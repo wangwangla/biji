@@ -209,7 +209,80 @@ eee
 欢迎eee登录
 
 
+#!/bin/bash
+echo 查看空文件的内容
+cat /dev/null
+echo 结束
+echo 向文件中写入数据
+echo test>/dev/null
+echo 显示内容
+cat /dev/null
 
+
+#进行算术
+#!/bin/bash
+test 3 -le 5
+echo "3 -le 5:$?"
+
+test 5 -le 3
+echo "5 -le 3 :$?"
+
+
+
+
+#!/bin/bash
+echo 使用test命令进行逻辑判断
+echo 判断3是否小于5
+if test 3 -le 5
+then 
+    echo 3小于5
+fi
+echo 判断5是否小于3
+if test 5 -le 3
+then
+    echo 5 小于 3
+fi
+
+
+
+#!/bin/bash
+echo 测试if
+if test 1 -le 3
+then 
+    echo "test01"
+fi
+
+
+#!/bin/bash
+if test 1 -le 3
+then
+    echo "test02"
+else
+    echo "test03"
+fi
+
+#!/bin/bash
+
+echo 使用[]命令替换test进行
+echo 判断3和5的大小
+if [3 -le 5]
+then 
+    echo 3 小于 5
+fi
+
+echo 判断5是否小于3
+if[5 -le 3]
+then
+    echo 5小于3
+
+fi
+
+
+#!/bin/bash
+for te in test01 test01 test01 test01 test01 
+    do 
+        echo "the data is $te"
+done
 
 
 

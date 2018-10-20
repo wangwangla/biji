@@ -1,7 +1,7 @@
 1.shell编程的步骤
-    写文件
-    授权
-    执行
+    写文件   vi
+    授权     chmod u+x 文件名字    或者 chmod 777 文件名字
+    执行     ./文件名      sh 文件名.sh
 2.举例hello
     （1）shell代码
         #第一个shell练习
