@@ -136,4 +136,56 @@
         <input type="输入项的类型"></input>
 
         输入项：<input type="text" name="name"></input>
-        
+        密码：<input type="password" name="password"/>
+        单选输入项：<input type="redio"/>
+            在里面需要属性name
+            name的属性值必须要相同
+            必须有一个value值
+
+            实现默认的是
+                checked="checked"
+        复选框：<input type="checkbox"/>
+            里面需要一个属性name
+            name的属性值必须相同
+            必须有一个value
+
+            默认选中
+                checked="checked"
+            文本输入项:<input type="file"/>
+        下拉输入框：
+            <select name="XXX">
+                <option value="1991">1991</option>
+                <option value="1992">1992</option>
+                <option value="1993">1993</option>
+                <option value="1994">1994</option>
+            </select>
+            默认选中
+                selected="selected"
+        文本域：
+            <textarea cols="10" rows="10">
+            </textarea>
+        隐藏域：
+            <input type="hidden"/>
+        提交按钮：
+            <input type="submit"/>
+            <input type="submit" value="注册"/>
+        使用图片提交：
+            <input type="image" src="图片路径">
+        重置按钮：
+            <input type="reset"/>
+        普通按钮：
+            <input type="button" value="test"/>
+12.html中的其他的常用标签的使用
+    b:加粗  s:斜线  u:下划线    i:斜线  pre:原样输出    sub：下标   sup:上标    p:段落
+13.html头标签的使用
+    html两部组成：head和body
+    在head里面的标签就是头标签
+    title标签：表示在标签上显示的内容
+	<meta>标签：设置页面的一些相关内容
+		<meta name="keywords" content="毕姥爷，熊出没，刘翔">
+		<meta http-equiv="refresh" content="3;url=01-hello.html" />
+    base标签：设置超链接的基本属性
+        可以统一设置超链接的打开方式
+    link：引入外部文件，比如css等文件
+14.框架标签的使用
+    <frameset>

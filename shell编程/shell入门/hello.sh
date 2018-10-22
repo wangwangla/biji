@@ -285,8 +285,48 @@ for te in test01 test01 test01 test01 test01
 done
 
 
+#!/bin/bash
+function test{
+    echo "test"
+}
+test
 
+#!/bin/bash
+echo "测试return的使用"
+fun1()
+{
+    for((num=1;num<10;num++))
+    {
+        if[ $num -eq 5 ]            注意这里有空格
+        then
+            return $num
+        else
+            echo "当前数据是：$num"
+        fi
 
+    }
+}
+fun1
+echo $?
+
+#!/bin/bash
+echo "测试return的使用"
+fun1()
+{
+    for((num=1;num<10;num++))
+    {
+        if [ $num -eq 5 ]
+        then
+            return $num
+        else
+            echo "当前数据是：$num"
+        fi
+
+    }
+}
+var=fun1
+var=var+1
+echo $var
 
 
 
