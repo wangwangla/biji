@@ -14,5 +14,5 @@ plot(w,H);
 subplot(223);
 plot(w,-2*w) 
 
-amplres()
+
 

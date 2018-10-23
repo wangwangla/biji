@@ -14,6 +14,3 @@ wdhm=hanning(N);
 wdbm=blackman(N);
 wdha=hamming(N);
 plot(n,[wdjx,wdsj,wdhm,wdbm,wdha]);
-%plot(n,wdbm)
-
-amplres(wdjx)
