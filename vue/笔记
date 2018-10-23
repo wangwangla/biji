@@ -1,0 +1,15 @@
+搭建项目环境：
+    1.使用vue之前需要安装nodejs
+    2.搭建vue的开发环境，安装vu脚手架工具 官方命令行工具
+        cnpm install --gloal-cli 
+    3.创建项目 
+        方式一：
+            vue init webpack vue-demo01
+            cd vue-demo01
+            npm run dev 运行项目
+        方式二：
+            vue init webpack-sample vue-demo01
+            cd vue-demo01
+            
+        
+        
