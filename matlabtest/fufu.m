@@ -1,0 +1,20 @@
+%符福的求法
+%计算幅频特性
+%举例：
+    %b=[-1,2,4,2,-1],a=1
+b=[-1,2,4,2,-1];
+a=1;
+%频率特性
+[H,w]=freqz(b,a);
+subplot(221);
+plot(w,abs(H));
+subplot(223);
+%相角
+plot(w,angle(H));
+%符福特性
+A=-2*cos(2*w)+4*cos(w)+4;
+%theta相位特性
+theta=2*w;
+subplot(222);
+plot(w,A)
+subplot(w,theta)
