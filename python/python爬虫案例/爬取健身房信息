@@ -1,0 +1,66 @@
+#coding:'utf-8'
+import requests
+import json
+import xlwt
+import time
+
+
+provinceList = ['北京市', '天津市', '河北省', '山西省',
+                '内蒙古自治区', '辽宁省', '吉林省','黑龙江省',
+                '上海市', '江苏省', '浙江省', '安徽省', '福建省',
+                '江西省', '山东省','河南省', '湖北省', '湖南省',
+                '广东省', '广西壮族自治区','海南省', '重庆市',
+                '四川省', '贵州省', '云南省', '西藏自治区', '陕西省',
+                '甘肃省', '青海省', '宁夏回族自治区', '新疆维吾尔自治区',
+                '台灣', '香港特别行>政区', '澳门特别行政区'];
+info = ['省','市','区','健身房场馆','联系电话','地址','经度','维度']
+i=0
+j=0
+
+for p in provinceList:
+    
+    i=0
+    j=0
+    sportInfo = xlwt.Workbook()
+    sheet = sportInfo.add_sheet('p')
+    for num in info:
+        sheet.write(0,i,num)
+        i=i+1
+    s=p
+    print(s)
+    urls=[]
+    for num in range(0,19):
+        url ='https://restapi.amap.com/v3/place/text?types=08010'+str(num)+'&city='+s+'&key=37b3781dfd1926ed67c18320fc387ead'
+        urls.append(url)
+    for url in urls:
+        print(url)
+        res = requests.get(url)
+        json_data = json.loads(res.text)
+        count = json_data['count']
+        # print(count,json_data)
+        if int(count) == 0:
+            break
+        pois = json_data['pois']
+#写入
+        for poi in pois:
+            j=j+1;
+            name = poi['name']
+            pname = poi['pname']
+            cityname = poi['cityname']
+            adname = poi['adname']
+            tel = poi['tel']
+            address = poi['address']
+            location = poi['location']
+            lon = location.split(',')[0]
+            lat = location.split(',')[1]
+            sheet.write(j,0,pname)
+            sheet.write(j,1,cityname)
+            sheet.write(j,2,adname)
+            sheet.write(j,3,name)
+            sheet.write(j,4,tel)
+            sheet.write(j,5,address)
+            sheet.write(j,6,lon)
+            sheet.write(j,7,lat)
+        time.sleep(0.01)
+        sportInfo.save(p+'.xls')
+    

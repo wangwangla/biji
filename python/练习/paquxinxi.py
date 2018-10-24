@@ -14,7 +14,7 @@ for num in info:
     
 urls=[]
 for num in range(0,19):
-    url ='https://restapi.amap.com/v3/place/text?types=08010'+str(num)+'&city=西安&key=37b3781dfd1926ed67c18320fc387ead'
+    url ='https://restapi.amap.com/v3/place/text?types=08010'+str(num)+'&city=陕西&key=37b3781dfd1926ed67c18320fc387ead'
     urls.append(url)
   
 for num in range(0,2):
