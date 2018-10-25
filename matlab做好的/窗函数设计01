@@ -23,8 +23,13 @@ H=(H(1:1:501))';
 w=(w(1:1:501))';
 mag=abs(H);
 db=20*log10((mag+eps)/max(mag));
+
+
+
 pha=angle(H);
 grd=grpdelay(h,[1],w);%画图
+
+
 subplot(221)
 stem(n,hd)
 subplot(222)

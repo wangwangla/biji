@@ -32,6 +32,5 @@ subplot(222)
 plot(w,[H1,H2,H3,H4,H5]);
 %·Ö±´
 subplot(223)
-%plot(w,20*log10*(abs(H2)))
-%plot(w,[20*log10(abs(H1)),20*log10(abs(H2)),':',20*log10(abs(H3)),'-',20*log10(abs(H4)),'-.',20*log10(abs(H5)),'.'])
+
 plot(w,20*log10(abs(H1)),w,20*log10(abs(H2)),':',w,20*log10(abs(H3)),'-',w,20*log10(abs(H4)),'-.',w,20*log10(abs(H5)),'.')
