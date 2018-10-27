@@ -1,21 +1,26 @@
+import java.util.Arrays;
+
 class Demo{
     public static void main(String[] args) {
-        List list=new ArrayList();
-        
-        list.add("aa");
-
+        Arrays a =Arrays.asList("","");
     }
+    /**
+     * 
+     * @param arrayLength
+     * @param fromIndex
+     * @param toIndex
+     */
+    private static void rangeCheck(int arrayLength, int fromIndex, int toIndex) {
+        if (fromIndex > toIndex) {
+            throw new IllegalArgumentException(
+                    "fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+        }
+        if (fromIndex < 0) {
+            throw new ArrayIndexOutOfBoundsException(fromIndex);
+        }
+        if (toIndex > arrayLength) {
+            throw new ArrayIndexOutOfBoundsException(toIndex);
+        }
+    }
+    
 }
-、】
-
-
-
-XXX.loder("bb.tets")
-
-
-XXX
-
-aa.A a=new aa.A();
-
-
-bb.A b 
