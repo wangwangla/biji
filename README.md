@@ -1,4 +1,4 @@
-# 笔记(https://github.com/wangwangla/biji)
+# [笔记}(https://github.com/wangwangla/biji)
 ##数据库
 ##操作系统
 ##java基础
