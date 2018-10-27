@@ -1,8 +1,10 @@
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 class Demo{
     public static void main(String[] args) {
         Arrays a =Arrays.asList("","");
+        ArrayDeque ar = new ArrayDeque<>();
     }
     /**
      * 

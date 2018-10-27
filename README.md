@@ -1,4 +1,4 @@
-#[笔记](https://github.com/wangwangla/biji)
+[#笔记](https://github.com/wangwangla/biji)
 [bootstrap](https://github.com/wangwangla/biji/tree/master/bootstrap)
 
 [html笔记](https://github.com/wangwangla/biji/tree/master/html笔记)
