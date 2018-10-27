@@ -6,3 +6,16 @@ class Demo{
 
     }
 }
+、】
+
+
+
+XXX.loder("bb.tets")
+
+
+XXX
+
+aa.A a=new aa.A();
+
+
+bb.A b 

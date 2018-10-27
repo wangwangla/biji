@@ -1,0 +1,40 @@
+%设计思想：使得滤波器在通带和阻带上误差峰值均匀分布
+%    其误差具有等波动特性，因而可把
+clear
+clc
+wp = 0.2*pi; 
+ws = 0.3*pi; 
+Rp = 0.25; 
+As = 50;   % 给定设计指标
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+delta1 = (10^(Rp/20)-1)/(10^(Rp/20)+1);         % 求通带绝对波动指标
+delta2 = (1+delta1)*(10^(-As/20));         %  求阻带绝对波动指标
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+weights = [delta2/delta1 1];         % remez 函数要求的加权向量
+deltaf = (ws-wp)/(2*pi);            % 估算N需要的过渡带宽度
+N = ceil((-20*log10(sqrt(delta1*delta2))-13)/(14.6*deltaf)+1)+4 % 估算N
+N=N+mod(N-1,2);                 % N必须取奇数 
+f = [0 wp/pi ws/pi 1];         %  函数要求的频率向量
+m = [1 1 0 0];                  % remez 函数要求的理想幅特性向量
+
+h = remez(N-1,f,m,weights);        % 用最优等波动法设计滤波器系数
+[db,mag,pha,grd,w] = myfreqz(h,[1]);        % 计算滤波器频率特性
+dw = 2*pi/1000; 
+wsi=ws/dw+1; wpi = wp/dw;  % 求边界频率下标
+Asd = -max(db(wsi:1:501));        % 求阻带波动
+% 检查Asd,若达不到要求，增加滤波器长度N = N+2，保持奇数,重复执行以下三句
+h = remez(N-1,f,m,weights);
+[db,mag,pha,grd,w] = myfreqz(h,[1]);
+Asd = -max(db(wsi:1:501))
+
+[A,w1]=amplres(h);                  % 求符幅特性
+subplot(2,2,1),stem([1:N],h,'.')    % 画滤波器脉冲响应
+subplot(2,2,2),plot(w,db)           % 画分贝幅特性
+subplot(2,2,3),plot(w,A)            % 画符幅特性曲线
+subplot(2,2,4),plot(w(1:wpi),A(1:wpi)-1,w(wsi:501),A(wsi:501))% 画误差波动曲线
+set(gcf,'color','w')                % 置图形背景色为白
+
+
+
+
+
