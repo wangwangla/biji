@@ -48,4 +48,25 @@
         undifined:
             定义一个变量，没有赋值
         typeof（）：查看变量的数据类型
-7.js的语句
+7.js的对象
+    var cat=function(name,age){
+        this.name=name;
+        this.age=age;
+        this.run=function(){
+            document.write("ssssss");
+        }
+    }
+    new k  = new cat("",3)
+8.js的响应：
+    方式一：
+        onclick="test()"
+        <script>
+            function test(){
+                alert("XXXXXX");
+            }
+        </script>
+    方式二：   
+        onclick="test()"
+        <script src="xxx.js">
+        </script>
+   

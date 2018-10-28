@@ -13,6 +13,11 @@
     （5）.有的标签，有结束标签
 3.html的操作思想
     网页中有很多数据，不同的数据可能需要不同的显示效果，这个时候需要使用标签将操作数据封装起来
+
+    标签属性的作用:
+        <html lang="ZH-CN">
+        <meta key=‘value’>加速网也速索
+ 
 4.html中的标签
     （1）文字标签和注释标签
         文字标签：修改文字的样式
@@ -189,3 +194,117 @@
     link：引入外部文件，比如css等文件
 14.框架标签的使用
     <frameset>
+
+
+
+
+15.补充：
+    <div>属性id是自由命名的，如果<div>太多就会出现问题，
+    so：
+        <header>:显示网站名称、主题、或者主要信息
+        <hgroup>:将标题分组
+        <nav>网站的连接菜单
+        <aside>:位于边侧栏
+        <artitle>:内容
+        <section>:用于章节或者段落
+        <footer>:位于页尾
+        <!DOCTYPE html>
+    <!--一般网站的摸版-->
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>背包</title>
+        </head>
+        <body>
+            <header id="header">
+                <hgroup>
+                    <h1></h1>
+                    <h2></h2>
+                </hgroup>
+            </header>
+            <nav>
+                <ul>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </nav>
+            <article>
+                <section>
+                    <p></p>
+                </section>
+            </article>
+            <aside></aside>
+        </body>
+    </html>
+```语言
+    <htm1 lang="zh-cn"></html>
+```编码
+    <meta charset="utf-8">
+```有序列表设置排序
+    <ol type="i" start="4" reversed="">
+    何种类型     从哪里开始  默认正序，也可逆序
+```span和div的区别
+    div最后会有换行  span最后没有换行
+```图片
+    src="":路径  
+    alt=""：说明
+
+    扩展：
+        路径不是方法
+        （1）网上：http://XXXXXXXXXXX
+        （2）统一目录：1.jpg
+        （3）下一级：img/1.jpg
+        （4）上一级：../img/1.jpg
+```表格
+    <tr>行  <td>列
+```form的enctype
+    只有在post请求下才可以。
+    （1）默认："application/x-www-form-urlencoded"
+    （2）文件上传：multipart/form-data
+    （3）text/plain:将窗体属性传输到电子邮箱
+```target
+    _black：开新窗口    空白页
+    _self:当前窗口
+    _parent:
+    _top:最上层
+    _也框名称
+
+
+
+```css基本格式
+    h1{
+        color:red; 
+    }
+    <h1 style="color:blue">
+```css选择器
+    （1）标签选择器
+        div{
+            font-size:1px;
+            color:red
+        }
+    （2）通用选择器
+        *：所有标签
+        *{
+            font-size:19px
+        }
+    （3）class选择器
+        .class属性名{
+
+        }
+        标签名.class属性名
+    （4）id选择器
+        #id名字{
+
+        }
+    （5）属性选择器
+        a[目标]{
+
+        }
+        目标:
+            [attribute="value"]:等于value
+            [attribute~="value"]:属性包含完value
+            [attribute|="value"]:等于或者大于
+            [attribute^="value"]：开头
+            [attribute$="value"]：结尾
+            [attribute*="value"]：出现
+            
