@@ -3,6 +3,7 @@ java.util中的工具类，提供数组相关的常用操作，排序、比较�
 
 based on jdk8
 
+
 ###常量和变量
 ```java
     （1）并行排序的最小数组长度，小于这个参数就不进行划分数组，数组长度较小会导致任务竞争，而导致内存效率低
@@ -11,7 +12,8 @@ based on jdk8
         private static final int INSERTIONSORT_THRESHOLD = 7;
 
 ```
-####范围检查
+###范围检查
+```
     1.私有方法，检查是否越界
     /**
      * 
@@ -25,7 +27,10 @@ based on jdk8
         如果开始坐标小于0，就会抛出异常
         如果结束的位置大于总的长度，也会抛出异常
 
+
+```
 ###排序
+```
     对于int[]、byte[]、long[]等基本类型数组的排序，使用DualPivotQuicksort类进行排序，可选范围。
 
     注意这个类对改动了双轴快排的策略，使用了其他的排序方法,查看其源码可以知道还使用了计数排序、插入排序、归并排序。很多会导致其他版本快排退化到O(n^2)的数据集使用这个类仍能保证O(nlogn)
@@ -38,6 +43,7 @@ based on jdk8
 
 ```
 我的总结：
+```
     （1）int类型的排序
         简单可以使用DualPivotQuicksort的静态方法直接的进行排序。
         ·只输入数组：就直接排序
@@ -47,11 +53,12 @@ based on jdk8
 
 ```
 ###并行排序
+```
 思想：将一个数组的排序分成几个数组的方式来实现排序，然后将其进行合并
     当数组的大小，下于最小粒度或者只有一个线程执行的时候，使用DualPivotQuicksort进行排序，他需要一个不大于原数组大小的额外数字进行排序任务。
     if (n <= MIN_ARRAY_SORT_GRAN ||(p = ForkJoinPool.getCommonPoolParallelism()) == 1)
     也可以使用一个数组，那就对整个数组进行执行，也可以指定位置
-
+```
 ###equals&deepEquals
 ```
     equals：
