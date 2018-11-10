@@ -1,4 +1,4 @@
-[#笔记](https://github.com/wangwangla/biji)
+[笔记](https://github.com/wangwangla/biji)
 
 [java](https://github.com/wangwangla/biji/tree/master/java)
 
@@ -29,3 +29,5 @@
 [计算机网络](https://github.com/wangwangla/biji/tree/master/计算机网络)
 
 [读书笔记](https://github.com/wangwangla/biji/tree/master/读书笔记)
+
+[目录](https://github.com/wangwangla/biji/tree/master/README.md)
