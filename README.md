@@ -1,14 +1,31 @@
 [#笔记](https://github.com/wangwangla/biji)
-[bootstrap](https://github.com/wangwangla/biji/tree/master/bootstrap)
 
-[html笔记](https://github.com/wangwangla/biji/tree/master/html笔记)
+[java](https://github.com/wangwangla/biji/tree/master/java)
 
-[java开发中的常见问题解决](https://github.com/wangwangla/biji/tree/master/java%开发中常见问题解决办法)
+[jboot&&jfinal](https://github.com/wangwangla/biji/tree/master/jbootLearn)
 
-[java基础](https://github.com/wangwangla/biji/tree/master/java基础)
+[shell编程](https://github.com/wangwangla/biji/tree/master/liunx/shell编程)
 
-[java源代码分析](https://github.com/wangwangla/biji/tree/master/java源代码分析)
+[liunx服务器配置](https://github.com/wangwangla/biji/tree/master/liunx/liunx服务器的配置)
 
-[JVM](https://github.com/wangwangla/biji/tree/master/jvm)
+[python](https://github.com/wangwangla/biji/tree/master/python)
 
-[jboot测试源代码](https://github.com/wangwangla/biji/tree/master/jbootLearn/kw-demo)
+[前端](https://github.com/wangwangla/biji/tree/master/前端)
+
+[小项目](https://github.com/wangwangla/biji/tree/master/小项目)
+
+[工具使用](https://github.com/wangwangla/biji/tree/master/工具使用)
+
+[操作系统](https://github.com/wangwangla/biji/tree/master/操作系统)
+
+[数据库](https://github.com/wangwangla/biji/tree/master/数据库)
+
+[时间安排](https://github.com/wangwangla/biji/tree/master/时间安排)
+
+[电脑维修以及常识](https://github.com/wangwangla/biji/tree/master/电脑维修以及常识)
+
+[算法](https://github.com/wangwangla/biji/tree/master/算法)
+
+[计算机网络](https://github.com/wangwangla/biji/tree/master/计算机网络)
+
+[读书笔记](https://github.com/wangwangla/biji/tree/master/读书笔记)
