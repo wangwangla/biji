@@ -32,7 +32,7 @@
 
 [目录](https://github.com/wangwangla/biji/tree/master/README.md)
 
-[设计模式java](https://github.com/wangwangla/biji/tree/master/设计模式java)
+[设计模式java](https://github.com/wangwangla/biji/tree/master/设计模式【java】)
 
 [每日一篇技术贴](https://github.com/wangwangla/biji/tree/master/每日一篇技术贴)
 
