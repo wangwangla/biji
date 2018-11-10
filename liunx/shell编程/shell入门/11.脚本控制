@@ -30,3 +30,8 @@ liunx的信号是中断实现的
     如果要实现真正的后台，可以使nohup命令
     正确的打开方式：nohup 命令 &
     
+
+
+
+
+[目录](https://github.com/wangwangla/biji/tree/master/README.md)

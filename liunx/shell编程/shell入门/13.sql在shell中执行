@@ -16,3 +16,8 @@
         eho '执行语句'
         mysql -e "${selectsql}"   #在脚本中执行SQL需要加上-e来实现语句的增加
        
+
+
+
+
+[目录](https://github.com/wangwangla/biji/tree/master/README.md)

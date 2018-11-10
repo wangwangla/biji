@@ -95,3 +95,7 @@
     当所有节点不为null的时候，并可以找到相应节点的时候，进行操作，否则直接返回null.
     获取头结点，判断hash值是否相同，如果相同在判断key是否相同
     为树的时候，通过树进行查找，否则就进行遍历查找。
+
+
+
+[目录](https://github.com/wangwangla/biji/tree/master/README.md)
