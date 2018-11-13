@@ -1,6 +1,6 @@
 补充：
     （1）chmod和chown的区别？
-        chmod:更改文件的访问权限，使用于普通文件，也可以包括目录   
+        chmod:更改文件的访问权限，使用于普通文件，也可以包括目录   rwx  421   
         chown:指定文件所有者改变为指定用户或者组
     
         我的总结：
@@ -8,11 +8,14 @@
             chown：文件的组或者用户
 
     （2）find查找指令
-        find -name filename
+        find -name filename   
         find -uid n
         find -size n
         find -amin n        指定时间分钟 
         find -atime n       
+
+        我的总结：
+            find可以根据多个参数进行查询
 
     （3）grep查找特定表达式的字符或者字符串
         ls -l | grep *l*
