@@ -156,4 +156,9 @@ docker中使用jenkins
     这个可前台运行，也可以后台运行，后台就看不到密码了，所以第一次启动的时候，不要使用后台运行。
     我们可以在里面增加用户，然后将自己的配置都写好之后，将其推送到自己的仓库中去，以便以后使用下载。
 
+docker在阿里云的构建
+
+
+
+docker-machine create --engine-registry-mirror=https://erwhn47e.mirror.aliyuncs.com -d virtualbox default
     
