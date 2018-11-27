@@ -162,3 +162,50 @@ docker在阿里云的构建
 
 docker-machine create --engine-registry-mirror=https://erwhn47e.mirror.aliyuncs.com -d virtualbox default
     
+===========================================================================================
+    Ubuntu下Docker
+    更新镜像源
+        sudo apt-get update
+    安装docker.io
+        sudo apt-get install docker.io
+    sudo apt-get install curl
+    curl -sSL https://get.docker.com | sh
+
+    docker service start
+
+
+    docker run --name=postgresql-redmine -d --env='DB_NAME=redmine_production' --env='DB_USER=redmine' --env='DB_PASS=password' sameersbn/postgrsql:9.4-12
+
+
+    docker run --name gitlab-redis -d sameersbn/redis:latest
+
+    docker run --name gitlab -d --link gitlab-postgresql:postgresql --link gitlab-redis:redisio --publish 10022:22 --publish 10080:80 --env 'GITLAB_PORT=10080' --env 'GITLAB_SSH_PORT=10022' --env 'GITLAB_SECRETS_DB_KEY_ABSE=long-and-random-alpha-numeric-string' sameersbn/gitlab:8.4.4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
