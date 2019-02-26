@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 		//判断是否支持openGLES
 		if(supportsEs2) {
 			gLSurfaceView.setEGLContextClientVersion(2);
-			gLSurfaceView.setRenderer(new MyRenderer());
+			gLSurfaceView.setRenderer(new MyRenderer(MainActivity.this));
 			renderSet=true;
 		}else {
 			Toast.makeText(this, "支持", Toast.LENGTH_LONG).show();
