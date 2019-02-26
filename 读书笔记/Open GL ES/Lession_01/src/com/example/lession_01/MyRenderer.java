@@ -8,6 +8,8 @@ import com.example.util.TextResourceReader;
 
 import static android.opengl.GLES10.glViewport;
 import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_LINES;
+import static android.opengl.GLES20.GL_POINTS;
 import static android.opengl.GLES20.GL_TRIANGLES;
 import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
@@ -56,18 +58,19 @@ public class MyRenderer implements Renderer {
 					*/
 				/*更新代码如下*/
 				/*x   y */
-				0f,0f,
-				9f,14f,
-				0f,14f,
-				0f,0f,
-				9f,0f,
-				9f,14f,
+				-0.5f,-0.5f,
+				0.5f,0.5f,
+				-0.5f,0.5f,
 				
-				0f,7f,
-				9f,7f,
+				-0.5f,-0.5f,
+				0.5f,-0.5f,
+				0.5f,0.5f,
 				
-				4.5f,2f,
-				4.5f ,12f
+				-0.5f,0f,
+				0.5f,0f,
+				
+				0f,-0.25f,
+				0f ,0.25f
 		};
 
 		vertexData = ByteBuffer.allocateDirect(BYTES_PER_FLOAT*tableVertices.length).order(ByteOrder.nativeOrder()).asFloatBuffer();
@@ -79,6 +82,14 @@ public class MyRenderer implements Renderer {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUniform4f(uColorLocation, 1.0f, 1.0f, 1.0f, 1.0f);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glUniform4f(uColorLocation, 0.0f, 0.0f, 0.0f, 1.0f);
+		glDrawArrays(GL_LINES, 6, 2);
+		glUniform4f(uColorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
+		glDrawArrays(GL_POINTS, 8, 1);
+		glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+		glDrawArrays(GL_POINTS, 9, 1);
+		
+		
 	}
 
 	@Override
