@@ -17,8 +17,10 @@ import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform4f;
+import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
+import static android.opengl.Matrix.orthoM;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -32,6 +34,12 @@ import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
 
 public class MyRenderer implements Renderer {
+	//加入矩阵数组
+	private static final String U_MATRIX = "u_Matrix";
+	//定义顶点数组存储矩阵
+	private final float[] projectMatrix = new float[16];
+	//我们需要一个整形来保存位置
+	private int uMatrixLocation ;
 	//每个顶点的坐标个数
 	private static final int POSITION_COMPONENT_COUNT = 2;
 	//颜色的个数
@@ -85,6 +93,7 @@ public class MyRenderer implements Renderer {
 	public void onDrawFrame(GL10 arg0) {
 		// TODO Auto-generated method stub
 		glClear(GL_COLOR_BUFFER_BIT);
+		glUniformMatrix4fv(uMatrixLocation, 1, false, projectMatrix,0);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
 
 	}
@@ -92,6 +101,13 @@ public class MyRenderer implements Renderer {
 	@Override
 	public void onSurfaceChanged(GL10 arg0, int width, int height) {
 		glViewport(0,0,width,height);
+		final float aspectRatio = width>height?(float)width / (float)height:
+			height / (float)width;
+		if(width>height) {
+			orthoM(projectMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+		}else {
+			orthoM(projectMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+		}
 	}
 
 	@Override
@@ -111,6 +127,7 @@ public class MyRenderer implements Renderer {
 		glUseProgram(progarm);
 		aColorLocation = glGetAttribLocation(progarm, A_COLOR);
 		aPosition = glGetAttribLocation(progarm, A_POSITION);
+		uMatrixLocation = glGetUniformLocation(progarm, U_MATRIX);
 		vertexData.position(0);
 		glVertexAttribPointer(aPosition, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRDE, vertexData);
 		glEnableVertexAttribArray(aPosition);
