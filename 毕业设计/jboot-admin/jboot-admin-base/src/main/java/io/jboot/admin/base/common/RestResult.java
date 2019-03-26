@@ -7,9 +7,14 @@ import java.io.Serializable;
  * @author Rlax
  *
  */
+@SuppressWarnings("rawtypes")
 public class RestResult<T> implements Serializable {
 
-    private String code;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String code;
     private String msg;
 
     private T data;
@@ -29,13 +34,15 @@ public class RestResult<T> implements Serializable {
         this.data = data;
     }
 
-    public static RestResult buildSuccess() {
+
+	public static RestResult buildSuccess() {
         RestResult restResult = new RestResult();
         restResult.success();
         return restResult;
     }
 
-    public static RestResult buildSuccess(Object t) {
+    @SuppressWarnings("unchecked")
+	public static RestResult buildSuccess(Object t) {
         RestResult restResult = buildSuccess();
         restResult.setData(t);
         return restResult;

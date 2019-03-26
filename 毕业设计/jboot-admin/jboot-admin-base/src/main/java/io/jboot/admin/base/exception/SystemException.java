@@ -9,6 +9,11 @@ import io.jboot.exception.JbootException;
  */
 public class SystemException extends JbootException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public SystemException() {
 		super();
 	}

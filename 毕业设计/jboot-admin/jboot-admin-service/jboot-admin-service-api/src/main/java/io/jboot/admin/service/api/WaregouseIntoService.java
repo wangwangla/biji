@@ -1,9 +1,7 @@
 package io.jboot.admin.service.api;
 
-
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
-
 import io.jboot.admin.service.entity.model.WaregouseInto;
 
 import java.util.List;
@@ -72,48 +70,25 @@ public interface WaregouseIntoService  {
     public boolean update(WaregouseInto model);
 
 
-    /**
-     * 分页
-     *
-     * @param page
-     * @param pageSize
-     * @return
-     */
-    public Page<? extends Model> paginate(int page, int pageSize);
-
-
     public void join(Page<? extends Model> page, String joinOnField);
-
     public void join(Page<? extends Model> page, String joinOnField, String[] attrs);
-
     public void join(Page<? extends Model> page, String joinOnField, String joinName);
-
     public void join(Page<? extends Model> page, String joinOnField, String joinName, String[] attrs);
-
     public void join(List<? extends Model> models, String joinOnField);
-
     public void join(List<? extends Model> models, String joinOnField, String[] attrs);
-
     public void join(List<? extends Model> models, String joinOnField, String joinName);
-
     public void join(List<? extends Model> models, String joinOnField, String joinName, String[] attrs);
-
     public void join(Model model, String joinOnField);
-
     public void join(Model model, String joinOnField, String[] attrs);
-
     public void join(Model model, String joinOnField, String joinName);
-
     public void join(Model model, String joinOnField, String joinName, String[] attrs);
 
     public void keep(Model model, String... attrs);
-
     public void keep(List<? extends Model> models, String... attrs);
 
 
+	public void refreshCache();
+
+
 	public Page<WaregouseInto> findPage(int pageNumber, int pageSize);
-
-
-	public List<WaregouseInto> findByName(String name);
-
 }

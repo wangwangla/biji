@@ -16,6 +16,7 @@ import java.io.Serializable;
  */
 public class SessionDAO extends EnterpriseCacheSessionDAO {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(SessionDAO.class);
 	
 	public static SessionDAO me;

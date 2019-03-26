@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentMap;
  * @author Rlax
  *
  */
+
+@SuppressWarnings("rawtypes")
 public class ShiroCacheManager implements CacheManager {
 
 	private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<String, Cache>();

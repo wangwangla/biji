@@ -9,6 +9,27 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSupplierInfo<M extends BaseSupplierInfo<M>> extends JbootModel<M> implements IBean {
 
+    public static final String ACTION_ADD = "SupplierInfo:add";
+    public static final String ACTION_DELETE = "SupplierInfo:delete";
+    public static final String ACTION_UPDATE = "SupplierInfo:update";
+
+
+    @Override
+    public String addAction() {
+        return ACTION_ADD;
+    }
+
+    @Override
+    public String deleteAction() {
+        return ACTION_DELETE;
+    }
+
+    @Override
+    public String updateAction() {
+        return ACTION_UPDATE;
+    }
+
+
 	public void setSupplierId(java.lang.String supplierId) {
 		set("supplier_id", supplierId);
 	}

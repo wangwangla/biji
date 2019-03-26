@@ -9,20 +9,33 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseWarehouseInfo<M extends BaseWarehouseInfo<M>> extends JbootModel<M> implements IBean {
 
+    public static final String ACTION_ADD = "WarehouseInfo:add";
+    public static final String ACTION_DELETE = "WarehouseInfo:delete";
+    public static final String ACTION_UPDATE = "WarehouseInfo:update";
+
+
+    @Override
+    public String addAction() {
+        return ACTION_ADD;
+    }
+
+    @Override
+    public String deleteAction() {
+        return ACTION_DELETE;
+    }
+
+    @Override
+    public String updateAction() {
+        return ACTION_UPDATE;
+    }
+
+
 	public void setWaregouseId(java.lang.String waregouseId) {
 		set("waregouse_id", waregouseId);
 	}
 	
 	public java.lang.String getWaregouseId() {
 		return getStr("waregouse_id");
-	}
-
-	public void setWaregouseCategoryId(java.lang.String waregouseCategoryId) {
-		set("waregouse_category_id", waregouseCategoryId);
-	}
-	
-	public java.lang.String getWaregouseCategoryId() {
-		return getStr("waregouse_category_id");
 	}
 
 	public void setWaregouseName(java.lang.String waregouseName) {

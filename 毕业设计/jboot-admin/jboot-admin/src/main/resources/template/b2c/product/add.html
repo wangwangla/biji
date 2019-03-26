@@ -9,12 +9,15 @@
 
 #define js()
 <script type="text/javascript">
-    layui.use(['form', 'layer'], function () {
+    layui.use(['jquery','form', 'layer', 'excel'], function () {
         // 操作对象
         var form = layui.form
             , layer = layui.layer
             , $ = layui.jquery;
-
+        var excel = layui.excel;
+        
+        
+        
         form.on('submit(sub)', function(data){
 
             util.sendAjax ({
@@ -62,7 +65,7 @@
             <div class="layui-input-block">
                 <select id='status' name="product.status" lay-verify="required">
                     <option></option>
-                    #statusOption(io.jboot.b2c.service.entity.status.ProductStatus::me(), '1')
+                    #statusOption(io.jboot.b2c.service.entity.status.ProductStatus::me(),'1')
                 </select>
             </div>
         </div>

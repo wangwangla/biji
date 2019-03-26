@@ -9,7 +9,12 @@ import java.io.Serializable;
  */
 public class JwtToken implements Serializable {
 
-    public JwtToken() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public JwtToken() {
 
     }
 

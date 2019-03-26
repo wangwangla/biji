@@ -150,4 +150,8 @@ public interface UserService  {
     public void keep(Model model, String... attrs);
 
     public void keep(List<? extends Model> models, String... attrs);
+
+	public Page<User> findPage(int pageNumber, int pageSize);
+
+	public void refreshCache();
 }

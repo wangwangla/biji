@@ -9,7 +9,11 @@ import java.io.Serializable;
  */
 public class ErrorResult implements Serializable {
 
-    public final static Integer NORMAL_ERROR = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public final static Integer NORMAL_ERROR = 0;
     public final static Integer VALIDATOR_ERROR = 1;
     public final static Integer BUSINESS_ERROR = 2;
     public final static Integer FALL_BACK_ERROR = 100;

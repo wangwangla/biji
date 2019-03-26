@@ -29,6 +29,8 @@
                 , {field: 'staffCategoryOptionDate', title: '创建日期', width: 120}
                 , {field: 'staffCategoryOptionUser', title: '创建人', width: 180}
                 , {field: 'staffCategoryUpdateDate', title: '更新日期', width: 180}
+                , {fixed: 'right', title: '操作', width: 120, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+                
              ]]
             , url: '#(ctxPath)/category/staffcategory/tableData'
             , method: 'get'
@@ -50,8 +52,8 @@
                 layer.confirm('真的删除行么', function(index){
                     util.sendAjax ({
                         type: 'POST',
-                        url: '#(ctxPath)/system/data/delete',
-                        data: {id : data.id},
+                        url: '#(ctxPath)/category/staffcategory/delete',
+                        data: {id : data.staffCategoryId},
                         loadFlag: true,
                         success : function(data){
                             layer.close(index);
@@ -63,40 +65,14 @@
                     })
                 });
             } else if(obj.event === 'edit'){
-                pop_show('编辑数据','#(ctxPath)/system/data/update?id=' + data.id,'','', function(){
+                pop_show('编辑数据','#(ctxPath)/category/staffcategory/update?id=' + data.staffCategoryId,'','', function(){
                     reloadTableQuery();
                 });
-            } else if(obj.event === 'use'){
-                util.sendAjax ({
-                    type: 'POST',
-                    url: '#(ctxPath)/system/data/use',
-                    data: {id : data.id},
-                    loadFlag: true,
-                    success : function(data){
-                        reloadTableQuery();
-                    }
-                });
-            } else if(obj.event === 'unuse'){
-                layer.confirm('确定停用该数据吗', function(index){
-                    util.sendAjax ({
-                        type: 'POST',
-                        url: '#(ctxPath)/system/data/unuse',
-                        data: {id : data.id},
-                        loadFlag: true,
-                        success : function(data){
-                            layer.close(index);
-                            reloadTableQuery();
-                        },
-                        unSuccess: function (data) {
-                            layer.close(index);
-                        }
-                    });
-                });
-            }
+            } 
         });
 
         $("#add").click(function(){
-            pop_show('添加数据','#(ctxPath)/system/data/add','','', function(){
+            pop_show('添加数据','#(ctxPath)/category/staffcategory/add','','', function(){
                 reloadTableQuery();
             });
         });
@@ -105,7 +81,7 @@
             layer.confirm('确定刷新数据缓存吗', function(index){
                 util.sendAjax ({
                     type: 'POST',
-                    url: '#(ctxPath)/system/data/cache',
+                    url: '#(ctxPath)/category/staffcategory/cache',
                     data: {},
                     loadFlag: true,
                     success : function(data){
@@ -120,14 +96,14 @@
 
         reloadTableQuery = function () {
             table.reload('dateTable', {
-                url: '#(ctxPath)/system/data/tableData'
+                url: '#(ctxPath)/category/staffcategory/tableData'
                 ,where: {type: $('#type').val(), typeDesc: $('#typeDesc').val()} //设定异步数据接口的额外参数
             });
         }
 
         reloadTable = function (type, typeDesc) {
             table.reload('dateTable', {
-                url: '#(ctxPath)/system/data/tableData'
+                url: '#(ctxPath)/category/staffcategory/tableData'
                 ,where: {type: type, typeDesc: typeDesc} //设定异步数据接口的额外参数
             });
         }
@@ -142,43 +118,24 @@
 
 #define content()
     <div class="layui-fluid">
-        <form id="searchForm" class="layui-form x-center" action="" >
-            <div class="layui-form-pane">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">类型编码</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="type" name="type" placeholder="类型编码" class="layui-input"/>
-                    </div>
-                    <label class="layui-form-label">类型描述</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="typeDesc" name="typeDesc" placeholder="类型描述" class="layui-input"/>
-                    </div>
-                    <div class="layui-input-inline" style="width : 80px">
-                        <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
-                    </div>
-                </div>
-            </div>
-        </form>
         <hr>
         <div class="layui-row">
             <div class="layui-btn-group">
-                #shiroHasPermission('/system/data/add')
+                
                 <button id="add" class="layui-btn layui-btn-small">添加数据</button>
-                #end
+                
             </div>
             <div class="layui-btn-group">
-                #shiroHasPermission('/system/data/cache')
                 <button id="cache" class="layui-btn layui-btn-small">刷新缓存</button>
-                #end
+               
             </div>
             <table id="dateTable" lay-filter="dateTable"></table>
         </div>
     </div>
 
 <script type="text/html" id="barOption">
-    #shiroHasPermission('/system/data/update')
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    #end
+
 
     #[[
     {{#  if(d.status == '0'){ }}
@@ -200,8 +157,8 @@
     {{#  } }}
     ]]#
 
-    #shiroHasPermission('/system/data/delete')
+ 
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    #end
+ 
 </script>
 #end

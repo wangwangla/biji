@@ -6,6 +6,7 @@ import io.jboot.admin.base.common.Consts;
 import io.jboot.admin.base.common.RestResult;
 import io.jboot.admin.base.plugin.shiro.MuitiLoginToken;
 import io.jboot.admin.base.web.base.BaseController;
+import io.jboot.admin.service.api.InstitutionInfoService;
 import io.jboot.admin.service.api.UserService;
 import io.jboot.admin.service.entity.model.User;
 import io.jboot.admin.validator.LoginValidator;
@@ -25,7 +26,8 @@ import org.apache.shiro.subject.Subject;
  */
 @RequestMapping("/")
 public class MainController extends BaseController {
-
+	@JbootrpcService
+	private InstitutionInfoService Service;
     @JbootrpcService
     private UserService userService;
 
@@ -98,5 +100,6 @@ public class MainController extends BaseController {
     public void welcome() {
         render("welcome.html");
     }
+    
 
 }

@@ -1,19 +1,21 @@
 package io.jboot.admin.service.provider;
 
-
-import io.jboot.admin.service.api.SupplierInfoService;
-import io.jboot.admin.service.entity.model.SupplierInfo;
 import io.jboot.aop.annotation.Bean;
 import io.jboot.core.rpc.annotation.JbootrpcService;
 import io.jboot.db.model.Columns;
-
-import com.jfinal.plugin.activerecord.Model;
-import com.jfinal.plugin.activerecord.Page;
+import io.jboot.Jboot;
+import io.jboot.admin.base.common.CacheKey;
+import io.jboot.admin.service.api.SupplierInfoService;
+import io.jboot.admin.service.entity.model.CommodityInfo;
+import io.jboot.admin.service.entity.model.SupplierInfo;
 import io.jboot.service.JbootServiceBase;
 
-import java.util.List;
-
 import javax.inject.Singleton;
+
+import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 @Bean
 @Singleton
@@ -21,23 +23,24 @@ import javax.inject.Singleton;
 public class SupplierInfoServiceImpl extends JbootServiceBase<SupplierInfo> implements SupplierInfoService {
 
 	@Override
+	public void refreshCache() {
+		// TODO Auto-generated method stub
+		  Jboot.me().getCache().removeAll(CacheKey.CACHE_KEYVALUE);
+    }
+
+	@Override
 	public Page<SupplierInfo> findPage(int pageNumber, int pageSize) {
 		// TODO Auto-generated method stub
-		return DAO.paginate(pageNumber, pageSize);
-	}
+        Columns columns = Columns.create();
+        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
+    }
 
 	@Override
-	public List<SupplierInfo> findByName(String name) {
+	public Record findByName(String id) {
 		// TODO Auto-generated method stub
-		Columns columns = new Columns();
-		columns.eq("", name);
-		return DAO.findListByColumns(columns);
-	}
-
-	@Override
-	public Page<? extends Model> paginate(int page, int pageSize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        Record data = Db.find("select * from supplier_info where supplier_name = '"+id+"'").get(0);
+        System.out.println(data+"===================");
+        return data;
+    }
 
 }

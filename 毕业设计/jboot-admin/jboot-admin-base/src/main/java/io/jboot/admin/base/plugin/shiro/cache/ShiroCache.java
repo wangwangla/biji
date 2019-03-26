@@ -50,6 +50,7 @@ public class ShiroCache<K, V> implements Cache<K, V> {
 		return Jboot.me().getCache().getKeys(cacheName).size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
     public Set<K> keys() {
 		return (Set<K>) Jboot.me().getCache().getKeys(cacheName);

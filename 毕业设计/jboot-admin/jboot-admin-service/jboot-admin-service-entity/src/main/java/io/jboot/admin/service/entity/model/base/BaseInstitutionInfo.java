@@ -9,28 +9,33 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseInstitutionInfo<M extends BaseInstitutionInfo<M>> extends JbootModel<M> implements IBean {
 
+    public static final String ACTION_ADD = "InstitutionInfo:add";
+    public static final String ACTION_DELETE = "InstitutionInfo:delete";
+    public static final String ACTION_UPDATE = "InstitutionInfo:update";
+
+
+    @Override
+    public String addAction() {
+        return ACTION_ADD;
+    }
+
+    @Override
+    public String deleteAction() {
+        return ACTION_DELETE;
+    }
+
+    @Override
+    public String updateAction() {
+        return ACTION_UPDATE;
+    }
+
+
 	public void setInstitutionId(java.lang.String institutionId) {
 		set("institution_id", institutionId);
 	}
 	
 	public java.lang.String getInstitutionId() {
 		return getStr("institution_id");
-	}
-
-	public void setUserId(java.lang.String userId) {
-		set("user_id", userId);
-	}
-	
-	public java.lang.String getUserId() {
-		return getStr("user_id");
-	}
-
-	public void setInstitutionCategoryId(java.lang.String institutionCategoryId) {
-		set("institution_category_id", institutionCategoryId);
-	}
-	
-	public java.lang.String getInstitutionCategoryId() {
-		return getStr("institution_category_id");
 	}
 
 	public void setInstitutionName(java.lang.String institutionName) {
@@ -41,60 +46,28 @@ public abstract class BaseInstitutionInfo<M extends BaseInstitutionInfo<M>> exte
 		return getStr("institution_name");
 	}
 
-	public void setInstitutionCategory(java.lang.String institutionCategory) {
-		set("institution_category", institutionCategory);
+	public void setInstitutionLogo(java.lang.String institutionLogo) {
+		set("institution_logo", institutionLogo);
 	}
 	
-	public java.lang.String getInstitutionCategory() {
-		return getStr("institution_category");
+	public java.lang.String getInstitutionLogo() {
+		return getStr("institution_logo");
 	}
 
-	public void setInstitutionStatus(java.lang.String institutionStatus) {
-		set("institution_status", institutionStatus);
+	public void setInstitutionWdNum(java.lang.String institutionWdNum) {
+		set("institution_wd_num", institutionWdNum);
 	}
 	
-	public java.lang.String getInstitutionStatus() {
-		return getStr("institution_status");
+	public java.lang.String getInstitutionWdNum() {
+		return getStr("institution_wd_num");
 	}
 
-	public void setInstitutionOfficial(java.lang.String institutionOfficial) {
-		set("institution_official", institutionOfficial);
+	public void setInstitutionWdId(java.lang.String institutionWdId) {
+		set("institution_wd_id", institutionWdId);
 	}
 	
-	public java.lang.String getInstitutionOfficial() {
-		return getStr("institution_official");
-	}
-
-	public void setInstitutionContcts(java.lang.String institutionContcts) {
-		set("institution_contcts", institutionContcts);
-	}
-	
-	public java.lang.String getInstitutionContcts() {
-		return getStr("institution_contcts");
-	}
-
-	public void setInstitutionAddress(java.lang.String institutionAddress) {
-		set("institution_address", institutionAddress);
-	}
-	
-	public java.lang.String getInstitutionAddress() {
-		return getStr("institution_address");
-	}
-
-	public void setInstitutionTel(java.lang.String institutionTel) {
-		set("institution_tel", institutionTel);
-	}
-	
-	public java.lang.String getInstitutionTel() {
-		return getStr("institution_tel");
-	}
-
-	public void setInstitutionWangdian(java.lang.String institutionWangdian) {
-		set("institution_wangdian", institutionWangdian);
-	}
-	
-	public java.lang.String getInstitutionWangdian() {
-		return getStr("institution_wangdian");
+	public java.lang.String getInstitutionWdId() {
+		return getStr("institution_wd_id");
 	}
 
 }

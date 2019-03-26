@@ -7,9 +7,14 @@ import java.io.Serializable;
  * @author Rlax
  *
  */
+@SuppressWarnings("rawtypes")
 public class RetResult<T> implements Serializable {
 
-    /** 成功失败 */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/** 成功失败 */
     private boolean success = true;
     /** 返回信息 */
     private T data;
@@ -17,7 +22,8 @@ public class RetResult<T> implements Serializable {
     /** 错误信息 */
     private ErrorResult error;
 
-    public static <T> RetResult buildSuccess() {
+
+	public static <T> RetResult buildSuccess() {
         return buildSuccess(null);
     }
 

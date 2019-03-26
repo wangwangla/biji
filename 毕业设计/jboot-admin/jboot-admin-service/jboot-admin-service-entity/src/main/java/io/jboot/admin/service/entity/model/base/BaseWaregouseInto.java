@@ -9,60 +9,113 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseWaregouseInto<M extends BaseWaregouseInto<M>> extends JbootModel<M> implements IBean {
 
-	public void setWaregouseId(java.lang.String waregouseId) {
-		set("waregouse_id", waregouseId);
+    public static final String ACTION_ADD = "WaregouseInto:add";
+    public static final String ACTION_DELETE = "WaregouseInto:delete";
+    public static final String ACTION_UPDATE = "WaregouseInto:update";
+
+
+    @Override
+    public String addAction() {
+        return ACTION_ADD;
+    }
+
+    @Override
+    public String deleteAction() {
+        return ACTION_DELETE;
+    }
+
+    @Override
+    public String updateAction() {
+        return ACTION_UPDATE;
+    }
+
+
+	public void setEqiupId(java.lang.String eqiupId) {
+		set("eqiup_id", eqiupId);
 	}
 	
-	public java.lang.String getWaregouseId() {
-		return getStr("waregouse_id");
+	public java.lang.String getEqiupId() {
+		return getStr("eqiup_id");
 	}
 
-	public void setUserId(java.lang.String userId) {
-		set("user_id", userId);
+	public void setEqiupType(java.lang.String eqiupType) {
+		set("eqiup_type", eqiupType);
 	}
 	
-	public java.lang.String getUserId() {
-		return getStr("user_id");
+	public java.lang.String getEqiupType() {
+		return getStr("eqiup_type");
 	}
 
-	public void setWaregouseName(java.lang.String waregouseName) {
-		set("waregouse_name", waregouseName);
+	public void setEqiupXinghao(java.lang.String eqiupXinghao) {
+		set("eqiup_xinghao", eqiupXinghao);
 	}
 	
-	public java.lang.String getWaregouseName() {
-		return getStr("waregouse_name");
+	public java.lang.String getEqiupXinghao() {
+		return getStr("eqiup_xinghao");
 	}
 
-	public void setWaregouseIntoDate(java.util.Date waregouseIntoDate) {
-		set("waregouse_into_date", waregouseIntoDate);
+	public void setEqiupName(java.lang.String eqiupName) {
+		set("eqiup_name", eqiupName);
 	}
 	
-	public java.util.Date getWaregouseIntoDate() {
-		return get("waregouse_into_date");
+	public java.lang.String getEqiupName() {
+		return getStr("eqiup_name");
 	}
 
-	public void setWaregouseIntoCount(java.lang.Integer waregouseIntoCount) {
-		set("waregouse_into_count", waregouseIntoCount);
+	public void setEqiupInDate(java.util.Date eqiupInDate) {
+		set("eqiup_in_date", eqiupInDate);
 	}
 	
-	public java.lang.Integer getWaregouseIntoCount() {
-		return getInt("waregouse_into_count");
+	public java.util.Date getEqiupInDate() {
+		return get("eqiup_in_date");
 	}
 
-	public void setWaregouseOption(java.lang.String waregouseOption) {
-		set("waregouse_option", waregouseOption);
+	public void setUnitPrice(java.math.BigDecimal unitPrice) {
+		set("unit_price", unitPrice);
 	}
 	
-	public java.lang.String getWaregouseOption() {
-		return getStr("waregouse_option");
+	public java.math.BigDecimal getUnitPrice() {
+		return get("unit_price");
 	}
 
-	public void setWaregouseNum(java.lang.String waregouseNum) {
-		set("waregouse_num", waregouseNum);
+	public void setEquipStatus(java.lang.String equipStatus) {
+		set("equip_status", equipStatus);
 	}
 	
-	public java.lang.String getWaregouseNum() {
-		return getStr("waregouse_num");
+	public java.lang.String getEquipStatus() {
+		return getStr("equip_status");
+	}
+
+	public void setEquipLqLead(java.lang.String equipLqLead) {
+		set("equip_lq_lead", equipLqLead);
+	}
+	
+	public java.lang.String getEquipLqLead() {
+		return getStr("equip_lq_lead");
+	}
+
+	public void setEquipLqDate(java.lang.String equipLqDate) {
+		set("equip_lq_date", equipLqDate);
+	}
+	
+	public java.lang.String getEquipLqDate() {
+		return getStr("equip_lq_date");
+	}
+
+	public void setEquipLead(java.lang.String equipLead) {
+		set("equip_lead", equipLead);
+	}
+	
+	public java.lang.String getEquipLead() {
+		return getStr("equip_lead");
+	}
+
+	public void setEquipDate(java.util.Date equipDate) {
+		set("equip_date", equipDate);
+	}
+	
+	public java.util.Date getEquipDate() {
+		return get("equip_date");
 	}
 
 }

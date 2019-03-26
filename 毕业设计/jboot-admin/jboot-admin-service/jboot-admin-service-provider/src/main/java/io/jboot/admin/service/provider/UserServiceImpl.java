@@ -6,6 +6,9 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
+
+import io.jboot.Jboot;
+import io.jboot.admin.base.common.CacheKey;
 import io.jboot.admin.service.api.UserRoleService;
 import io.jboot.admin.service.entity.model.UserRole;
 import io.jboot.admin.service.entity.status.system.UserOnlineStatus;
@@ -145,5 +148,16 @@ public class UserServiceImpl extends JbootServiceBase<User> implements UserServi
                 return true;
             }
         });
+    }
+
+	@Override
+	public Page<User> findPage(int pageNumber, int pageSize) {
+        Columns columns = Columns.create();
+        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList(), "id desc");
+    }
+
+    @Override
+    public void refreshCache() {
+        Jboot.me().getCache().removeAll(CacheKey.CACHE_KEYVALUE);
     }
 }

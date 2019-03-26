@@ -9,20 +9,33 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseCommodityInfo<M extends BaseCommodityInfo<M>> extends JbootModel<M> implements IBean {
 
+    public static final String ACTION_ADD = "CommodityInfo:add";
+    public static final String ACTION_DELETE = "CommodityInfo:delete";
+    public static final String ACTION_UPDATE = "CommodityInfo:update";
+
+
+    @Override
+    public String addAction() {
+        return ACTION_ADD;
+    }
+
+    @Override
+    public String deleteAction() {
+        return ACTION_DELETE;
+    }
+
+    @Override
+    public String updateAction() {
+        return ACTION_UPDATE;
+    }
+
+
 	public void setCommodityId(java.lang.String commodityId) {
 		set("commodity_id", commodityId);
 	}
 	
 	public java.lang.String getCommodityId() {
 		return getStr("commodity_id");
-	}
-
-	public void setSupplierId(java.lang.String supplierId) {
-		set("supplier_id", supplierId);
-	}
-	
-	public java.lang.String getSupplierId() {
-		return getStr("supplier_id");
 	}
 
 	public void setCommodityName(java.lang.String commodityName) {

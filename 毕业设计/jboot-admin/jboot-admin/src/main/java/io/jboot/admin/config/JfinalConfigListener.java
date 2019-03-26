@@ -6,10 +6,7 @@ import com.jfinal.config.Constants;
 import com.jfinal.config.Interceptors;
 import com.jfinal.config.Routes;
 import com.jfinal.ext.handler.ContextPathHandler;
-import com.jfinal.json.JFinalJsonFactory;
 import com.jfinal.template.Engine;
-import com.jfinal.weixin.sdk.api.ApiConfig;
-import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import io.jboot.Jboot;
 import io.jboot.admin.base.captcha.CaptchaCache;
 import io.jboot.admin.base.common.AppInfo;
@@ -24,7 +21,6 @@ import io.jboot.server.ContextListeners;
 import io.jboot.server.JbootServer;
 import io.jboot.server.Servlets;
 import io.jboot.server.listener.JbootAppListenerBase;
-import io.jboot.wechat.JbootWechatConfig;
 
 /**
  * jfinal config

@@ -1,19 +1,18 @@
 package io.jboot.admin.service.provider;
 
-
-import io.jboot.admin.service.api.CommodityInfoService;
-import io.jboot.admin.service.entity.model.CommodityInfo;
 import io.jboot.aop.annotation.Bean;
 import io.jboot.core.rpc.annotation.JbootrpcService;
 import io.jboot.db.model.Columns;
-
-import com.jfinal.plugin.activerecord.Model;
-import com.jfinal.plugin.activerecord.Page;
+import io.jboot.Jboot;
+import io.jboot.admin.base.common.CacheKey;
+import io.jboot.admin.service.api.CommodityInfoService;
+import io.jboot.admin.service.entity.model.CommodityInfo;
 import io.jboot.service.JbootServiceBase;
 
-import java.util.List;
-
 import javax.inject.Singleton;
+
+import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Page;
 
 @Bean
 @Singleton
@@ -23,23 +22,14 @@ public class CommodityInfoServiceImpl extends JbootServiceBase<CommodityInfo> im
 	@Override
 	public Page<CommodityInfo> findPage(int pageNumber, int pageSize) {
 		// TODO Auto-generated method stub
-		
-		return DAO.paginate(pageNumber, pageSize);
-	}
+        Columns columns = Columns.create();
+        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
+    }
 
 	@Override
-	public List<CommodityInfo> findByName(String name) {
-		// TODO Auto-generated method stub
-		Columns columns = new Columns();
-		columns.eq("", name);
-		return DAO.findListByColumns(columns);
-	}
+    public void refreshCache() {
+        Jboot.me().getCache().removeAll(CacheKey.CACHE_KEYVALUE);
+    }
 
-	@Override
-	public Page<? extends Model> paginate(int page, int pageSize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
+
 }

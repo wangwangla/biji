@@ -5,9 +5,6 @@ import com.jfinal.plugin.activerecord.generator.TableMeta;
 import io.jboot.Jboot;
 import io.jboot.admin.base.gencode.model.AppMetaBuilder;
 import io.jboot.codegen.CodeGenHelpler;
-import io.jboot.codegen.service.JbootServiceImplGenerator;
-import io.jboot.codegen.service.JbootServiceInterfaceGenerator;
-
 import javax.sql.DataSource;
 import java.util.List;
 
