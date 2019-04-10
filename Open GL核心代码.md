@@ -848,7 +848,239 @@ GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,GLES20
 
   - 确定员帧片源在最终片源的比例、 
 
-    
+    设定源因子和目标因子他们有四个参数，混合因子由开发人员确定，但是OpenGLES为了简化，不允许自己设定，仅仅可以自己选择
+
+  混合因子的使用，只需要在化的方法中加入即可glBlendFunc(XX,XXX)
+
+  - 雾的实现，就是将举例比较远的物体，显示出朦胧的感觉
+
+    实现的数学模型，f=max(min((end-dist)/(end-start))),这个公式中是线性的，但是现实中并不是这样的，所以可以使用下面的方式：f = 1 - smoothstep(start,end,dist)
+
+  --------
+
+  ## 标志板
+
+  ​	因为树等不规则的物体，形状十分复杂，直接使用三角形一般情况下无法支撑，所以使用成本低廉的技术，标志板。
+
+  ​	使用纹理矩形来绘制图像。，每棵植物进需要一个纹理即可。，一般适合使用在一个对称 的植物上。
+
+  - 每棵植物用一个纹理矩阵绘制，纹理内容为透明背景图，绘制纹理要使用恰当的混合因子，使其具有遮挡效果。
+  - 纹理矩阵一直面向相机
 
   
+
+
+
+## 图片的处理
+
+​	了解了许多关于图性的绘制，下来开始对图像进行处理，比如滤镜、放大，缩小等操作。我们平时使用相机或者ps对图片进行处理。可以很方便的对其色彩进行控制和改变，达到我们需要的效果。在html中通过设置颜色的属性对颜色进行设置，我们平时见到的图片都是通过4中进行合并，根据不同的比例得到最总所需要的颜色，每一种压缩通过16进制进行表示,使用比例的不同显示出各种各样的颜色。在这里使用GLSL语言，我们通过vec4向量的方式将数据颜色进行表示四个通道，通过代码传递颜色值，在通过片段着色器进行颜色的渲染，首先R [红] G[黄] B[蓝] A[透明] ，如果三个坐标相同，那么就会显示出黑白的效果。所以灰度图像就比较容易处理，将三个通道的颜色设置一样就可以了，还有一种是根据一个颜色的比例和各个通道相乘就可以得到灰色的效果。
+
+​	在ps中通过调整颜色的色相可以控制颜色的饱和度等，显示出暖色或者冷色，亮或者暗。
+
+图片模糊：
+
+​	图片模糊可以通过取出最近的几个点，将点取得平均值，然后得到每一个颜色的属性值，最常听说的有高斯模糊，其实模糊并一定是将图片显示的不清晰，比如取出一下小的斑点，也是可以使用的 。
+
+**放大镜效果**
+
+放大镜效果相对模糊处理来说，处理过程也会相对简单一些。我们只需要将制定区域的像素点，都以需要放大的区域中心点为中心，向外延伸其到这个中心的距离即可实现放大效果。具体实现，可参考着色器中vChangeType=4时的操作。
+
+**实例处理**
+
+- 将图片变为灰色图像
+
+- 将图片变为暖色调
+
+- 将图片转为冷色调
+
+  --------
+
+  转换一：灰度转变
+
+  灰度图像就是将图片的三个量设置为一样
+
+  ```c++
+   float c=nColor.r*vChangeColor.r+nColor.g*vChangeColor.g+nColor.b*vChangeColor.b;
+   gl_FragColor=vec4(c,c,c,nColor.a);
+  ```
+
+  转换二：冷暖色调转换
+
+  ```
+    vec4 deltaColor=nColor+vec4(vChangeColor,0.0);
+    modifyColor(deltaColor);
+    gl_FragColor=deltaColor;
+  ```
+
+  冷暖色调，那么我们需要将其颜色都进行加深，所以将各个颜色值加上一个参数即可，但是在加深的过程中如果颜色超过了规定值的大小，那么就需要将其设置在一个规定的范围内。
+
+  ```c++
+      color.r=max(min(color.r,1.0),0.0);
+      color.g=max(min(color.g,1.0),0.0);
+      color.b=max(min(color.b,1.0),0.0);
+      color.a=max(min(color.a,1.0),0.0);
+  ```
+
+  其他处理
+
+  ```
+  放大处理：
+  float dis=distance(vec2(gPosition.x,gPosition.y/uXY),vec2(vChangeColor.r,vChangeColor.g));
+              if(dis<vChangeColor.b){
+                  nColor=texture2D(vTexture,vec2(aCoordinate.x/2.0+0.25,aCoordinate.y/2.0+0.25));
+              }
+              gl_FragColor=nColor;
+  ```
+
+  模糊处理
+
+  ```
+   nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.r,aCoordinate.y-vChangeColor.r));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.r,aCoordinate.y+vChangeColor.r));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.r,aCoordinate.y-vChangeColor.r));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.r,aCoordinate.y+vChangeColor.r));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.g,aCoordinate.y-vChangeColor.g));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.g,aCoordinate.y+vChangeColor.g));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.g,aCoordinate.y-vChangeColor.g));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.g,aCoordinate.y+vChangeColor.g));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.b,aCoordinate.y-vChangeColor.b));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x-vChangeColor.b,aCoordinate.y+vChangeColor.b));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.b,aCoordinate.y-vChangeColor.b));
+              nColor+=texture2D(vTexture,vec2(aCoordinate.x+vChangeColor.b,aCoordinate.y+vChangeColor.b));
+              nColor/=13.0;
+              gl_FragColor=nColor;
+             取出好多个参数，然后将参数的值进行平均得到一个点的像素值，
+  ```
+
+  
+
+## 图片裁剪
+
+​	图片裁剪可以使用系统的图片裁剪，也可以自己实现一个图片的裁剪方案。想一下自己裁剪图片的过程，一张图片，想进行裁剪，首先自己确定裁剪的区域，选择好之后，此时并未裁剪，我们这个时候可能需要移动，或者缩放，使得图片达到最佳的效果。所以整体为，选择裁剪框，对图片进行控制，裁剪执行并保存数据、。
+
+## 相机预览
+
+ 	openGLES的相机预览：open GL ES可以做游戏，同时它也可以做图片视频的处理， 进行相机 的预览，在前面进行图片的预览处理，可以对其进行多种变换和操作。那个可以认为是对一阵图片的处理，下来对相机预览，就是没有按下快照之前，他是按照时间顺序显示的，之前的是使用一个bitmap图片作为处理的目标，然后对目标进行处理，这个是相机，这里需要使用`GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D,0,GLES20.GL_RGBA,width,height,0,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buffer);`进行处理。
+
+​	不过相机获得的图像是NV21和YV21的，并不是什么jpg等，如果实时转换，太浪费了，这个问题的处理方法是将其按照YUV的三个分量，将去拆分为三张纹理传入，然后通过GPU将其转换为RGB的，不过也是很麻烦的方式，可以使用下面的方法进行处理。
+
+​	**Android的Camera及Camera2都允许使用SurfaceTexture作为预览载体，但是它们所使用的SurfaceTexture传入的OpenGL texture object name必须为GLES11Ext.GL_TEXTURE_EXTERNAL_OES。这种方式，实际上就是两个OpenGL Thread共享一个Texture，不再需要数据导入导出，从Camera采集的数据直接在GPU中完成转换和渲染。**
+
+## —FBO离屏渲染
+
+​	它是什么？？ 就是将获取到的图像不是直接的显示出来，这个时候使用FBO离屏渲染。
+
+**FBO离屏渲染**
+
+FBO就是Frame Buffer Object,这个不是将其直接的显示到屏幕上，而是放入到缓存中，比如我们在拍照，我们显示出来的部分，进行拍照，另一个进行录制保存。也就是不会必须显示处理的。
+
+
+
+### RGBA、RGB、BGRA、BGR转YUV420P、YUV420SP
+
+做视频需要格式的转换，转换的时候，使用转换公式即可
+
+```
+Y’= 0.299*R’ + 0.587*G’ + 0.114*B’ 
+U’= -0.147*R’ - 0.289*G’ + 0.436*B’ = 0.492*(B’- Y’) 
+V’= 0.615*R’ - 0.515*G’ - 0.100*B’ = 0.877*(R’- Y’) 
+R’ = Y’ + 1.140*V’ 
+G’ = Y’ - 0.394*U’ - 0.581*V’ 
+B’ = Y’ + 2.032*U’
+```
+
+编码需要考虑效率问题，在转换运算中应该尽量避免浮点运算。以下代码实现相对简介，效率也还可以，如果需要更高的转换效率，可以用空间换时间，采用查表法来做。 
+
+```c++
+#include "jni.h"
+
+#define max(x,y)  (x>y?x:y)
+#define min(x,y)  (x<y?x:y)
+#define y(r,g,b)  (((66 * r + 129 * g + 25 * b + 128) >> 8) + 16)
+#define u(r,g,b)  (((-38 * r - 74 * g + 112 * b + 128) >> 8) + 128)
+#define v(r,g,b)  (((112 * r - 94 * g - 18 * b + 128) >> 8) + 128)
+#define color(x)  ((unsigned char)((x < 0) ? 0 : ((x > 255) ? 255 : x)))
+
+#define RGBA_YUV420SP   0x00004012
+#define BGRA_YUV420SP   0x00004210
+#define RGBA_YUV420P    0x00014012
+#define BGRA_YUV420P    0x00014210
+#define RGB_YUV420SP    0x00003012
+#define RGB_YUV420P     0x00013012
+#define BGR_YUV420SP    0x00003210
+#define BGR_YUV420P     0x00013210
+
+/**
+*   type 0-3位表示b的偏移量
+*        4-7位表示g的偏移量
+*        8-11位表示r的偏移量
+*        12-15位表示rgba一个像素所占的byte
+*        16-19位表示yuv的类型，0为420sp，1为420p
+*/
+
+void rgbaToYuv(int width,int height,unsigned char * rgb,unsigned char * yuv,int type){
+    const int frameSize = width * height;
+    const int yuvType=(type&0x10000)>>16;
+    const int byteRgba=(type&0x0F000)>>12;
+    const int rShift=(type&0x00F00)>>8;
+    const int gShift=(type&0x000F0)>>4;
+    const int bShift= (type&0x0000F);
+    const int uIndex=0;
+    const int vIndex=yuvType; //yuvType为1表示YUV420p,为0表示420sp
+
+    int yIndex = 0;
+    int uvIndex[2]={frameSize,frameSize+frameSize/4};
+
+    unsigned char R, G, B, Y, U, V;
+    unsigned int index = 0;
+    for (int j = 0; j < height; j++) {
+       for (int i = 0; i < width; i++) {
+           index = j * width + i;
+
+           R = rgb[index*byteRgba+rShift]&0xFF;
+           G = rgb[index*byteRgba+gShift]&0xFF;
+           B = rgb[index*byteRgba+bShift]&0xFF;
+
+           Y = y(R,G,B);
+           U = u(R,G,B);
+           V = v(R,G,B);
+
+           yuv[yIndex++] = color(Y);
+           if (j % 2 == 0 && index % 2 == 0) {
+               yuv[uvIndex[uIndex]++] =color(U);
+               yuv[uvIndex[vIndex]++] =color(V);
+           }
+       }
+    }
+}
+
+
+extern "C" {
+
+    void Java_com_aiya_jni_DataConvert_rgbaToYuv
+      (JNIEnv * env, jobject obj, jbyteArray rgba, jint width, jint height,
+      jbyteArray yuv,jint type){
+        jbyte * rgbaBuffer = env->GetByteArrayElements(rgba,0);
+        unsigned char * cRgba=(unsigned char *)rgbaBuffer;
+        jbyte* yuvBuffer = env->GetByteArrayElements(yuv,0);
+        unsigned char * cYuv=(unsigned char *)yuvBuffer;
+        rgbaToYuv(width,height,cRgba,cYuv,type);
+        env->ReleaseByteArrayElements(rgba, rgbaBuffer, 0);
+        env->ReleaseByteArrayElements(yuv, yuvBuffer, 0);
+    }
+
+}
+--------------------- 
+作者：湖广午王 
+来源：CSDN 
+原文：https://blog.csdn.net/junzia/article/details/54707322 
+```
+
+
+
+
+
+[相机有关的](照相机的获取方法.md)
+
+[TOC]
 
