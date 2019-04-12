@@ -1,6 +1,4 @@
----
-typora-copy-images-to: 笔记图片
----
+
 
 # PS基本操作
 
