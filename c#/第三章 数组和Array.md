@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 ## 数组
 
 **定义：**数组是内存中一块连续区域，用于存放多个相同类型的数据。数组中的每个数据使用相同的数组名，但是使用不同的唯一标识。
@@ -137,3 +141,108 @@ string[,] array01 = new  string[3,2];
 - 二维数组取值
 
   ​	![1555131858055](c#笔记图片/1555131858055.png)
+
+--------
+
+#### 数组代码分析
+
+1.数组的定义
+
+```
+   static void Main1(string[] args)
+   {
+            //声明
+            int[] array;
+            //初始化
+            array = new int[5];
+            //赋值
+            array[0] = 1;
+            array[1] = 2;
+            array[3] = 4;
+
+            //显示：命名空间.类名
+            //Console.WriteLine(array);
+
+            //读取数组所有元素
+            //array.Length  表示数组长度(元素总数)  5
+            for (int i = 0; i < array.Length; i++)
+            {
+                //Console.WriteLine(array[i]);
+                array[i] = 0;
+            }
+            //倒序获取所有元素
+            //4   3   2  1 0 
+            for (int i = array.Length - 1; i >= 0; i--)
+            {
+                Console.WriteLine(array[i]);
+            }
+
+            //依次获取数组全部元素
+            //优点：使用简洁。方便
+            /*foreach (元素类型 变量名 in 数组名)
+            { 
+                 变量名 就是 数组每个元素
+            }*/
+
+            foreach (int element in array)
+            {
+                Console.WriteLine(element);
+                //element = 0;  不能修改数组元素
+            }
+
+            //练习1：在控制台中录入学生成绩：float[]
+            //要求：成绩范围0--100
+            //"请输入学生总数："
+            //"请输入第1个学生成绩："
+            //"输入的成绩有误"
+
+            //练习2：计算数组元素最大值float[]
+        }
+```
+
+2.数组定义+赋值
+
+```
+ static void Main2()
+        {
+            float[] scoreArray = CreateScoreArray();
+
+            float max = GetMax(scoreArray);
+
+            Console.WriteLine("最高分为：" + max);
+
+            //数组写法1：声明 + 初始化 
+            int[] arr01 = new int[10];
+
+            //数组写法2：初始化 +  赋值
+            int[] arr02 = new int[3] { 1, 2, 3 };
+
+            //数组写法3：声明 + 初始化 +  赋值
+            int[] arr03 = { 1, 2, 3 };
+
+            PrintArray(new int[3] { 1, 2, 3 });
+```
+
+3.排序
+
+```
+   private static float[] CreateScoreArray()
+        {
+            Console.WriteLine("请输入学生总数：");
+            int count = int.Parse(Console.ReadLine());
+            float[] scoreArray = new float[count];
+
+            for (int i = 0; i < count; )
+            {
+                Console.WriteLine("请输入第{0}个学生成绩：", i + 1);
+                float score = float.Parse(Console.ReadLine());
+                if (score >= 0 && score <= 100)
+                    scoreArray[i++] = score;
+                else
+                    Console.WriteLine("成绩输入有误");
+            }
+
+            return scoreArray;
+        }
+```
+
