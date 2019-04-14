@@ -93,16 +93,16 @@ glUserProgram(programId);
 
 ### 创建一个着色器API介绍
 
-- glCreateShader(String type);
+- GLuint glCreateShader(String type);
 
   - type：可以是片元，也可以是片段
 
-- glDeleteShader（int shader）;
+- void glDeleteShader（int shader）;
 
   - shader:着色器句柄，
   - 如果连接到一个程序对象，执行方法不会理解执行，等待不在连接任何程序对象的时候，才会删除。
 
-- glShaderSource(shader,count,string,length)
+- void glShaderSource(shader,count,string,length)
 
   - 着色器
   - 字符串数量
@@ -111,12 +111,12 @@ glUserProgram(programId);
 
   在Android上也可以直接使用glShaderSource(shader,source);
 
-- glCompileShader(shader)
+- void glCompileShader(shader)
 
   - shader：着色器句柄
   - 将已经保存在着色器对象中的着色器源代码进行编译。
 
-- glGetShderiv(shader,pname,*param)
+- void glGetShderiv(shader,pname,*param)
 
   - 着色器
 
@@ -133,12 +133,48 @@ glUserProgram(programId);
 
 ### 创建和链接程序
 
-- glCreateProgram();
+- GLuint glCreateProgram();
   - 仅仅返回一个执行新程序对象的句柄。
-- glDeleteProgram(proid);
+
+- void glDeleteProgram(proid);
   - 一个参数就是句柄
-- glAttachShader(proid,shader);
+
+- void glAttachShader(proid,shader);
   - 程序句柄
   - 着色器
+
+  **这个在连接的过程中，着色器不一定要编译，不一定要有代码，唯一的要求，就是只能有一个片元和片段。**
+
+- void glDetaShader(program,shader)
+
+  - 指向句柄
+
+  - 指向断开连接的着色器
+
+    **到此准备工作做完了**
+
+- void glLinkProgram(proId)
+
+  - 此时生成最终的可执行程序。连接程序检查各种对象数量，连接就是生成最终在硬件上执行的时候。
+
+- void glUseProgram(projectId)
+
+  - 使用程序
+
+
+
+### 统一变量
+
+​	连接之后，就可以在对象上执行许多查询，
+
+- 找出活动统一变量，存储应用程序通过OpenGLES传输给着色器只读的常数值变量。
+
+- 统一变量分为两类：
+
+  - 命名统一变量块：值有统一变量缓存区对象支持，【被分配一块统一变量块索引】
+  - 默认统一变量块：没有名称或者统一块索引。
+
+  **统一变量在顶点或者片段中均有，那么类型需要一致。值也需要相同，连接阶段，连接程序未程序中与默认统一变量块的相关活动指定位置。位置是加载的标识符 ，还为命名变量块相关的活动变量分配偏移和跨距。**
+
 - 
 
