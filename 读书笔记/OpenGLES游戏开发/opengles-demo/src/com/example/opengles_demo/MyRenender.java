@@ -9,7 +9,7 @@ import android.opengl.GLSurfaceView.Renderer;
 
 public class MyRenender implements Renderer {
     private Context context;
-
+    private Square square;
 	public MyRenender(Context context) {
 		this.context = context;
 	}
@@ -17,6 +17,7 @@ public class MyRenender implements Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		square = new Square(context);
 	}
 
 	@Override
@@ -27,8 +28,9 @@ public class MyRenender implements Renderer {
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		// TODO Auto-generated method stub
-		GLES20.glClearColor((float)redValue, 0.0f, 0.0f, 1.0f);
+		//GLES20.glClearColor((float)redValue, 0.0f, 0.0f, 1.0f);
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-		 redValue = ((Math.sin(System.currentTimeMillis() * 2 * Math.PI / 10000.0) * 0.5) + 0.5); 
+		 //redValue = ((Math.sin(System.currentTimeMillis() * 2 * Math.PI / 10000.0) * 0.5) + 0.5); 
+		square.draw();
 	}
 }

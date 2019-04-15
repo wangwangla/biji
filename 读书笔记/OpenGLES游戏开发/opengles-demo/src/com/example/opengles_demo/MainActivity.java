@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		oGLView = (OGLView)findViewById(R.id.oglView);
+	
 	}
 
 	@Override
