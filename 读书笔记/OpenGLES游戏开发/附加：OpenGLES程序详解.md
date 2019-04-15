@@ -176,5 +176,116 @@ glUserProgram(programId);
 
   **统一变量在顶点或者片段中均有，那么类型需要一致。值也需要相同，连接阶段，连接程序未程序中与默认统一变量块的相关活动指定位置。位置是加载的标识符 ，还为命名变量块相关的活动变量分配偏移和跨距。**
 
-- 
+- 查询活动统一变量的列表，首先要用GL_ACTIVE_UNIFORMS参数调用glGetProgramiv,可以获取程序中活动同一变量的数量，这个数据主要包含了命名统一变量，默认统一变量以及着色器代码中内建的统一变量。如果被程序调用就认为是活动的，如果创建了一个变量但是一直没有使用，连接程序的似乎会将其去掉。
+
+  使用API:gLGetActiveUniform(Unint program,GLuint index,GLsizei bufsize,GLsizer *length)可以获取所有统一变量的属性的名称和类
+
+- 找出统一变量在程序的位置，这个位置用于后续加载统一变量值的后续调用。
+
+  API:glGetUniformLocation(GLuint program,const GLchar *name); 这个必须是活动的。
+
+- 位置获取之后，给他们设置统一变量的值。
+
+  glUniform1f(Glint location,GLfloat x);
+
+  glUniform1fv(Glint location,GLsizei count ,const GLFloat * value);
+
+  glUniform1i(Glint location,GLfloat x);
+
+  ……
+
+- 统一变量缓存区
+
+  - 统一变量数据，程序之间可以共享变量
+  - 在调用的时候降低API开销、
+
+- 着色器编译
+
+  - 着色器代码通常解析为某种中间的表现形式，将其转换为机器可以值性的机器指令，这个主要是CPU做的 
+
+- 二进制代码：
+
+  - 他是完全编译和连接的程序的二进制表现形式，他可以避免在线进行编译。
+  - 二进制取决于供应商，程序可移植性差，
+
+  这个可以使用GL_LINK_STATUS进行检测，如果不可以用，那么就在编译一次
+
+
+
+
+
+### 顶点属性、顶点数组和缓存区对象
+
+#### 顶点着色器属性
+
+​	顶点属性使用一个顶点数组将值进行指定，也可以将一个常量用于图元的所有顶点。所有的必须支持16个顶点的属性。应用程序可以查询特定实现支持顶点属性的准确值
+
+​	API:glVertexAttrib1f(GLuint index,GLfloat x);
+
+​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y);
+
+​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y,GLfloat z);
+
+​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y,GLfloat z,GLfloat w);
+
+#### 顶点数组
+
+指定每个顶点的属性，保存应用程序地址空间
+
+
+
+
+
+
+
+### 图元和光栅化
+
+图元可以使用多种函数进行绘制，glDrawArraysInstanced和glDrawElementsInstanced等命令绘制。其他颜色定，与每个顶点相关联。
+
+
+
+### 点精灵
+
+​	它支持点精灵:GL_POINTS,点精灵指定绘制的，一般作为点并不是正方形绘制的，实现高效渲染，它需要指定位置和半径屏幕对其的正方形，位置是正中心，半径用于寻找4个点。
+
+```
+	半径设置  gl_Point = 10；
+```
+
+点精灵的位置？？？？？？？？
+
+gl_PointCoord:只能在绘制点精灵的时候用于片段着色器内部内建变量，使用mediump精度限定一个vec2
+
+```
+#version 300 es
+precision mediump float;
+uniform samplers2D a_textSprite;
+layout(location=0)out vec4 outColor;
+void main()
+{
+    outColor = texture(s_textSprite,gl_PointCoord);
+}
+```
+
+
+
+### 绘制图元
+
+​	使用绘制图像的那几个API来完成这个操作，
+
+### 图元重启
+
+图元重启，可以一次绘制出多个不想连接的图元，可以降低API调用，，可以是一些所以列表来重启。
+
+
+
+### 驱动顶点
+
+如果没有限定符，那么在图元中使用的是线性插值，如果是平滑着色，那么没有插值，所以片段着色器中只有一个点的值可用。
+
+
+
+图元装配包括：
+
+​	裁剪------>透视分割----->视口变换
 
