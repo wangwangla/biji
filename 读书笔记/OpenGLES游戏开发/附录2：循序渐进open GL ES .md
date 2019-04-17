@@ -1023,7 +1023,7 @@ public class Square {
       };
   ```
 
-  - 获取着色器
+  - 获取着色器对象
 
     ```java
      private void setupShader() {
@@ -1041,6 +1041,13 @@ public class Square {
 
   ```java
           shader.begin();
+        /**
+           *   这里需要注意：
+           *   	如果使用的是顶点属性数组，那么使用顶点数组，
+           *   如果使用缓存区对象，那么使用偏移量
+               shader.setVertexAttribute("a_Position", COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, 0);
+           */
+      
   
           shader.enableVertexAttribute("a_Position");
           shader.setVertexAttribute("a_Position", 3, GLES20.GL_FLOAT, false, 3*4, 0);
@@ -1062,7 +1069,11 @@ public class Square {
             vertexBuffer = BufferUtils.newFloatBuffer(vertices.length);
             vertexBuffer.put(vertices);
             vertexBuffer.position(0);
-    
+    		/**glGenBuffers(GLSize n,GLint *buffers);
+    		返回的缓冲区对象名称的数量
+    		buffers：指向n个条目的数组指针，该数组是分配缓存区的位置
+    		
+    		*/
             //copy vertices from cpu to the gpu
             IntBuffer buffer = IntBuffer.allocate(1);
             GLES20.glGenBuffers(1, buffer);
@@ -1075,7 +1086,7 @@ public class Square {
 
     
 
-第四例 三角形
+### 第四例 三角形
 
 
 
