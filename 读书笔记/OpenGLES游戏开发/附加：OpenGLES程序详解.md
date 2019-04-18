@@ -59,7 +59,19 @@ glUserProgram(programId);
 
 ## 视口和清除缓存
 
-视口就是现实图像的位置和大小，
+我们是EGL创建了渲染表面，并初始化和加载了着色器，glViewport(0,0,width,hight)指定创建的位置以及窗口的大小，视口就是现实图像的位置和大小，
+
+```
+glViewport(x,y,width,height);
+```
+
+清缓存
+
+```
+glClear(GL_COLOR_BUFFER_BIT);清掉缓存，使用glClearColor作为渲染颜色。
+```
+
+
 
 ## 画图，清缓存
 
@@ -67,7 +79,7 @@ glUserProgram(programId);
 
 ## 加载几何图形
 
-顶点位置需要加载到GL中，并将其连接到属性的位置中，设置完毕之后，就可以设置图元了。
+清除缓存以及将底部颜色设置之后，就可以加载图形，画出图元了。,顶点位置需要加载到GL中，并将其连接到属性的位置中，设置完毕之后，就可以设置图元了。
 
 ## 后台缓冲区
 
@@ -86,7 +98,7 @@ glUserProgram(programId);
 
 ## 着色器和程序
 
-​	创建对象，我们需要着色器和程序对象，着色器的加载编译、连接类似于c语言，编译程序，链接程序。着色器得到源代码，将其编译成一个目标文件--------->连接到一个对象，
+​	创建对象，我们需要着色器和程序对象，着色器的加载编译、连接类似于c语言，编译程序，链接程序。着色器得到源代码，将其编译成一个目标文件--------->连接到一个对象，在连接阶段，就会生成目标机器语言。
 
 - 创建着色器对象
 - 加载代码到着色器
@@ -98,14 +110,24 @@ glUserProgram(programId);
 
 ### 创建一个着色器API介绍
 
+##### 创建着色器：
+
 - GLuint glCreateShader(String type);
 
   - type：可以是片元，也可以是片段
+  - 参数：GL_VERTEX_SHADER      GL_FRAGMENT_SHADER
+  - 根据传参类型，创建出相应类型的着色器对象
+
+
+##### 删除着色器
 
 - void glDeleteShader（int shader）;
 
   - shader:着色器句柄，
-  - 如果连接到一个程序对象，执行方法不会理解执行，等待不在连接任何程序对象的时候，才会删除。
+  - 如果连接到一个程序对象，执行方法**不会理解执行**，等待不在连接任何程序对象的时候，才会删除。
+
+
+##### 创建着色器代码
 
 - void glShaderSource(shader,count,string,length)
 
@@ -116,10 +138,14 @@ glUserProgram(programId);
 
   在Android上也可以直接使用glShaderSource(shader,source);
 
+##### 编译
+
 - void glCompileShader(shader)
 
   - shader：着色器句柄
   - 将已经保存在着色器对象中的着色器源代码进行编译。
+
+##### 查看着色器信息
 
 - void glGetShderiv(shader,pname,*param)
 
@@ -138,17 +164,29 @@ glUserProgram(programId);
 
 ### 创建和链接程序
 
+着色器已准备好了，下来我们需要创建一个程序，将两个着色器对象连接起来。形成一个可执行的程序。
+
+##### 创建一个程序
+
 - GLuint glCreateProgram();
   - 仅仅返回一个执行新程序对象的句柄。
 
+
+##### 删除程序
+
 - void glDeleteProgram(proid);
   - 一个参数就是句柄
+
+
+##### 将着色器连接，每一个程序对应一个顶点和片段。
 
 - void glAttachShader(proid,shader);
   - 程序句柄
   - 着色器
 
-  **这个在连接的过程中，着色器不一定要编译，不一定要有代码，唯一的要求，就是只能有一个片元和片段。**
+  **这个在连接的过程中，着色器不一定要编译，不一定要有代码，唯一的要求，就是只能有一个片元和片段。，可以在任何时候进行连接**
+
+##### 断开连接
 
 - void glDetaShader(program,shader)
 
@@ -158,9 +196,16 @@ glUserProgram(programId);
 
     **到此准备工作做完了**
 
+##### 最后的链接
+
 - void glLinkProgram(proId)
 
-  - 此时生成最终的可执行程序。连接程序检查各种对象数量，连接就是生成最终在硬件上执行的时候。
+  - 此时生成最终的可执行程序。
+  - 连接程序检查各种对象数量，确保成功。
+  - 确保输出变量和输入变量的值的类型相同。
+  - 连接就是生成最终在硬件上执行的时候。
+
+##### 使用程序
 
 - void glUseProgram(projectId)
 
@@ -168,7 +213,7 @@ glUserProgram(programId);
 
 
 
-### 统一变量
+### 统一变量和属性
 
 ​	连接之后，就可以在对象上执行许多查询，
 
@@ -223,19 +268,39 @@ glUserProgram(programId);
 
 ## 顶点属性、顶点数组和缓存区对象
 
+指定顶点属性和数据的方法，讨论顶点属性的概念，如何指定它们支持的数据类型，如何绑定顶点属性以用于顶点着色器。可以使用数组进行指定。
+
 #### 顶点着色器属性
 
-​	顶点属性使用一个顶点数组将值进行指定，也可以将一个常量用于图元的所有顶点。所有的必须支持16个顶点的属性。应用程序可以查询特定实现支持顶点属性的准确值
+​	顶点属性使用一个顶点数组对每个顶点进行指定，也可以将一个常量用于图元的所有顶点。所有的必须支持16个顶点的属性。应用程序可以查询特定实现支持顶点属性的准确值
 
-​	通常使用他来加载指定的通用订单属性
+​	通常使用它来加载指定的通用顶点属性
 
 ​	API:glVertexAttrib1f(GLuint index,GLfloat x);
 
-​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y);
+```
+(x,0.0,0.0,1.0)
+```
 
-​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y,GLfloat z);
 
-​	API:glVertexAttrib1f(GLuint index,GLfloat x,GLfloat y,GLfloat z,GLfloat w);
+
+​	API:glVertexAttrib2f(GLuint index,GLfloat x,GLfloat y);
+
+```
+(x,y,0.0,1.0)
+```
+
+
+
+​	API:glVertexAttrib3f(GLuint index,GLfloat x,GLfloat y,GLfloat z);
+
+```
+(x,y,z,1.0)
+```
+
+
+
+​	API:glVertexAttrib4f(GLuint index,GLfloat x,GLfloat y,GLfloat z,GLfloat w);
 
 #### 顶点数组
 
@@ -246,8 +311,8 @@ API:
 ```
 glVertexAttribPointer(index,size,type,normalized,stride,*ptr)
 index：顶点属性索引
-size:为索引引用的订单属性指定分量数量，
-type:数据格式
+size:为索引引用的ding单属性指定分量数量，
+type:数据格式  GL_BYTE    GLUNSIGNED)BYTE   GL_SHORT    GL_UUNSIGNED_SHORT   GL_INT  GL_UNSIGNED_INT  
 normalized:表示非浮点数据格式类型在浮点时是否需要格式化，偏移
 ptr:准备的数据数组
 ```
@@ -261,7 +326,35 @@ ptr:准备的数据数组
 
 一般是结果数组比较的高，每个顶点的属性可以顺序的读取，so高效
 
+数组结构，每次将值进行偏移 。
 
+
+
+
+
+​	在使用的过程中通过type指定顶点属性书的格式，不仅影响效率，也会影响它的整体性能，，数据量越小，所占带宽越小，
+
+​	建议使用数据类型
+
+```
+尽可能是GL_HALF_FLOAT，一般用在纹理、法线、向量
+颜色是由GL_UNSIGNED_BYTE，每个颜色4个分量
+顶点位置使用GL_FLOAT
+```
+
+
+
+glVertexAttribPointer中的规范化标志如何工作
+
+ 	着色器之前，顶点存储为单精度，如果鄙视单精度会进行转换为单精度，规范化标志控制非浮点型向浮点型的转化。为假，就直接转化为浮点型，数据类型的范围都会转化为[-1.0,1.0] 或者是[0.0,1.0].
+
+
+
+
+
+常量的顶点属性和顶点数组之间的选择
+
+​	应用程序让openGL使用常量数据或者来自于顶点数组的数据。使用GLEnableVertexAttribArray和GlDisableVertexAttribArray使用或者禁用属性数组。
 
 ##### ----------------未结束-------------待续---------------------------------
 
@@ -374,7 +467,9 @@ uniform gl_DepthRangeParameters
 
 
 
-订单着色器的案例：
+### 订单着色器的案例：
+
+##### 矩阵变换
 
 ```
 #version 300 es
@@ -388,4 +483,36 @@ void main()
     gl_Position = u_MvPMatrix*a_Position;  使用变换后的顶点位置和图元类型
 }
 ```
+
+设置了光栅化阶段使用变换后顶点位置和图元类型将图元进行光栅化为片段，对每个片段，计算插值，最后作为输出传递给片段着色器
+
+##### 模型矩阵
+
+​	使用矩阵对图像进行平移等操作。但是并不存在函数，所以需要自己来构建，一般步骤为：
+
+- 初始化单位矩阵
+- 将单位矩阵结合一个平移，使得物体远离观察者
+- 将其进行其他操作。
+
+
+
+##### 投影矩阵
+
+​	在固定功能gl中，使用的是glFrustum或者openGL工具函数指定。Frustum是将其进行此
+
+
+
+
+
+#### 顶点着色器的照明
+
+​	通过观察直射光、点光源、聚光灯的照明方式示例。直接光就是平行的光
+
+
+
+点光源：光照位置   xyzw
+
+​		光照距离  xyzw
+
+​		衰减距离 光源颜色、光照强度
 

@@ -1088,5 +1088,340 @@ public class Square {
 
 ### 第四例 三角形
 
+1.准备数据
 
+```
+    static final float triangleCoords[] = {
+             0.0f,  0.25f, 0.0f,    // TOP
+            -0.5f, -0.25f, 0.0f,    // LEFT
+             0.5f, -0.25f, 0.0f,    // RIGHT
+    };
+```
+
+2初始化
+
+```
+private void setupShader(Context context) {
+        // compile & link shader
+        shader = new ShaderProgram(
+                ShaderUtils.readShaderFileFromRawResource(context, R.raw.simple_vertex_shader),
+                ShaderUtils.readShaderFileFromRawResource(context, R.raw.simple_fragment_shader)
+        );
+    }
+```
+
+3.放入数据
+
+```
+ // initialize vertex float buffer for shape coordinates
+        vertexBuffer = BufferUtils.newFloatBuffer(triangleCoords.length);
+
+        // add the coordinates to the FloatBuffer
+        vertexBuffer.put(triangleCoords);
+
+        // set the buffer to read the first coordinate
+        vertexBuffer.position(0);
+```
+
+4.将数据放入缓存中
+
+```
+ //copy vertices from cpu to the gpu
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        vertexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, triangleCoords.length * 4, vertexBuffer, GLES20.GL_STATIC_DRAW);
+```
+
+5.个数
+
+```
+vertexCount = triangleCoords.length / COORDS_PER_VERTEX;
+vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+```
+
+6,画图
+
+```
+       shader.begin();
+
+        shader.enableVertexAttribute("a_Position");
+        shader.setVertexAttribute("a_Position", COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
+
+        shader.disableVertexAttribute("a_Position");
+
+        shader.end();
+```
+
+
+
+
+
+第五例 颜色变化的正方形
+
+将颜色和顶点放入到同一个数组中。
+
+1.准备数据
+
+````
+static final float squareCoords[] = {
+            -0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,// top left
+            -0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,// bottom left
+             0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,// bottom right
+             0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f, 1.0f,// top right
+    };
+    
+        static final short indexes[] = {
+            0, 1, 2,
+            0, 2, 3,
+    };
+````
+
+2.数据放入本地缓存
+
+```
+private void setupVertexBuffer() {
+        // initialize vertex float buffer for shape coordinates
+        vertexBuffer = BufferUtils.newFloatBuffer(squareCoords.length);
+
+        // add the coordinates to the FloatBuffer
+        vertexBuffer.put(squareCoords);
+
+        // set the buffer to read the first coordinate
+        vertexBuffer.position(0);
+
+
+        //copy vertices from cpu to the gpu
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        vertexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, squareCoords.length * SIZE_OF_FLOAT, vertexBuffer, GLES20.GL_STATIC_DRAW);
+
+        vertexCount = squareCoords.length / (COORDS_PER_VERTEX + COLORS_PER_VERTEX);
+        vertexStride = (COORDS_PER_VERTEX + COLORS_PER_VERTEX) * SIZE_OF_FLOAT; // 4 bytes per vertex
+    }
+
+
+
+
+ private void setupIndexBuffer() {
+        // initialize index short buffer for index
+        indexBuffer = BufferUtils.newShortBuffer(indexes.length);
+        indexBuffer.put(indexes);
+        indexBuffer.position(0);
+
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        indexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+        GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexes.length * SIZE_OF_SHORT, indexBuffer, GLES20.GL_STATIC_DRAW);
+    }
+```
+
+3，画图
+
+```
+   public void draw() {
+
+        shader.begin();
+
+        shader.enableVertexAttribute("a_Position");
+        shader.setVertexAttribute("a_Position", COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, 0);
+
+        shader.enableVertexAttribute("a_Color");
+        shader.setVertexAttribute("a_Color", COLORS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, COORDS_PER_VERTEX * SIZE_OF_FLOAT);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+        GLES20.glDrawElements(
+                GLES20.GL_TRIANGLES,        // mode
+                indexes.length,             // count
+                GLES20.GL_UNSIGNED_SHORT,   // type
+                0);                         // offset
+
+        shader.disableVertexAttribute("a_Position");
+        shader.disableVertexAttribute("a_Color");
+
+        shader.end();
+    }
+```
+
+### 第五例 使用一个model
+
+```
+public class Model {
+    private static final int COORDS_PER_VERTEX = 3;
+    private static final int COLORS_PER_VERTEX = 4;
+    private static final int SIZE_OF_FLOAT = 4;
+    private static final int SIZE_OF_SHORT = 2;
+
+    private ShaderProgram shader;
+    private String name;
+    private float vertices[];
+    private short indices[];
+
+
+    private FloatBuffer vertexBuffer;
+    private int vertexBufferId;
+    private int vertexStride;
+
+    private ShortBuffer indexBuffer;
+    private int indexBufferId;
+
+    public Model(String name, ShaderProgram shader, float[] vertices, short[] indices) {
+        this.name = name;
+        this.shader = shader;
+        this.vertices = Arrays.copyOfRange(vertices, 0, vertices.length);
+        this.indices = Arrays.copyOfRange(indices, 0, indices.length);
+
+        setupVertexBuffer();
+        setupIndexBuffer();
+    }
+
+    private void setupVertexBuffer() {
+        vertexBuffer = BufferUtils.newFloatBuffer(vertices.length);
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
+
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        vertexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertices.length * SIZE_OF_FLOAT, vertexBuffer, GLES20.GL_STATIC_DRAW);
+        vertexStride = (COORDS_PER_VERTEX + COLORS_PER_VERTEX) * SIZE_OF_FLOAT; // 4 bytes per vertex
+    }
+
+    private void setupIndexBuffer() {
+        // initialize index short buffer for index
+        indexBuffer = BufferUtils.newShortBuffer(indices.length);
+        indexBuffer.put(indices);
+        indexBuffer.position(0);
+
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        indexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+        GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, indices.length * SIZE_OF_SHORT, indexBuffer, GLES20.GL_STATIC_DRAW);
+    }
+
+    public void draw() {
+
+        shader.begin();
+
+        shader.enableVertexAttribute("a_Position");
+        shader.setVertexAttribute("a_Position", COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, 0);
+
+        shader.enableVertexAttribute("a_Color");
+        shader.setVertexAttribute("a_Color", COLORS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, COORDS_PER_VERTEX * SIZE_OF_FLOAT);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+        GLES20.glDrawElements(
+                GLES20.GL_TRIANGLES,        // mode
+                indices.length,             // count
+                GLES20.GL_UNSIGNED_SHORT,   // type
+                0);                         // offset
+
+        shader.disableVertexAttribute("a_Position");
+        shader.disableVertexAttribute("a_Color");
+
+        shader.end();
+    }
+}
+
+```
+
+```
+public class Square extends Model {
+
+
+
+    static final float squareCoords[] = {
+            -0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,// top left
+            -0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,// bottom left
+             0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,// bottom right
+             0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f, 1.0f,// top right
+    };
+
+    static final short indices[] = {
+            0, 1, 2,
+            0, 2, 3,
+    };
+
+    public Square(ShaderProgram shader) {
+        super("square", shader, squareCoords, indices);
+    }
+}
+
+```
+
+
+
+### 第六例 设置移动
+
+1.设置变换矩阵
+
+```
+    public Matrix4f modelMatrix() {
+        Matrix4f mat = new Matrix4f(); // make a new identitiy 4x4 matrix
+        mat.translate(position.x, position.y, position.z);
+        mat.rotate(rotationX, 1.0f, 0.0f, 0.0f);
+        mat.rotate(rotationY, 0.0f, 1.0f, 0.0f);
+        mat.rotate(rotationZ, 0.0f, 0.0f, 1.0f);
+        mat.scale(scale, scale, scale);
+        return mat;
+    }
+
+```
+
+2.将矩阵传给着色器
+
+```
+shader.setUniformMatrix("u_ModelViewMatrix", modelMatrix());
+```
+
+
+
+准备变换数据，准备变换矩阵
+
+```
+    public Matrix4f modelMatrix() {
+        Matrix4f mat = new Matrix4f(); // make a new identitiy 4x4 matrix
+        mat.translate(position.x, position.y, position.z);
+        mat.rotate(rotationX, 1.0f, 0.0f, 0.0f);
+        mat.rotate(rotationY, 0.0f, 1.0f, 0.0f);
+        mat.rotate(rotationZ, 0.0f, 0.0f, 1.0f);
+        mat.scale(scale, scale, scale);
+        return mat;
+    }
+```
+
+
+
+
+
+变换动作
+
+```
+    public void updateWithDelta(long dt) {
+
+        final float secsPerMove = 2.0f * ONE_SEC;
+        square.setPosition(new Float3(
+                (float)(Math.sin(System.currentTimeMillis() * 2 * Math.PI / secsPerMove)),
+                square.position.y,
+                square.position.z)
+        );
+
+        square.draw(dt);
+    }
+```
+
+
+
+### 光照
 
