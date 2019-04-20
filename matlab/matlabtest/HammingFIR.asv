@@ -1,0 +1,27 @@
+%Hamming¥∞…Ëº∆
+wp=0.2*pi
+ws=0.3*pi
+tr_width=ws-wp
+
+M=ceil(6.6*pi/tr_width)+1
+n=[0:1:M-1]
+wc=(ws+wp)/2
+%hd=ideal_lp(wc,M)
+alpha=(M-1)/2
+n1=[0:1:(M-1)]
+m=n1-alpha
+fc1=wc/pi
+hd=fc*sinc(fc1*m)
+
+w_ham=(hamming(M))
+h=hd . *w_ham
+
+[H,w]=freqz(h,[1],1000,'whole')
+H=(H(1:1:501))'
+w=(w(1:1:501))
+mag=abs(H)
+
+db=20*log10((mag+eps)/max(mag));
+pha=angle(H)
+grd=gradelay(h,[1],w)
+

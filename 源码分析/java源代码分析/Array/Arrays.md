@@ -1,10 +1,15 @@
+[TOC]
+
+
+
 ### 介绍
+
 java.util中的工具类，提供数组相关的常用操作，排序、比较、填充、二分查找等功能
 
 based on jdk8
 
+### 常量和变量
 
-###常量和变量
 ```java
     （1）并行排序的最小数组长度，小于这个参数就不进行划分数组，数组长度较小会导致任务竞争，而导致内存效率低
         private static final int MIN_ARRAY_SORT_GRAN = 1 << 13;
@@ -12,7 +17,8 @@ based on jdk8
         private static final int INSERTIONSORT_THRESHOLD = 7;
 
 ```
-###范围检查
+### 范围检查
+
 ```
     1.私有方法，检查是否越界
     /**
@@ -29,7 +35,8 @@ based on jdk8
 
 
 ```
-###排序
+### 排序
+
 ```
     对于int[]、byte[]、long[]等基本类型数组的排序，使用DualPivotQuicksort类进行排序，可选范围。
 
@@ -52,14 +59,16 @@ based on jdk8
 
 
 ```
-###并行排序
+### 并行排序
+
 ```
 思想：将一个数组的排序分成几个数组的方式来实现排序，然后将其进行合并
     当数组的大小，下于最小粒度或者只有一个线程执行的时候，使用DualPivotQuicksort进行排序，他需要一个不大于原数组大小的额外数字进行排序任务。
     if (n <= MIN_ARRAY_SORT_GRAN ||(p = ForkJoinPool.getCommonPoolParallelism()) == 1)
     也可以使用一个数组，那就对整个数组进行执行，也可以指定位置
 ```
-###equals&deepEquals
+### equals&deepEquals
+
 ```
     equals：
     （1）参数：数组一和数组二
@@ -81,41 +90,44 @@ based on jdk8
         if (a1 == null || a2==null)
             return false;
         int length = a1.length;
-
+    
         //长度不同直接false
         if (a2.length != length)
             return false;
-
+    
         for (int i = 0; i < length; i++) {
             Object e1 = a1[i];
             Object e2 = a2[i];
-
+    
             if (e1 == e2)
                 continue;
             if (e1 == null)
                 return false;
-
+    
             //递归比较，记录是否相等
             boolean eq = deepEquals0(e1, e2);
-
+    
             if (!eq)
                 return false;
         }
         return true;
     }
 
-###fil
-    用于给定值充数组，提供范围操作
+### fill
+
+​    用于给定值充数组，提供范围操作
     （1）fill(int[]a,int val)
      fill(object[]a,int val)
      遍历，填入
 
-###asList
-    asList（a）这个是将数据转换为一个list,它的实现是new ArrayList(s)
+### asList
+
+​    asList（a）这个是将数据转换为一个list,它的实现是new ArrayList(s)
     所以它起到了桥梁的作用
 
-###binarySearch
-    二分查找，显然数组必须是有序的，如果有重复的，那么就不知道找到的是哪一个了
+### binarySearch
+
+​    二分查找，显然数组必须是有序的，如果有重复的，那么就不知道找到的是哪一个了
     函数基本都是调用自己私有的
 
 
@@ -136,3 +148,6 @@ public static short[] copyOf(short[] original, int newLength) {
 
 
 [目录](https://github.com/wangwangla/biji/tree/master/README.md)
+
+
+

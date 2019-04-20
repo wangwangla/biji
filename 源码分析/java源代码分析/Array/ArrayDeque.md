@@ -1,39 +1,49 @@
 [介绍](#介绍)
 
+### 介绍
 
-###介绍
 deque：双端队列
--线程不安全，队列不许有空元素
--动态队列的双向循环队列
--继承AbstractCollection，实现了Deque、cloneable、serializable接口
-    public class ArrayDeque<E> extends AbstractCollection<E>implements Deque<E>, Cloneable, Serializable
--双向可操作，单端操作为栈，双向操作为队列
--用做队列时比LinkList快
--主要的插入方法有addFirst/addList/pollFrist/pollList
--循环队列的实现细节
+
+- 线程不安全，队列不许有空元素
+
+- 动态队列的双向循环队列
+- 继承AbstractCollection，实现了Deque、cloneable、serializable接口
+
+```java
+public class ArrayDeque<E> extends AbstractCollection<E>implements Deque<E>, Cloneable, Serializable
+```
+
+- 双向可操作，单端操作为栈，双向操作为队列
+- 用做队列时比LinkList快
+- 主要的插入删除方法有addFirst/addList/pollFrist/pollList
+- 循环队列的实现细节
+
  1.head指向第一个元素
  2.tail指向最后一个元素
  3.head==tail为空，增加操作时队满自动扩容
  4.head<tail，下标区间[head，tail-1]
  5.head>tail,下标区间[head,elements.length()-1]+[0,tail]
 
-****************************************************************************
- * Resizable-array implementation of the {@link Deque} interface.  Array
- 尺寸可变的数组实现了这个接口
+### 常量和字段
+
+- Resizable-array implementation of the {@link Deque} interface.  Array
+
+尺寸可变的数组实现了这个接口
+
  * deques have no capacity restrictions; they grow as necessary to support
-数组的双端队列没有空间限制  它的增长是必须要支持使用惯例
+  数组的双端队列没有空间限制  它的增长是必须要支持使用惯例
  * usage.  They are not thread-safe; in the absence of external
- 他是不安全的                             增长是没有进行同步的
+    他是不安全的                             增长是没有进行同步的
  * synchronization, they do not support concurrent access by multiple threads.
-                        它不支持多线程
+         它不支持多线程
  * Null elements are prohibited.  This class is likely to be faster than
     空元素他是不允许的                  它的速度很快超过栈
  * {@link Stack} when used as a stack, and faster than {@link LinkedList}
  * when used as a queue.
     超过LinkedLsit
  * <p>Most {@code ArrayDeque} operations run in amortized constant time.
- 许多的x
- ******************************************************************************
+    许多的x
+******************************************************************************
 
 ###常量和空间
 
@@ -53,8 +63,8 @@ deque：双端队列
      保证队列内啡队列元素为null
      * deque elements are always null.
      */
-    ```
-    transient Object[] elements; // non-private to simplify nested class access
+   
+​    transient Object[] elements; // non-private to simplify nested class access
 
     /**
      * The index of the element at the head of the deque (which is the
@@ -64,7 +74,7 @@ deque：双端队列
      */
     ```
     transient int head;
-
+    
      /**
      * The minimum capacity that we'll use for a newly created deque.
      * Must be a power of 2.
@@ -92,7 +102,7 @@ deque：双端队列
     public ArrayDeque() {
         elements = new Object[16];
     }
-
+    
     /**
      * Constructs an empty array deque with an initial capacity
      * sufficient to hold the specified number of elements.
@@ -102,7 +112,7 @@ deque：双端队列
     public ArrayDeque(int numElements) {
         allocateElements(numElements);
     }
-
+    
     /**
      * Constructs a deque containing the elements of the specified
      * collection, in the order they are returned by the collection's
@@ -149,7 +159,7 @@ deque：双端队列
         if (head == tail)
             doubleCapacity();
     }
-
+    
     /**
      * Inserts the specified element at the end of this deque.
      *
@@ -177,7 +187,7 @@ deque：双端队列
         addFirst(e);
         return true;
     }
-
+    
     /**
      * Inserts the specified element at the end of this deque.
      *
