@@ -821,3 +821,66 @@ void main()
 
 ## 片段操作
 
+​	片段输出的是：颜色和深度值。片段着色器之后会执行，裁剪区域测试、摸版测试、深度测试、多重采样、混合、抖动。
+
+#### 缓冲区
+
+​	每种缓冲区中有不同的数据：颜色缓冲区、深度缓冲区、摸版缓冲区，颜色缓冲区一般会有红绿蓝alpha、颜色深度是颜色的总和。深度和摸版于此相反，它是单一表示像素深度。
+
+​	颜色缓冲区有可能是两个：一个用于显示，一个用于将要显示。通过后台和前台缓冲的交换进行设计的一种。
+
+​	EGL是可以进行选择使用缓冲区的，但是EGL实现必须提供一个包含了3个缓冲区的配置。
+
+- 请求更多的缓冲区：
+
+  - 需要zaiEGL中请求他们。
+
+- 缓冲区的操作
+
+  - 删除缓存区
+
+    openGL ES是一个交互渲染系统，每次开始绘制，需要将所有内容清除掉
+
+    ````
+    glClear(mask);
+    ````
+
+    使用mask指定缓冲区，掩码参数有：
+
+    | GL_COLOR_BUFFER_BIT   |
+    | --------------------- |
+    | GL_DEPTH_BUFFER_BIT   |
+    | GL_STENCIL_BUFFER_BIT |
+    |                       |
+
+    没有必要全部清除，
+
+  - 函数指定清除值，每一个也会有一个默认的值
+
+    - glClearColor(r,g,b,a)  GLfloat
+    - glClearDeth(depth);    GLfloat
+    - glClearStencil(s):清除摸版   GLint
+
+  - 如果有多个缓存区，那么就会有下面的方法
+
+    - glClearBufferiv(buffer, drawbuffer, value)
+
+    - glClearBufferuiv(buffer, drawbuffer, value)
+
+    - glClearBufferfv(buffer, drawbuffer, value)
+
+      缓存区类型   缓存区名称   指定缓存区的四元素向量
+
+    - 终极办法：glClearBufferfi(buffer, drawbuffer, depth，stencil)
+
+      类型  名称  深度缓冲    摸版缓冲区
+
+  - 
+
+
+
+缓存和缓冲的区别：
+
+​	缓存：为了提高CPU 和内存之间的速度
+
+​	缓冲：为了磁盘IO和和内存之间的交换
