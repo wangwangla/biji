@@ -656,6 +656,12 @@ OpenGLES支持立方纹理，其实就是6个2D组成的纹理，虽说有很多
 
 
 
+
+
+**总结：固定管线是使用固定的方程式，所以比较的方便，但是操作局限性很大**
+
+偏大着色器执行的操作与固定功能的设置执行的操作完全相同，纹理从一个采样器中读取，并用一个2D纹理坐标查找该值，，然后纹理读取的结果和从顶点着色器传递输入值相乘
+
 ### 精度
 
 片段着色器没有固定的限定符，那么我们在使用的时候就需要自己声明一个。
@@ -665,4 +671,153 @@ OpenGLES支持立方纹理，其实就是6个2D组成的纹理，虽说有很多
 openGL ES1.x和OpenGL中固定管线提供API,可以执行多重纹理、雾化、Alpha测试等，可以使用着色器实现。
 
 #### 多重纹理
+
+片段着色器中非常常见的操作，用于组合多个纹理贴图。在片段着色器中以不同的方式组合纹理很简单，就是采样着色器语言许多运算符合内建函数，可以轻松实现固定管线难以实现的函数方法、。
+
+**多重纹理片段着色器**
+
+```c++
+#version 300 es
+precision mediump float;
+in vec2 v_textCoord;
+layout(location=0)out vec4 outColor;
+uniform sampler2D s_baseMap;
+uniform sampler2D s_lightMap;
+void main()
+{
+    vec4 baseColor;
+    vec4 lightColor;
+    baseColor = texture(s_baseMap,v_textCoord);
+    lightColor = texture(s_lightMap,v_textCoord);
+    outColr = baseColor * (lightColor + 0.25);
+}
+
+```
+
+绑定数据
+
+```
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D,userData->baseMapTexId);
+glUniformli(userData->baseMapLoc,0);
+
+glActiveTexture(GL_TEXTURE1);
+glBindTexture(GL_TEXTURE_2D,userData->lightMapTexId);
+glUniformli(userData->lightMapLoc,1);
+```
+
+从上面可以看出，绑定的是纹理0和纹理1，为采样器设置数值，将采样器绑定到对于纹理上，上面是通过单一纹理坐标从两个贴图中读取。
+
+#### 雾化
+
+应用雾化是渲染3D场景的一种技术，在1.1中使用的是固定功能操作，使用的原因之一是：可以减少绘制距离，，并且消除突显。
+
+**雾化几种方式**
+
+- 进行可编程片段着色器，比局限于使用某种方程式。
+
+  - 介绍如何用片段着色器计算线性雾化
+
+  - 计算需要两个输入：眼睛距离以及雾化颜色
+
+  - 还需要雾化所覆盖的最小和最大距离范围
+
+  - 计算雾化因子，使用因子乘以颜色，然后通过片段总颜色进行线性插值，
+
+  - 计算距离，最好在顶点中计算。
+
+    ```
+    #version 300 es
+    uniform mat4 u_matViewProjection;
+    uniform mat4 u_matView
+    ```
+
+    
+
+- 
+
+
+
+#### Alpha测试
+
+​	3D应用程序使用常见特效之一是绘制某些片段中完全透明的图元，绘制链状非常有用，绘制珊栏需要大量图元，在纹理中存储一个遮拦值，控制那些是显示的那么些是遮拦的。
+
+​	上面不理解呀，接着看也不一定理解
+
+​	传统的做法是:使用alpha实现，允许一个比较测试，比较失败，就删除，通不过测试就删除。openGL ES3.0中没有Alpha测试，但是可以使用discard关键字实现相同的效果。
+
+​	案例：
+
+```
+#version 300 es
+precision mediump float;
+uniform sample2D baseMap;
+in vec2 v_textCoord;
+layout(location=0)out vec4 outColor;
+void main(void)
+{
+    vec4 baseColor = texture(baseMap,v_textCoord);
+    if(baseColor.a<0.25)
+    {
+        discard;
+    }
+    else
+    {
+        outColor = baseColor;
+    }
+}
+```
+
+
+
+纹理是一个四通道的RGBA纹理，他会个参数进行测试， 测试通过就进行显示，如果测试没过，就不会显示。
+
+
+
+#### 用户裁剪平面
+
+​	所有图元根据组成视椎的6个平面进行裁剪，但是，有时候用户可能想要根据一个或者多个额外用户的裁剪平面进行裁剪，根据用户裁剪平面进行裁剪的原因是：比如渲染反射时，需要根据反射平面反转几何形状，然后将其渲染到屏幕外纹理中，渲染纹理时，需要反射屏幕裁剪几何形状。
+
+​	1.1中用户裁剪需要通过平面方程式提供给API，裁剪将会自动处理。2.0也可以，但是必须在着色器中进行处理，还是使用上一节中的discard。
+
+​	计算是否需裁剪，计算一个参数如果小于0，那么就需要裁剪，大于0 ，就不需要裁剪。
+
+案例：
+
+```
+#version 300 es
+uniform vec4 u_clipPlane;
+uniform mat4 u_matrixProjection;
+in vec4 a_vertex;
+
+out float v_clipDist;
+void main()
+{
+    v_clipDist = dot(a_vertex.xyz,u_clipPlane.xyz)+u_clipPlane.w;
+    gl_Position = u_matViewProjection*a_vertex;
+}
+```
+
+u_clipPlane保存裁剪平面的方程式，并有glUniform4f传递着色器  clipDist可变变量存储计算后的距离。
+
+片段着色器
+
+````
+#version 300 es
+precision mediump float;
+in float v_clipDist;
+layout(location=0)out vec4 outColor;
+void main()
+{
+    if(v_clipDist<0)
+    {
+        discard；
+    }
+    outColor = vec4(0.5,0.5,0.5,0.0);
+}
+````
+
+
+
+## 片段操作
 
