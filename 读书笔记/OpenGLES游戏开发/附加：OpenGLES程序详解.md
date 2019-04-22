@@ -106,6 +106,8 @@ glClear(GL_COLOR_BUFFER_BIT);清掉缓存，使用glClearColor作为渲染颜色
 - 创建一个程序对象
 - 着色器连接到程序
 
+[^]: 
+
 
 
 ### 创建一个着色器API介绍
