@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="kr.pe.burt.android.helloopengl.MainActivity">
-
+	<!--引入布局-->
     <kr.pe.burt.android.helloopengl.OGLView
         android:id="@+id/oglView"
         android:layout_width="match_parent"
@@ -955,19 +955,17 @@ public class Square {
     private void setupVertexBuffer() {
         // initialize vertex float buffer for shape coordinates
         vertexBuffer = BufferUtils.newFloatBuffer(squareCoords.length);
-
         // add the coordinates to the FloatBuffer
         vertexBuffer.put(squareCoords);
-
         // set the buffer to read the first coordinate
         vertexBuffer.position(0);
-
-
+		如果没有加入到缓冲中，那么每次都会从客户端向服务端进行复制，比较浪费资源
         //copy vertices from cpu to the gpu
         IntBuffer buffer = IntBuffer.allocate(1);
         GLES20.glGenBuffers(1, buffer);
         vertexBufferId = buffer.get(0);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        //数据的长度是类型长度X数据的个数
         GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, squareCoords.length * 4, vertexBuffer, GLES20.GL_STATIC_DRAW);
 
         vertexCount = squareCoords.length / COORDS_PER_VERTEX;
