@@ -5,7 +5,7 @@ import io.jboot.admin.base.web.base.JsonValidator;
 
 /**
  * 系统资源校验器
- * @author Rlax
+ * 
  *
  */
 public class ResValidator extends JsonValidator {

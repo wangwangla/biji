@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * 根据url的权限拦截器，具有url权限的角色才允许访问
- * @author Rlax
+ *
  *
  */
 public class AuthInterceptor implements Interceptor {

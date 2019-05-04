@@ -32,21 +32,39 @@
             }
           });
             
-   
+	var i ;
+        $.ajax({
+            url:'/institution/info/tableData',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+         		console.log(data.data)
+                 $.each(data.data,function(index,item){
+                	 console.log(index)
+                	 console.log(item)
+               	
+                    $('#jselectID').append(new Option(item.institutionName,item.institutionName));//往下拉菜单里添加元素
+                })
+          
+                form.render();//菜单渲染 把内容加载进去
+            }
+        })
 
-        window.onload = function(){
-    		$.ajax({
-    			type:"get",
-    			url:"www.baidu.com"
-    			success:function(data,textStatus,jqXHR){
-    				
-    			},error:function(XMLHttpRequest,textStatus,errorThrown){
-    				
-    			}
-    				
-    		});		
-    	}
-        
+		  $.ajax({
+            url:'/institution/detail/tableData',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+         		console.log(data.data)
+                 $.each(data.data,function(index,item){
+                	 console.log(data.data+"+=========");
+                    $('#selectID').append(new Option(item.wdName,item.wdName));//往下拉菜单里添加元素
+                })
+          
+                form.render();//菜单渲染 把内容加载进去
+            }
+        })
+         
         form.on('submit(sub)', function(data){
 
             util.sendAjax ({
@@ -63,6 +81,7 @@
         });
          
     });
+
 </script>
 #end
 
@@ -75,17 +94,30 @@
                 <input type="text" name="serviceOrder.serviceOrderName" placeholder="订单名称" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
         </div>
-        <div class="layui-form-item">
+       <!--  <div class="layui-form-item">
             <label class="layui-form-label"><em class="require-mark">*</em>服务机构</label>
             <div class="layui-input-block">
                 <input type="text" name="serviceOrder.serviceOrderInstitution" placeholder="服务机构" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
-        </div>
+        </div> -->
+	  <div class="layui-form-item">
+            <label class="layui-form-label"><em class="require-mark">*</em>服务机构</label>
+            <div class="layui-input-block">
+                <select id="jselectID" name="serviceOrder.serviceOrderInstitution" lay-verify="required">
+                </select>
+            </div>
+        </div> 
          <div class="layui-form-item">
-            <label class="layui-form-label"><em class="require-mark">*</em>机构网点</label>
+            
+            <label class="layui-form-label"><em class="require-mark">*</em>网点</label>
+            <div class="layui-input-block" >
+                <select id="selectID" name="serviceOrder.wdName" onchange="func();" lay-verify="required">
+                </select>
+            </div>
+            <!-- <label class="layui-form-label"><em class="require-mark">*</em>机构网点</label>
             <div class="layui-input-block">
                 <input type="text" name="serviceOrder.wdName" placeholder="机构网点" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
-            </div>
+            </div> -->
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><em class="require-mark">*</em>甲方负责人</label>
@@ -100,15 +132,16 @@
             </div>
         </div>
         
-         <div class="layui-form-item">
-            <label class="layui-form-label"><em class="require-mark">*</em>状态</label>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><em class="require-mark">*</em>下单类型</label>
             <div class="layui-input-block">
-                <select id='status' name="product.status" lay-verify="required">
-                    <option></option>
-                    #statusOption(io.jboot.admin.service.entity.status.system.DataStatus::me(),'1')
+                <select id='status' name="serviceOrder.orderCategory" lay-verify="required">
+                    <option>自助下单</option>
+                    <option>平台下单</option>
+                   
                 </select>
             </div>
-        </div>
+        </div> 
         <div class="layui-form-item">
           	<div class="layui-upload">
   				<button type="button" class="layui-btn" id="test2">附件图片上传</button> 

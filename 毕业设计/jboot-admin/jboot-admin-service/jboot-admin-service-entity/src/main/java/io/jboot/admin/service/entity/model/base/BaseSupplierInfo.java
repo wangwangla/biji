@@ -62,12 +62,12 @@ public abstract class BaseSupplierInfo<M extends BaseSupplierInfo<M>> extends Jb
 		return getStr("supplier_lead");
 	}
 
-	public void setSupplierTel(java.lang.Integer supplierTel) {
+	public void setSupplierTel(java.lang.String supplierTel) {
 		set("supplier_tel", supplierTel);
 	}
 	
-	public java.lang.Integer getSupplierTel() {
-		return getInt("supplier_tel");
+	public java.lang.String getSupplierTel() {
+		return getStr("supplier_tel");
 	}
 
 	public void setSupplierRemark(java.lang.String supplierRemark) {

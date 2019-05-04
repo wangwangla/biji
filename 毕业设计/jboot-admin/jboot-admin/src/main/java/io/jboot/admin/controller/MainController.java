@@ -21,7 +21,7 @@ import org.apache.shiro.subject.Subject;
 
 /**
  * 主控制器
- * @author Rlax
+ *
  *
  */
 @RequestMapping("/")

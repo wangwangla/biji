@@ -94,4 +94,28 @@ public abstract class BaseInstitutionDetailInfo<M extends BaseInstitutionDetailI
 		return getStr("institution_id");
 	}
 
+	public void setRepairNum(java.lang.Integer repairNum) {
+		set("repair_num", repairNum);
+	}
+	
+	public java.lang.Integer getRepairNum() {
+		return getInt("repair_num");
+	}
+
+	public void setAddDate(java.util.Date addDate) {
+		set("add_date", addDate);
+	}
+	
+	public java.util.Date getAddDate() {
+		return get("add_date");
+	}
+
+	public void setRepairDate(java.util.Date repairDate) {
+		set("repair_date", repairDate);
+	}
+	
+	public java.util.Date getRepairDate() {
+		return get("repair_date");
+	}
+
 }

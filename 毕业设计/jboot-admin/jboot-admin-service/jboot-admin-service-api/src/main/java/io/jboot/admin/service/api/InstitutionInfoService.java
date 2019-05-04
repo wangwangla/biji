@@ -2,6 +2,8 @@ package io.jboot.admin.service.api;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
 import io.jboot.admin.service.entity.model.InstitutionInfo;
 import io.jboot.admin.service.entity.model.StaffInfo;
 
@@ -92,4 +94,10 @@ public interface InstitutionInfoService  {
 
 
 	public void refreshCache();
+
+
+	public Page<InstitutionInfo> findPage(InstitutionInfo info, int pageNumber, int pageSize);
+
+
+	public Record findByInsititutionName(String institution);
 }

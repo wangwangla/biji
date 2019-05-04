@@ -45,9 +45,12 @@ public class InstitutionController extends BaseController{
      * 表格数据
      */
     public void tableData() {
+    	String name = getPara("name");
+    	InstitutionInfo info = new InstitutionInfo();
+    	info.setInstitutionName(name);
         int pageNumber = getParaToInt("pageNumber", 1);
         int pageSize = getParaToInt("pageSize", 30);
-        Page<InstitutionInfo> dataPage = dataService.findPage(pageNumber, pageSize);
+        Page<InstitutionInfo> dataPage = dataService.findPage(info,pageNumber, pageSize);
         renderJson(new DataTable<InstitutionInfo>(dataPage));
     }
 
@@ -71,11 +74,11 @@ public class InstitutionController extends BaseController{
      */
     public void postAdd() {
     	InstitutionInfo data = getBean(InstitutionInfo.class, "institutionInfo");
-        System.out.println(listImage+"     ===========  "+listImage.size());
     	for(String s : listImage) {
         	data.setInstitutionLogo(s);
         }
     	data.setInstitutionWdNum("0");
+    	data.setInstitutionWdId(0);
         if (!dataService.save(data)) {
             throw new BusinessException("保存失败");
         }
@@ -130,7 +133,10 @@ public class InstitutionController extends BaseController{
      	 HashMap<String, UploadFile> HashMapFile = getUploadFilesMap();
      	 UploadFile file = HashMapFile.get("file");
      	 listImage = UpLoadUtils.uploadFile(file, listImage);
-     	 System.out.println("listInage"+"==========================="+listImage.size());
      	 renderJson(RestResult.buildSuccess());
       }
+    private void find() {
+		// TODO Auto-generated method stub
+    	
+	}
 }

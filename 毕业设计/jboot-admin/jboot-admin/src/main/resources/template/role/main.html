@@ -23,19 +23,16 @@
             , size: 'sm' //小尺寸的表格
             , height: 'full-150'    //容器高度
             , cols: [[                  //标题栏
-                {checkbox: false, sort: true, fixed: true, space: true}
-                , {field: 'institutionId', title: 'ID', width: 60}
-                , {field: 'institutionName', title: '机构名称', width: 60}
-                , {field: 'institutionCategory', title: '类型', width: 120}
-                , {field: 'institutionStatus', title: '状态', width: 180}
-                , {field: 'institutionOfficial', title: '负责人', width: 180}
-                , {field: 'institutionAddress', title: '机构地址', width: 180}
-                , {field: 'institutionContcts', title: '联系人', width: 180}
-                , {field: 'institutionTel', title: '联系电话', width: 180}
-                , {fixed: 'right', title: '操作', width: 120, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
-                
+                 {field: 'staffId', title: 'ID', width: 160}
+                , {field: 'staffName', title: '姓名', width: 80}
+                , {field: 'staffCategory', title: '类型', width: 100}
+                , {field: 'staffBirthday', title: '出生日期', width: 160}
+                , {field: 'staffTel', title: '电话', width: 120}
+                , {field: 'staffAddress', title: '住址', width: 220}
+                , {field: 'staffStatus', title: '状态', width: 140}
+                , {fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
              ]]
-            , url: '#(ctxPath)/institution/tableData'
+            , url: '#(ctxPath)/staff/info/tableData'
             , method: 'get'
             , request: {
                 pageName: 'pageNumber' //页码的参数名称，默认：page
@@ -55,8 +52,8 @@
                 layer.confirm('真的删除行么', function(index){
                     util.sendAjax ({
                         type: 'POST',
-                        url: '#(ctxPath)/institution/delete',
-                        data: {id : data.institutionCategoryId},
+                        url: '#(ctxPath)/staff/info/delete',
+                        data: {id : data.staffId},
                         loadFlag: true,
                         success : function(data){
                             layer.close(index);
@@ -68,14 +65,18 @@
                     })
                 });
             } else if(obj.event === 'edit'){
-                pop_show('编辑数据','#(ctxPath)/institution/update?id=' + data.institutionCategoryId,'','', function(){
+                pop_show('编辑数据','#(ctxPath)/staff/info/update?id=' + data.staffId,'','', function(){
                     reloadTableQuery();
                 });
-            }  
+            }  else if(obj.event === 'detail'){
+                pop_show('详情','#(ctxPath)/staff/info/find?id=' + data.staffId,'','', function(){
+                    reloadTableQuery();
+                });
+            }
         });
 
         $("#add").click(function(){
-            pop_show('添加数据','#(ctxPath)/institution/add','','', function(){
+            pop_show('添加数据','#(ctxPath)/staff/info/add','','', function(){
                 reloadTableQuery();
             });
         });
@@ -84,7 +85,7 @@
             layer.confirm('确定刷新数据缓存吗', function(index){
                 util.sendAjax ({
                     type: 'POST',
-                    url: '#(ctxPath)/institution/cache',
+                    url: '#(ctxPath)/staff/info/cache',
                     data: {},
                     loadFlag: true,
                     success : function(data){
@@ -99,20 +100,22 @@
 
         reloadTableQuery = function () {
             table.reload('dateTable', {
-                url: '#(ctxPath)/institution/tableData'
+                url: '#(ctxPath)/staff/info/tableData'
                 ,where: {type: $('#type').val(), typeDesc: $('#typeDesc').val()} //设定异步数据接口的额外参数
             });
         }
 
-        reloadTable = function (type, typeDesc) {
+        reloadTable = function (name) {
             table.reload('dateTable', {
-                url: '#(ctxPath)/institution/tableData'
-                ,where: {type: type, typeDesc: typeDesc} //设定异步数据接口的额外参数
+                url: '#(ctxPath)/staff/info/tableData'
+                ,where: {name:name } //设定异步数据接口的额外参数
             });
         }
-
+		//用户使用用户名查找
+		
         form.on('submit(search)', function(data){
-            reloadTable(data.field.type, data.field.typeDesc);
+        	console.log(data.field.name)
+            reloadTable(data.field.name);
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
@@ -121,7 +124,19 @@
 
 #define content()
     <div class="layui-fluid">
-         
+                 <form id="searchForm" class="layui-form x-center" action="" >
+            <div class="layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓名查询</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" placeholder="维修工姓名" class="layui-input"/>
+                    </div>
+                    <div class="layui-input-inline" style="width : 80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
         <hr>
         <div class="layui-row">
             <div class="layui-btn-group">
@@ -134,6 +149,7 @@
                 <button id="cache" class="layui-btn layui-btn-small">刷新缓存</button>
           
             </div>
+          	  
             <table id="dateTable" lay-filter="dateTable"></table>
         </div>
     </div>
@@ -141,6 +157,7 @@
 <script type="text/html" id="barOption">
  
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
   
 </script>

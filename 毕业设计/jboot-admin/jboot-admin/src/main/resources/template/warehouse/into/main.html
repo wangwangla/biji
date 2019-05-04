@@ -104,15 +104,15 @@
             });
         }
 
-        reloadTable = function (type, typeDesc) {
+        reloadTable = function (eqiupType, eqiupXinghao,eqiupName) {
             table.reload('dateTable', {
                 url: '#(ctxPath)/warehouse/into/tableData'
-                ,where: {type: type, typeDesc: typeDesc} //设定异步数据接口的额外参数
+                ,where: {eqiupType: eqiupType, eqiupXinghao: eqiupXinghao,eqiupName:eqiupName} //设定异步数据接口的额外参数
             });
         }
 
         form.on('submit(search)', function(data){
-            reloadTable(data.field.type, data.field.typeDesc);
+            reloadTable(data.field.eqiupType, data.field.eqiupXinghao,data.field.eqiupName);
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
@@ -121,7 +121,28 @@
 
 #define content()
     <div class="layui-fluid">
-         
+        <form id="searchForm" class="layui-form x-center" action="" >
+            <div class="layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类型查询</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="eqiupType" placeholder="类型查询" class="layui-input"/>
+                    </div>
+                    <label class="layui-form-label">型号查询</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="eqiupXinghao" placeholder="型号查询" class="layui-input"/>
+                    </div>
+                    <label class="layui-form-label">名称查询</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="eqiupName" placeholder="名称查询" class="layui-input"/>
+                    </div>
+                     <div class="layui-input-inline" style="width : 80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+        
+            </div>
+        </form>
         <hr>
         <div class="layui-row">
             <div class="layui-btn-group">

@@ -49,9 +49,12 @@ public class StaffController extends BaseController{
      * 表格数据
      */
     public void tableData() {
+    	String name = getPara("name");
+    	StaffInfo staffInfo = new StaffInfo();
+    	staffInfo.setStaffName(name);
         int pageNumber = getParaToInt("pageNumber", 1);
         int pageSize = getParaToInt("pageSize", 30);
-        Page<StaffInfo> dataPage = dataService.findPage(pageNumber, pageSize);
+        Page<StaffInfo> dataPage = dataService.findPage(staffInfo,pageNumber, pageSize);
         renderJson(new DataTable<StaffInfo>(dataPage));
     }
 
@@ -132,7 +135,6 @@ public class StaffController extends BaseController{
         renderJson(RestResult.buildSuccess());
     }
 
-    
 
     public void postUpload() throws Exception{
       	 HashMap<String, UploadFile> HashMapFile = getUploadFilesMap();
@@ -140,5 +142,4 @@ public class StaffController extends BaseController{
       	 listImage = UpLoadUtils.uploadFile(file, listImage);
       	 renderJson(RestResult.buildSuccess());
        }
-    
 }

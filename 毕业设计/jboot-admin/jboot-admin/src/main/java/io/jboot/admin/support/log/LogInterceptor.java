@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  * 系统日志拦截器
- * @author Rlax
+ *
  *
  */
 public class LogInterceptor implements Interceptor {

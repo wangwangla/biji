@@ -2,7 +2,11 @@ package io.jboot.admin.service.api;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
+import io.jboot.admin.service.entity.model.InstitutionDetailInfo;
 import io.jboot.admin.service.entity.model.ServiceOrder;
+import io.jboot.db.model.Columns;
 
 import java.util.List;
 
@@ -91,4 +95,24 @@ public interface ServiceOrderService  {
 
 
 	public void refreshCache();
+
+
+	public Page<ServiceOrder> findByIDXX(String id);
+
+
+	public List<Record> findByIDN(String id);
+
+
+	public List<Record> findByIDy(String id);
+
+
+	public List<Record> findByIDjd(String id);
+
+
+	public List<Record> findByIDz(String id);
+
+
+	public List<Record> findByIDxq(String institutionName);
+ 
+	public Page<ServiceOrder> findByWdName(String id, String institutionName);
 }

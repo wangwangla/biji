@@ -15,11 +15,7 @@ import io.jboot.web.controller.annotation.RequestMapping;
 
 import java.util.Date;
 
-/**
- * 数据字典管理
- * @author Rlax
- *
- */
+
 @RequestMapping("/system/data")
 public class DataController extends BaseController {
 

@@ -11,6 +11,8 @@ import io.jboot.admin.service.entity.model.StaffInfo;
 import io.jboot.service.JbootServiceBase;
 
 import javax.inject.Singleton;
+
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 
 @Bean
@@ -21,6 +23,7 @@ public class StaffInfoServiceImpl extends JbootServiceBase<StaffInfo> implements
 	@Override
 	public Page<StaffInfo> findPage( int pageNumber, int pageSize) {
         Columns columns = Columns.create();
+     
         return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
     }
 
@@ -28,4 +31,14 @@ public class StaffInfoServiceImpl extends JbootServiceBase<StaffInfo> implements
     public void refreshCache() {
         Jboot.me().getCache().removeAll(CacheKey.CACHE_KEYVALUE);
     }
+
+	@Override
+	public Page<StaffInfo> findPage(StaffInfo staffInfo, int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+		Columns columns = Columns.create();
+	    if(StrKit.notBlank(staffInfo.getStaffName())) {
+	    	columns.like("staff_name", staffInfo.getStaffName());
+	    }
+		return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
+	}
 }

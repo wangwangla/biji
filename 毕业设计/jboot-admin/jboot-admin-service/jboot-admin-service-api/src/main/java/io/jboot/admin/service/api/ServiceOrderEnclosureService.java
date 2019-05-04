@@ -2,6 +2,7 @@ package io.jboot.admin.service.api;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 import io.jboot.admin.service.entity.model.Enclosure;
 import io.jboot.admin.service.entity.model.ServiceOrderEnclosure;
@@ -93,4 +94,7 @@ public interface ServiceOrderEnclosureService  {
 
 
 	public void deletePhotoId(String ar);
+
+
+	public List<Record> findByIDz(String institutionName);
 }

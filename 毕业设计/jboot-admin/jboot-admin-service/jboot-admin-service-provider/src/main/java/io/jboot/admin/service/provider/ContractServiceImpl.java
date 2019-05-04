@@ -11,6 +11,7 @@ import io.jboot.service.JbootServiceBase;
 
 import javax.inject.Singleton;
 
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 
 @Bean
@@ -29,4 +30,13 @@ public class ContractServiceImpl extends JbootServiceBase<Contract> implements C
 	    public void refreshCache() {
 	        Jboot.me().getCache().removeAll(CacheKey.CACHE_KEYVALUE);
 	    }
+
+		@Override
+		public Page<Contract> findPage(Contract contract, int pageNumber, int pageSize) {
+			Columns columns = Columns.create();
+			if(StrKit.notBlank(contract.getContractName())) {
+				columns.eq("contract_name", contract.getContractName());
+			}
+	        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
+		}
 }

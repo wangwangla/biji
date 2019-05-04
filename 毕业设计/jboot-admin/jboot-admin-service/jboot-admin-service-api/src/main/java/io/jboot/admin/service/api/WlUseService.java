@@ -2,13 +2,11 @@ package io.jboot.admin.service.api;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
-
-import io.jboot.admin.service.entity.model.InstitutionDetailInfo;
+import io.jboot.admin.service.entity.model.WlUse;
 
 import java.util.List;
 
-public interface InstitutionDetailInfoService  {
+public interface WlUseService  {
 
     /**
      * find model by primary key
@@ -16,15 +14,15 @@ public interface InstitutionDetailInfoService  {
      * @param id
      * @return
      */
-    public InstitutionDetailInfo findById(Object id);
+    public WlUse findById(Object id);
 
 
     /**
      * find all model
      *
-     * @return all <InstitutionDetailInfo
+     * @return all <WlUse
      */
-    public List<InstitutionDetailInfo> findAll();
+    public List<WlUse> findAll();
 
 
     /**
@@ -42,7 +40,7 @@ public interface InstitutionDetailInfoService  {
      * @param model
      * @return
      */
-    public boolean delete(InstitutionDetailInfo model);
+    public boolean delete(WlUse model);
 
 
     /**
@@ -51,7 +49,7 @@ public interface InstitutionDetailInfoService  {
      * @param model
      * @return
      */
-    public boolean save(InstitutionDetailInfo model);
+    public boolean save(WlUse model);
 
 
     /**
@@ -60,7 +58,7 @@ public interface InstitutionDetailInfoService  {
      * @param model
      * @return if save or update success
      */
-    public boolean saveOrUpdate(InstitutionDetailInfo model);
+    public boolean saveOrUpdate(WlUse model);
 
 
     /**
@@ -69,7 +67,7 @@ public interface InstitutionDetailInfoService  {
      * @param model
      * @return
      */
-    public boolean update(InstitutionDetailInfo model);
+    public boolean update(WlUse model);
 
 
     public void join(Page<? extends Model> page, String joinOnField);
@@ -87,25 +85,4 @@ public interface InstitutionDetailInfoService  {
 
     public void keep(Model model, String... attrs);
     public void keep(List<? extends Model> models, String... attrs);
-
-
-	public void refreshCache();
-
-
-	public Page<InstitutionDetailInfo> findPage(int pageNumber, int pageSize);
-
-
-	public void delete(String institutionId);
-
-
-	public Page<InstitutionDetailInfo>  findByIDXX(String id);
-
-
-	public Record findByWD(String wdName);
- 
-
-	public List<Record> findByInstituId(String id);
-
-
- 
 }

@@ -91,4 +91,7 @@ public interface WaregouseIntoService  {
 
 
 	public Page<WaregouseInto> findPage(int pageNumber, int pageSize);
+
+
+	public Page<WaregouseInto> findPage(WaregouseInto waregouseInto, int pageNumber, int pageSize);
 }

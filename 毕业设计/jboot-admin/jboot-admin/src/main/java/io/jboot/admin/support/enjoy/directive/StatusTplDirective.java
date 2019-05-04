@@ -10,7 +10,7 @@ import io.jboot.web.directive.base.JbootDirectiveBase;
 
 /**
  * 状态layui模版，状态数据desc
- * @author Rlax
+ * 
  *
  */
 @JFinalDirective("statusTpl")

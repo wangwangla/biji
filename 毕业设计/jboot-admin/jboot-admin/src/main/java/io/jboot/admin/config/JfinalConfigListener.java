@@ -22,11 +22,6 @@ import io.jboot.server.JbootServer;
 import io.jboot.server.Servlets;
 import io.jboot.server.listener.JbootAppListenerBase;
 
-/**
- * jfinal config
- * @author Rlax
- *
- */
 public class JfinalConfigListener extends JbootAppListenerBase {
     @Override
     public void onJfinalConstantConfig(Constants constants) {

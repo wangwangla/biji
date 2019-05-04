@@ -10,7 +10,7 @@ import io.jboot.web.controller.annotation.RequestMapping;
 
 /**
  * 日志管理
- * @author Rlax
+ * 
  *
  */
 @RequestMapping("/system/log")

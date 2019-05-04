@@ -24,15 +24,13 @@
 				
 				for(var i = 0; i < data.data.length;i++)
 				{
-					lhtml=lhtml+'<div class="layui-col-md3"><div align="center"><img src="http://localhost:80/'+data.data[i].institutionLogo+'" width="130px" height="130px" align="center"/><p align="center">'+data.data[i].institutionName+'</p><p><a  class="add layui-btn layui-btn-xs" onclick="cl(1)">编辑</a></p></div></div></div>';
-					jsondata[i] = {value:data.data[i].institutionWdNum,name:data.data[i].institutionName}
-					
+					console.log(data.data[i]);
+					lhtml=lhtml+'<div class="layui-col-md3"><div align="center"><img src="http://localhost:80/'+data.data[i].institutionLogo+'" width="130px" height="130px" align="center"/><p align="center">'+data.data[i].institutionName+'</p><p><a  href="/institution/detail/detailview?id='+data.data[i].institutionId+'" class="add layui-btn layui-btn-xs"">网点详情</a></p></div></div></div>';
+					jsondata[i] = {value:data.data[i].institutionWdId,name:data.data[i].institutionName}
+					console.log(data.data[i].institutionWdId);
 				}
 				console.log(jsondata);
 				$("#listinfo").html(lhtml);
-				
-				
-				
 				var myChart = echarts.init(document.getElementById('main'));
 
 				 option = {
@@ -52,7 +50,7 @@
 	                        },
 	                        series : [
 	                            {
-	                                name: '消费积分',
+	                                name: '机构名称',
 	                                type: 'pie',
 	                                radius : '55%',
 	                                center: ['50%', '60%'],
@@ -74,33 +72,30 @@
 				}
 		});	
 	}
-	
-    function cl(t){
-       	alert(t);
- 	
-    	}      
+	     
 	  layui.use(['table', 'layer'], function () {
 	        var table = layui.table
 	            , layer = layui.layer
 	            , $ = layui.jquery
 	            , form = layui.form;
 	        $(".edit").click(function(){
-	        	 pop_show('编辑数据','#(ctxPath)/staff/info/update?id=','','', function(){
+	        	 pop_show('编辑数据','#(ctxPath)/institution/detail/update?id=','','', function(){
 	                    reloadTableQuery();
 	                });
 	        });
-	    });
 	
-</script>
+
+	    });
+	</script>
 #end
 
 #define content()
 
-    
-	<div class="layui-col-md8" style="float:left" id="listinfo">
+	<div class="layui-col-md8" style="float:left" id="listinfo" >
 	
 	</div>
-	<div class="layui-col-md4" style="float:right ;position:fixed;right:4px">
-		<div id="main" style="height:400px;"></div>
+	<div class="layui-col-md4" style="float:right ;position:fixed;right:4px;margin:40px">
+		<div id="main" style="height:400px;></div>
 	</div>
+	
 #end

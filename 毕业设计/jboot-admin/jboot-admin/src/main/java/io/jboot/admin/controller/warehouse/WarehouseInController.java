@@ -33,9 +33,17 @@ public class WarehouseInController  extends BaseController {
     * 表格数据
     */
    public void tableData() {
+	   WaregouseInto waregouseInto = new WaregouseInto();
+	   String type = getPara("eqiupType");
+	   String eqiupXinghao =getPara("eqiupXinghao");
+	   String eqiupName = getPara("eqiupName");
+	   System.out.println(type+"==========="+eqiupXinghao+"----------"+eqiupName);
+	   waregouseInto.setEqiupType(type);
+	   waregouseInto.setEqiupXinghao(eqiupXinghao);
+	   waregouseInto.setEqiupName(eqiupName);
        int pageNumber = getParaToInt("pageNumber", 1);
        int pageSize = getParaToInt("pageSize", 30);
-       Page<WaregouseInto> dataPage = dataService.findPage(pageNumber, pageSize);
+       Page<WaregouseInto> dataPage = dataService.findPage(waregouseInto,pageNumber, pageSize);
        renderJson(new DataTable<WaregouseInto>(dataPage));
    }
 
@@ -52,6 +60,7 @@ public class WarehouseInController  extends BaseController {
    public void postAdd() {
 	   WaregouseInto data = getBean(WaregouseInto.class, "warehouseInto");
        data.setEquipLead(AuthUtils.getLoginUser().getName());
+       data.setEquipStatus("设备入库");
        if (!dataService.save(data)) {
            throw new BusinessException("保存失败");
        }

@@ -11,6 +11,7 @@ import io.jboot.service.JbootServiceBase;
 
 import javax.inject.Singleton;
 
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 
 @Bean
@@ -30,5 +31,22 @@ public class WaregouseIntoServiceImpl extends JbootServiceBase<WaregouseInto> im
 		  Columns columns = Columns.create();
 	        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
 	    }
+
+
+	@Override
+	public Page<WaregouseInto> findPage(WaregouseInto waregouseInto, int pageNumber, int pageSize) {
+		   
+		   Columns columns = Columns.create();
+		   if(StrKit.notBlank(waregouseInto.getEqiupType())) {
+			   columns.eq("eqiup_type", waregouseInto.getEqiupType());
+		   }
+		   if(StrKit.notBlank(waregouseInto.getEqiupXinghao())) {
+			   columns.eq("eqiup_xinghao", waregouseInto.getEqiupXinghao());
+		   }
+		   if(StrKit.notBlank(waregouseInto.getEqiupName())) {
+			   columns.eq("eqiup_name", waregouseInto.getEqiupName());
+		   }
+	        return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
+	}
 
 }

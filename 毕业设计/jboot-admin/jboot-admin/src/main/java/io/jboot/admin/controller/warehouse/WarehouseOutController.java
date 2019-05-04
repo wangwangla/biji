@@ -49,9 +49,17 @@ public class WarehouseOutController extends BaseController {
     * 表格数据
     */
    public void tableData() {
+	   String equipType = getPara("equipType");
+	   String equipXinghao = getPara("equipXinghao");
+	   String equipName = getPara("equipName");
+	   System.out.println(equipType+"==="+equipXinghao+"------"+equipName);
+	   WaregouseOut waregouseOut = new WaregouseOut();
+	   waregouseOut.setEquipType(equipType);
+	   waregouseOut.setEquipXinghao(equipXinghao);
+	   waregouseOut.setEquipName(equipName);
        int pageNumber = getParaToInt("pageNumber", 1);
        int pageSize = getParaToInt("pageSize", 30);
-       Page<WaregouseOut> dataPage = dataService.findPage(pageNumber, pageSize);
+       Page<WaregouseOut> dataPage = dataService.findPage(waregouseOut,pageNumber, pageSize);
        renderJson(new DataTable<WaregouseOut>(dataPage));
    }
 
@@ -166,6 +174,7 @@ public class WarehouseOutController extends BaseController {
 		        titleData.put("equip_lead", "负责人");
 		        File file = new File(ExcelExportUtil.getTitle());
 		    file = ExcelExportUtil.saveFile(titleData, list, file);
-		    this.renderFile(file);
+		    renderNull();
+		    
 		}
 }

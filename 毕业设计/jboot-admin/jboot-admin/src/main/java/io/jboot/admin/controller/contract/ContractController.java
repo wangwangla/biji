@@ -62,9 +62,12 @@ public class ContractController extends BaseController {
   * 表格数据
   */
  public void tableData() {
+	 String contractName = getPara("contractName");
+	 Contract contract = new Contract();
+	 contract.setContractName(contractName);
      int pageNumber = getParaToInt("pageNumber", 1);
      int pageSize = getParaToInt("pageSize", 30);
-     Page<Contract> dataPage = dataService.findPage(pageNumber, pageSize);
+     Page<Contract> dataPage = dataService.findPage(contract,pageNumber, pageSize);
      renderJson(new DataTable<Contract>(dataPage));
  }
 

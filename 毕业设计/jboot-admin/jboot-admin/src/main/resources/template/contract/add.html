@@ -49,6 +49,39 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
          
+        
+        $.ajax({
+            url:'/institution/info/tableData',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+         		console.log(data.data)
+                 $.each(data.data,function(index,item){
+                
+                	 console.log(item)
+               	
+                    $('#jselectID').append(new Option(item.institutionName,item.institutionId));//往下拉菜单里添加元素
+                })
+          
+                form.render();//菜单渲染 把内容加载进去
+            }
+        })
+
+		  $.ajax({
+            url:'/institution/detail/tableData',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+         		console.log(data.data)
+                 $.each(data.data,function(index,item){
+                	 console.log(item.wdId+"+=========");
+                    $('#selectID').append(new Option(item.wdName,item.wdId));//往下拉菜单里添加元素
+                })
+          
+                form.render();//菜单渲染 把内容加载进去
+            }
+        })
+        
     });
 </script>
 #end
@@ -86,6 +119,27 @@
                 <input type="text" name="contract.contractContent" placeholder="合同内容" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
         </div>
+        
+          <div class="layui-form-item">
+            <label class="layui-form-label"><em class="require-mark">*</em>机构名称</label>
+            <div class="layui-input-block">
+                <select id="jselectID" name="contract.instinitionId" lay-verify="required">
+                </select>
+            </div>
+        </div> 
+         <div class="layui-form-item">
+            
+            <label class="layui-form-label"><em class="require-mark">*</em>机构网点</label>
+            <div class="layui-input-block" >
+                <select id="selectID" name="contract.wdId" onchange="func();" lay-verify="required">
+                </select>
+            </div>
+            <!-- <label class="layui-form-label"><em class="require-mark">*</em>机构网点</label>
+            <div class="layui-input-block">
+                <input type="text" name="serviceOrder.wdName" placeholder="机构网点" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
+            </div> -->
+        </div>
+        <!-- 
         <div class="layui-form-item">
             <label class="layui-form-label"><em class="require-mark">*</em>机构编号</label>
             <div class="layui-input-block">
@@ -99,7 +153,7 @@
                 <input type="text" name="contract.wdId" placeholder="网点编号" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
         </div>
-        
+         -->
         
         <div class="layui-form-item">
             <label class="layui-form-label"><em class="require-mark">*</em>甲方负责人</label>

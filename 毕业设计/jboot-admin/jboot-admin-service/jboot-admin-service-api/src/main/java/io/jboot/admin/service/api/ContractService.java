@@ -92,4 +92,7 @@ public interface ContractService  {
 
 
 	public void refreshCache();
+
+
+	public Page<Contract> findPage(Contract contract, int pageNumber, int pageSize);
 }

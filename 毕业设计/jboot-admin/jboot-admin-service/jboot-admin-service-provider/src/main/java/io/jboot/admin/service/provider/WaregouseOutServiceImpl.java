@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -38,6 +39,22 @@ public class WaregouseOutServiceImpl extends JbootServiceBase<WaregouseOut> impl
 	public List<Record> export() {
 		// TODO Auto-generated method stub
 		return Db.find("select * from waregouse_out ");
+	}
+
+	@Override
+	public Page<WaregouseOut> findPage(WaregouseOut waregouseOut, int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+	       Columns columns = Columns.create();
+	       if(StrKit.notBlank(waregouseOut.getEquipName())) {
+	    	   columns.eq("equip_name", waregouseOut.getEquipName());
+	       }
+	       if(StrKit.notBlank(waregouseOut.getEquipType())) {
+	    	   columns.eq("equip_type", waregouseOut.getEquipType());
+	       }
+	       if(StrKit.notBlank(waregouseOut.getEquipXinghao())) {
+	    	   columns.eq("equip_xinghao", waregouseOut.getEquipXinghao());
+	       }
+	       return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
 	}
 
 }

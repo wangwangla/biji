@@ -3,9 +3,7 @@ package io.jboot.admin;
 import io.jboot.Jboot;
 
 /**
- * 服务启动入口
- * @author Rlax
- *
+ * C启动入口
  */
 public class Application {
     public static void main(String [] args){

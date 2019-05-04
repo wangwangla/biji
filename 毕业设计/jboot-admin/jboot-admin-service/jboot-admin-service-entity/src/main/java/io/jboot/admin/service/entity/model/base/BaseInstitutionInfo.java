@@ -62,12 +62,12 @@ public abstract class BaseInstitutionInfo<M extends BaseInstitutionInfo<M>> exte
 		return getStr("institution_wd_num");
 	}
 
-	public void setInstitutionWdId(java.lang.String institutionWdId) {
+	public void setInstitutionWdId(java.lang.Integer institutionWdId) {
 		set("institution_wd_id", institutionWdId);
 	}
 	
-	public java.lang.String getInstitutionWdId() {
-		return getStr("institution_wd_id");
+	public java.lang.Integer getInstitutionWdId() {
+		return getInt("institution_wd_id");
 	}
 
 }

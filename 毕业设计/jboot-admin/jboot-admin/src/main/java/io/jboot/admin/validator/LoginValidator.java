@@ -5,7 +5,7 @@ import io.jboot.admin.base.web.base.JsonValidator;
 
 /**
  * 登录校验
- * @author Rlax
+ * 
  *
  */
 public class LoginValidator extends JsonValidator {

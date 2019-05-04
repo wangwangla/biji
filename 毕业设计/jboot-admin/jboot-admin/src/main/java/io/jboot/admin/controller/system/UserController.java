@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * 系统用户管理
- * @author Rlax
+ * 
  * 
  */
 @RequestMapping("/system/user")
@@ -126,6 +126,11 @@ public class UserController extends BaseController {
     @NotNullPara({"id"})
     public void delete() {
         Long id = getParaToLong("id");
+        User _sysUser = userService.findById(id);
+        
+        if(_sysUser.getName()==AuthUtils.getLoginUser().getName()||_sysUser.getName()=="admin") {
+        	throw new BusinessException("如乃天骄，何不上九宵");
+        }
         if (!userService.deleteById(id)) {
             throw new BusinessException("删除失败");
         }

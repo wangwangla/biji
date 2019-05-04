@@ -8,6 +8,8 @@
 #end
 
 #define js()
+<script src="//cdn.bootcss.com/echarts/4.0.2/echarts.min.js"></script>
+        <script src="//cdn.bootcss.com/echarts/4.0.2/extension/bmap.min.js"></script>
 <script type="text/javascript">
     layui.use(['table', 'layer'], function () {
         var table = layui.table
@@ -19,20 +21,20 @@
         var tableIns = table.render({
             elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
             , id: 'dateTable'
+          
             , even: true //开启隔行背景
             , size: 'sm' //小尺寸的表格
             , height: 'full-150'    //容器高度
             , cols: [[                  //标题栏
-                 {field: 'staffId', title: 'ID', width: 160}
-                , {field: 'staffName', title: '姓名', width: 80}
-                , {field: 'staffCategory', title: '类型', width: 100}
-                , {field: 'staffBirthday', title: '出生日期', width: 160}
-                , {field: 'staffTel', title: '电话', width: 120}
-                , {field: 'staffAddress', title: '住址', width: 220}
-                , {field: 'staffStatus', title: '状态', width: 140}
-                , {fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+				  {field: 'institutionId', title: 'ID', width: 180}
+                , {field: 'wdName', title: '网点名称', width: 120}
+                , {field: 'addDate', title: '最近签约日期', width: 180}
+                , {field: 'repairDate', title: '最近维修日期', width: 180}
+                , {field: 'repairNum', title: '维修次数累计', width: 120}
+                , {fixed: 'right', title: '操作', width: 280, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+                
              ]]
-            , url: '#(ctxPath)/staff/info/tableData'
+            , url: '#(ctxPath)/institution/detail/detail?id=#(data)'
             , method: 'get'
             , request: {
                 pageName: 'pageNumber' //页码的参数名称，默认：page
@@ -49,65 +51,24 @@
         table.on('tool(dateTable)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    util.sendAjax ({
-                        type: 'POST',
-                        url: '#(ctxPath)/staff/info/delete',
-                        data: {id : data.staffId},
-                        loadFlag: true,
-                        success : function(data){
-                            layer.close(index);
-                            reloadTableQuery();
-                        },
-                        unSuccess: function (data) {
-                            layer.close(index);
-                        }
-                    })
-                });
-            } else if(obj.event === 'edit'){
-                pop_show('编辑数据','#(ctxPath)/staff/info/update?id=' + data.staffId,'','', function(){
+                pop_show('编辑数据','#(ctxPath)/service/order/detailview?id=' + data.wdName,'','', function(){
                     reloadTableQuery();
                 });
-            }  else if(obj.event === 'detail'){
-                pop_show('详情','#(ctxPath)/staff/info/find?id=' + data.staffId,'','', function(){
-                    reloadTableQuery();
-                });
-            }
+            }  
         });
 
-        $("#add").click(function(){
-            pop_show('添加数据','#(ctxPath)/staff/info/add','','', function(){
-                reloadTableQuery();
-            });
-        });
-
-        $("#cache").click(function(){
-            layer.confirm('确定刷新数据缓存吗', function(index){
-                util.sendAjax ({
-                    type: 'POST',
-                    url: '#(ctxPath)/staff/info/cache',
-                    data: {},
-                    loadFlag: true,
-                    success : function(data){
-                        layer.close(index);
-                    },
-                    unSuccess: function (data) {
-                        layer.close(index);
-                    }
-                });
-            });
-        });
-
+      
+      
         reloadTableQuery = function () {
             table.reload('dateTable', {
-                url: '#(ctxPath)/staff/info/tableData'
-                ,where: {type: $('#type').val(), typeDesc: $('#typeDesc').val()} //设定异步数据接口的额外参数
+                url: '#(ctxPath)/institution/detail/detail?id=#(data)'
+                //设定异步数据接口的额外参数
             });
         }
 
         reloadTable = function (type, typeDesc) {
             table.reload('dateTable', {
-                url: '#(ctxPath)/staff/info/tableData'
+                url: '#(ctxPath)/institution/detail/detail?id=#(data)'
                 ,where: {type: type, typeDesc: typeDesc} //设定异步数据接口的额外参数
             });
         }
@@ -117,6 +78,63 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
+    //总的
+	window.onload = function(){
+		$.ajax({
+			type:"get",
+			url:"#(ctxPath)/service/order/wdetail?id=#(data)",
+			success:function(data,textStatus,jqXHR){
+	   var lhtml  = [];
+		var countnum = 0;
+         var jsondata = [];
+		
+		for(var i = 0; i < data.length;i++){
+				lhtml.push(data[i].c)
+				jsondata.push(data[i].z)
+				console.log(lhtml);
+				console.log(jsondata);
+		}
+	
+		var myChart = echarts.init(document.getElementById('main'));
+
+		 option = {
+                    title : {
+                        text: '网点维修次数',
+                    },
+                    tooltip : {
+                    },
+                    toolbox:{
+                    	show:true,
+                    	featrue:{
+                    		saveAsImage:{show:true}
+                    	}
+                    },
+                    dataset:{
+                    	source:[
+                    		
+                    	]
+                    },
+                    xAxis:[{
+                    		type:'category',
+                    		data:jsondata
+                    	}],
+                    yAxis:{
+                    	type:'value'
+                    },
+                    series:[
+                    	{"name":"维修次数",
+                    		"type":"bar",
+                    		"data":lhtml
+                    	}
+                    ]};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+	},error:function(XMLHttpRequest,textStatus,errorThrown){
+		}
+});	
+	}
+    
 </script>
 #end
 
@@ -125,25 +143,20 @@
          
         <hr>
         <div class="layui-row">
-            <div class="layui-btn-group">
-            
-                <button id="add" class="layui-btn layui-btn-small">添加数据</button>
-           
-            </div>
-            <div class="layui-btn-group">
-           
-                <button id="cache" class="layui-btn layui-btn-small">刷新缓存</button>
-          
-            </div>
+        
             <table id="dateTable" lay-filter="dateTable"></table>
+        </div>
+        
+        <div id="main" style="height:400px;"></div>
+        <div>
+        	<p class="count01"></p>
         </div>
     </div>
 
 <script type="text/html" id="barOption">
- 
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-  
+	#shiroHasPermission('/service/order/wdetail')
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">查看维修服务明细</a>
+    #end
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">查看合同</a>
 </script>
 #end

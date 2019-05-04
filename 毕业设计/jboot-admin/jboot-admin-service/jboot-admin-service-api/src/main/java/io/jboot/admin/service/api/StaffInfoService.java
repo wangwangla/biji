@@ -93,4 +93,7 @@ public interface StaffInfoService  {
 
 
 	public void refreshCache();
+
+
+	public Page<StaffInfo> findPage(StaffInfo staffInfo, int pageNumber, int pageSize);
 }

@@ -16,11 +16,6 @@ import io.jboot.admin.service.entity.model.SupplierInfo;
 import io.jboot.core.rpc.annotation.JbootrpcService;
 import io.jboot.web.controller.annotation.RequestMapping;
 
-/**
- * 
- * @author Administrator
- * 商品资料
- */
 @RequestMapping("/commodity/info")
 public class CommodityController extends BaseController {
 	@JbootrpcService

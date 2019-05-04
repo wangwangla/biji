@@ -7,10 +7,13 @@ import io.jboot.admin.service.api.ServiceOrderEnclosureService;
 import io.jboot.admin.service.entity.model.ServiceOrderEnclosure;
 import io.jboot.service.JbootServiceBase;
 
+import java.util.List;
+
 import javax.inject.Singleton;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 @Bean
 @Singleton
@@ -27,5 +30,11 @@ public class ServiceOrderEnclosureServiceImpl extends JbootServiceBase<ServiceOr
 	public void deletePhotoId(String ar) {
 		// TODO Auto-generated method stub
 		Db.delete("delete from enclosure where contract_id  =  '"+ar+"'");
+	}
+
+	@Override
+	public List<Record> findByIDz(String institutionName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

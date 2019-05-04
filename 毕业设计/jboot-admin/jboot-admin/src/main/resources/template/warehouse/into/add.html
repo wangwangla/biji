@@ -20,7 +20,18 @@
 			elem:'#date'
 		});
             
-
+        $.ajax({
+			url:'/warehouse/info/tableData',
+			dataType:'json',
+			type:'post',
+			success:function(data){
+			   $.each(data.data,function(index,item){
+				$('#selected').append(new Option(item.waregouseName,item.waregouseName));
+				 
+			   }) 
+				form.render();
+			}
+		})
         form.on('submit(sub)', function(data){
 
             util.sendAjax ({
@@ -62,7 +73,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label"><em class="require-mark">*</em>chu 库时间</label>
+            <label class="layui-form-label"><em class="require-mark">*</em>入 库时间</label>
             <div class="layui-input-block">
                 <input type="text" name="warehouseInto.eqiupInDate" id="date" placeholder="入库时间" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
@@ -73,12 +84,17 @@
                 <input type="text" name="warehouseInto.unitPrice" placeholder="单价" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
             </div>
         </div>
-<!--         <div class="layui-form-item">
-            <label class="layui-form-label"><em class="require-mark">*</em>状态</label>
+   <div class="layui-form-item">
+            <label class="layui-form-label"><em class="require-mark">*</em>仓库名称</label>
             <div class="layui-input-block">
-                <input type="text" name="warehouseInto.equipStatus" placeholder="状态" class="layui-input" value="" required  lay-verify="required" autocomplete="off"/>
+               <select id = "selected" name ="warehouseInto.equipLqDate"></select>
             </div>
-        </div> -->
+        </div>
+        
+        
+        
+<!--   
+         -->
             <div class="layui-form-item">
             <label class="layui-form-label"><em class="require-mark">*</em>状态</label>
             <div class="layui-input-block">

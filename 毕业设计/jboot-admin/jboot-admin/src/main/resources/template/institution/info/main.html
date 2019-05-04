@@ -65,11 +65,11 @@
                     reloadTableQuery();
                 });
             }  else if(obj.event === 'detail'){
-                pop_show('详情','#(ctxPath)/institution/info/find?id=' + data.institutionId,'','', function(){
+                pop_show('详情','#(ctxPath)/institution/detail/detailview?id=' + data.institutionId,'','', function(){
                     reloadTableQuery();
                 });
             }  else if(obj.event === 'addwd'){
-                pop_show('增加','#(ctxPath)/institution/detail/main?id=' + data.institutionId,'','', function(){
+                pop_show('增加','#(ctxPath)/institution/detail/main?id='+ data.institutionId,'','', function(){
                     reloadTableQuery();
                 });
             }
@@ -105,15 +105,15 @@
             });
         }
 
-        reloadTable = function (type, typeDesc) {
+        reloadTable = function (name) {
             table.reload('dateTable', {
                 url: '#(ctxPath)/institution/info/tableData'
-                ,where: {type: type, typeDesc: typeDesc} //设定异步数据接口的额外参数
+                ,where: {name: name} //设定异步数据接口的额外参数
             });
         }
 
         form.on('submit(search)', function(data){
-            reloadTable(data.field.type, data.field.typeDesc);
+            reloadTable(data.field.name);
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
@@ -122,13 +122,25 @@
 
 #define content()
     <div class="layui-fluid">
-         
+         <form id="searchForm" class="layui-form x-center" action="" >
+            <div class="layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">机构名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" placeholder="机构名称" class="layui-input"/>
+                    </div>
+                    <div class="layui-input-inline" style="width : 80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
         <hr>
         <div class="layui-row">
             <div class="layui-btn-group">
-            
+            	#shiroHasPermission('/institution/info')
                 <button id="add" class="layui-btn layui-btn-small">添加数据</button>
-           
+           		#end
             </div>
             <div class="layui-btn-group">
            
@@ -140,10 +152,15 @@
     </div>
 
 <script type="text/html" id="barOption">
- 
+ 	#shiroHasPermission('/institution/info')
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	#end
     <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
+	#shiroHasPermission('/institution/info')
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="addwd">增加网点</a>  
+	#end
+    #shiroHasPermission('/institution/info')
+	<a class="layui-btn layui-btn-xs" lay-event="addwd">增加网点</a>  
+	#end
 </script>
 #end

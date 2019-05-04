@@ -132,7 +132,9 @@
         <hr>
         <div class="layui-row">
             <div class="layui-btn-group">
+            	#shiroHasPermission('/service/order/add')
                 <button id="add" class="layui-btn layui-btn-small">添加数据</button>
+                #end
             </div>
             <div class="layui-btn-group">
                 <button id="cache" class="layui-btn layui-btn-small">刷新缓存</button>
@@ -141,8 +143,9 @@
         </div>
     </div>
 <script type="text/html" id="barOption">
-
+	
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="fujian">订单附件</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="fujian">订单附件</a>
+
 </script>
 #end

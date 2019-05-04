@@ -8,7 +8,7 @@ import io.jboot.admin.support.auth.AuthUtils;
 
 /**
  * 修改密码校验器
- * @author Rlax
+ * 
  *
  */
 public class ChangePwdValidator extends JsonValidator {

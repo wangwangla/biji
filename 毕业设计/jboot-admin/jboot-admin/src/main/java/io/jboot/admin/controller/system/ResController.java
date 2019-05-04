@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * 系统资源控制器
- * @author Rlax
+ * 
  *
  */
 @RequestMapping("/system/res")

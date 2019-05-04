@@ -96,4 +96,7 @@ public interface WaregouseOutService  {
 
 
 	public List<Record> export();
+
+
+	public Page<WaregouseOut> findPage(WaregouseOut waregouseOut, int pageNumber, int pageSize);
 }

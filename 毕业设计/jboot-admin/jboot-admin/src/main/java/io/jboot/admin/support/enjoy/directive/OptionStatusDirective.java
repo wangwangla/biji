@@ -11,8 +11,7 @@ import com.jfinal.template.io.Writer;
 
 /**
  * 状态下拉Option指令
- * @author Rlax
- *
+ 
  */
 @JFinalDirective("statusOption")
 public class OptionStatusDirective extends JbootDirectiveBase {
