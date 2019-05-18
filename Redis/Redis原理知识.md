@@ -1,270 +1,69 @@
-## 基础和应用
+# 原理篇
 
-1.Redis是远程调用技术的首字母缩写。
+### 线程IO模型
 
-2.Redis可以用来做什么？
-
-- Redis可以用来做缓存。
-- 分布式锁
-
-3.Redis的应用举例
-
-- 记录帖子的点赞数、评论数和点击数。（使用HASH）
-- 记录用户的帖子ID列表，便于快速显示用户的帖子列表。（ZSET）
-- 记录帖子的标题、摘要、作者和封面信息，用于展示。（hash）
-- 记录帖子的点怎用户ID和列表ID，用于显示和去重计数。（zset）
-- 缓存近期热帖内容，减少数据库压力。（hash）
-- 记录帖子相关文章ID,根据内容推荐相关帖子。（list）
-- 如图帖子是正数递增，可以使用Redis来分配帖子ID。（计数器）
-- 收藏集合帖子的之前的关系。（zset）
-- 记录热榜的 ID列表、总热榜和分类榜
-- 缓存用户行为的历史，过滤恶意行为（zset、hash）
-
-## Redis安装
-
-Redis安装可以在window、linux中安装，也可以使用docker安装。
-
-- Docker安装方式
-
-  ```shell
-  拉取镜像
-  docker  pull redis
-  运行容器
-  docker run --name myredis -d -p 6379:6379 redis
-  后台执行
-  docker exec -it myredis redis-cli
-  ```
-
-- github源码安装
-
-  ```shell
-  git clone 
-  cd redis 
-  编译
-  make
-  cd src
-  运行服务
-  ./redis-server --deamonize yes
-  运行客户端
-  ./redis-cli
-  ```
-
-  
-
-- apt-get install     /yum install     /brew install 
-
-```shell
-yum install redis
-redis-cli
-```
-
-## 5种基本的数据结构
-
-​	Redis的数据结构，分为string、list、hash、set、zset
-
-### string
-
--  它的内部是一个字符串数组，使用一个唯一的key作为字符串名称的，通过key获取数据。不同的值在于他们value的值不同。
-
-- 字符串一般可以使用在缓存，将用户信息序列化之后放入字符串中。
-
-- 实现原理：类似于Arraylist，使用阈值的方式开辟空间，一般会加倍，但是当数据大于1M的时候，每次加1M,最大的值是512M.
-
-- 基本操作
-
-  - 键值对
-
-    ```shell
-    test:0>set name value01
-    "OK"
-    test:0>get name
-    "value01"
-    test:0>exsits name
-    "ERR unknown command 'exsits'"
-    test:0>exists name
-    "1"
-    test:0>del name
-    "1"
-    test:0>get name
-    null
-    test:0>
-    ```
-
-    
-
-  - 批量键值对
-
-    ```shell
-    test:0>set name1 value01
-    "OK"
-    test:0>set name2 value02
-    "OK"
-    test:0>mget name1 name2
-     1)  "value01"
-     2)  "value02"
-    test:0>mset name1 kangwang name2 jiangyu name3 yjh
-    "OK"
-    test:0>mget name1 name2 name3
-     1)  "kangwang"
-     2)  "jiangyu"
-     3)  "yjh"
-    test:0>
-    ```
+​	Redis是一个单线程的程序，nginx、nodejs都是单线程的。但是他也很快，这是因为数据都在内存中，计算是内存级别的。在处理O(n)的指令就会出现卡顿的问题。
 
-    
+​	Redis为什么可以处理多个客户端，这是因为它采用多路复用。
 
-  - 过期和set指令的扩展
+### 非阻塞IO
 
-    ```shell
-    test:0>set name kangwang
-    "OK"
-    test:0>expire name 5
-    "1"
-    test:0>get name
-    null
-    ---------------
-    test:0>setex name 5 code
-    "OK"
-    test:0>get name
-    null
-    -----------------
-    test:0>setnx name kkkk
-    "1"
-    test:0>setnx name kkkk
-    "0"
-    ```
-
-  - 计数
-
-    ```shell
-    test:0>set age 39
-    "OK"
-    test:0>incr age
-    "40"
-    test:0>incrby age 5
-    "45"
-    ```
-
-### list
+​	默认读写是阻塞的，最后可以是一个n，这个参数由套接字传递的，如果没有数据就不糊会返回，卡在哪里。直到有数据或者是断开连接，才会返回或者是继续处理。读的时候，只有放写满了才会阻塞。当有非堵塞的时候，就会出现一个问题，怎样就写完了，怎样就读完了，如果读不完怎么办。这个通过轮询来进行处理这个问题。
 
-​	类似于java的linkList，他是链表不是数组。他可以作为消息队列
+### 多路复用
 
-- 队列
+最简单的时间轮询API Select函数，提供给用户的API.输入是read_fds和write_fds.输出是对应的可读事件，提供一个timeout.没有任何事件的时候，等timeout就会进入堵塞，有事件来就会返回。拿到事件就会进行轮询，进入一个死循环。
 
-```shell
-test:0>lpush books java c++ c python
-"4"
-test:0>llen books
-"4"
-test:0>lpush books java c++ c python
-"4"
-test:0>llen books
-"4"
-test:0>rpop books
-"java"
-```
+### 指令队列
 
-- 堆栈
+Redis会将每一个客户端套接字都关联一个指令队列，通过队列来执行任务，先到先服务。
 
-```shell
-左边入，左边出
-```
+### 服务队列
 
-- 角标获取数据
+同时提供一个响应队列，Redis通过队列将返回结果返回给客户端，为null，就不去获取写事件了。将客户端描述符拿出来。当队列有数据了在进行获取。
 
-```
-test:0>lindex books 0
-"python"
-test:0>lrange books 0 -1
- 1)  "python"
- 2)  "c"
- 3)  "c++"
-test:0>
-```
+###  定时任务
 
-- 快速列表
+单线程的任务，如果在一个IO上堵塞，那么定时任务到时怎么办？
+Redis的计时放在一个堆中，将快要执行的任务放在最上面，每一个循环周期中，Redis都会对最小堆里面已经到时的进行处理，将快要执行的任务时间记下来，这个值是select的timeout。在这个时间可以安心睡了。
 
-Redis底层使用的是一个快速列表，在数据小的时候，将数据存储在一块练习的内存中。当数据比较多的时候，普通链表太浪费空间，所以它将多个内存块的数据使用链表连接起来。
 
-![1558161362770](../读书笔记/OpenGLES游戏开发/1558161362770.png)
 
+## 持久化
 
+​	Redis数据存储在内存中，宕机就会消失，那么就可以使用一种策略，让其可以一种存在，第一种使用快照；第二种使用AOF日志。但是有个问题，AOF的增大，启动会变慢。快照是存在一个紧凑的二进制文件中。
 
-### Hash
+### 快照原理
 
+​	Redis是单线程，他需要执行多个客户端的操作。如果需要快照，那么就需要一边服务一边进行IO快照。并且IO操作不可以多路复用。
 
+​	问题：快照的同时，数据还在改变，这怎么办。
 
-典相当于java的HashMap，无序的字典，内部结构和HashMap类似。不同之处：
+​	Redis使用的是WOW(copy on write)
 
-​	Redis字典相当于java的HashMap，无序的字典，内部结构和HashMap类似。不同之处：
+### fork
 
-- Redis只会是字符串。，并且hash的方式也不一样。
-- java会一次的进行hash，但是redis会慢慢的进行hash，他会保存两个hash结构，然后在后续定时任务以及其他操作的时候，逐渐的进行迁移，当最后一个节点移动完毕的时候，就会将其取而代之。
-- hash可以存储用户的信息，字符串会一次的进行序列化，并且会将所有的数据读取。浪费带宽。
+​	持久化会调用glibc函数fork产生一个子进程，快照持久化完全交给子进程来处理，父进程继续响应客户端。
 
+在子进程进行数据持久化的时候，不会修改现有数据的内存数据结构，仅仅只是循环，将数据持久化到内存中。父进程对客户端进行处理，不断修改。
 
+​	Copy on write在复制上写，将数据段复制一个，然后在上面进行修改。
 
-### Set
 
-​	Redis相当于hashSet，内部的建是无序的、唯一的。当最后一个数据删除，数据就会自己的删除，可以进行去重保证一次不会出现两次的数据。
 
-```shell
-test:0>sadd stu s1
-"1"
-test:0>sadd stu s2
-"1"
-test:0>smembers stu
- 1)  "s2"
- 2)  "s1"
-test:0>sadd stu s
-"1"
-test:0>smembers stu
- 1)  "s"
- 2)  "s2"
- 3)  "s1"
-```
+### AOF原理
 
-顺序也是不一致的。
+AOF存储的是Redis服务器执行的指令，仅仅记录了修改的指令。
 
-其他操作
+AOF的流程为：收到指令，先对指令进行效验、逻辑处理，没有问题，就会立即将文本指令存储到AOF日志中**先执行，在写入日志**
 
-```java
-是否存在数据
-test:0>sismember stu s
-"1"
-数据的长度
-test:0>scard stu
-"3"
-弹出
-test:0>spop stu
-"s2"
-```
+AOF日志过大之后，需要对其进行瘦身处理。
 
-### zset
+### AOF日志重写
 
-有序列表,它类似于sorted和HashMap，set保证唯一，Sort保证有序。最后一个数据撒喊出，那么数据结构也会删除。可以用来存储，评论和点赞。
+Redis提供了bgrewriteaof指令进行瘦身，原理是：开辟一个新的子进程对内存进行遍历，转化为一系列的指令，将指令放入到新的一个日志中，再将执行期间的日志追加，然后将旧的日志替换掉。瘦身就算结束了。
 
+### fsyns
 
-
-### 通用规则
-
-list、set、hash、zset如果不存在就会创建，再操作。没有数据了就删除了。
-
-
-
-## 过期时间
-
-过期他是一个对象进行过期，不是某一个元素，也不是key、如果设置了过期时间，在对其进行修改，就会将其过期时间删除。
-
-
-
-
-
-
-
-
-
-
-
-[TOC]
+aof日志的形式放在内存中，但是aof读写的时候，先将数据放入内存中，然后在刷到磁盘。
 
