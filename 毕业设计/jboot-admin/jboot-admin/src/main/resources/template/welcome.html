@@ -25,7 +25,7 @@
 				for(var i = 0; i < data.data.length;i++)
 				{
 					console.log(data.data[i]);
-					lhtml=lhtml+'<div class="layui-col-md3"><div align="center"><img src="http://localhost:80/'+data.data[i].institutionLogo+'" width="130px" height="130px" align="center"/><p align="center">'+data.data[i].institutionName+'</p><p><a  href="/institution/detail/detailview?id='+data.data[i].institutionId+'" class="add layui-btn layui-btn-xs"">网点详情</a></p></div></div></div>';
+					lhtml=lhtml+'<div class="layui-col-md3"><div align="center"><img src="http://118.24.235.237/'+data.data[i].institutionLogo+'" width="130px" height="130px" align="center"/><p align="center">'+data.data[i].institutionName+'</p><p><a  href="/institution/detail/detailview?id='+data.data[i].institutionId+'" class="add layui-btn layui-btn-xs"">网点详情</a></p></div></div></div>';
 					jsondata[i] = {value:data.data[i].institutionWdId,name:data.data[i].institutionName}
 					console.log(data.data[i].institutionWdId);
 				}

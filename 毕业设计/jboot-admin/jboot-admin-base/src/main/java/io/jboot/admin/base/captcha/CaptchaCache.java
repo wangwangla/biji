@@ -5,11 +5,6 @@ import com.jfinal.captcha.ICaptchaCache;
 import io.jboot.Jboot;
 import io.jboot.admin.base.common.CacheKey;
 
-/**
- * 验证码 redis 集群
- * @author Rlax
- *
- */
 public class CaptchaCache implements ICaptchaCache {
 
 	@Override

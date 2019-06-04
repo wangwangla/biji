@@ -2,11 +2,6 @@ package io.jboot.admin.base.common;
 
 import io.jboot.config.annotation.PropertyConfig;
 
-/**
- * 应用信息
- * @author Rlax
- *
- */
 @PropertyConfig(prefix = "jboot.admin.app")
 public class AppInfo {
 

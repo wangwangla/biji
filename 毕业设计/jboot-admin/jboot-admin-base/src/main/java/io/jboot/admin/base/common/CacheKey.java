@@ -1,10 +1,6 @@
 package io.jboot.admin.base.common;
 
-/**
- * 缓存目录 KEY
- * @author Rlax
- *
- */
+ 
 public class CacheKey {
 
 	/** 基础数据 对应 data 表 keyValue缓存在cache的name */

@@ -73,6 +73,13 @@
                     reloadTableQuery();
                 });
             }
+            else if(obj.event === 'tongji'){
+                pop_show('增加','#(ctxPath)/institution/detail/tongji?id='+ data.institutionId,'','', function(){
+                    reloadTableQuery();
+                });
+            }
+            
+            
         });
 
         $("#add").click(function(){
@@ -152,7 +159,10 @@
     </div>
 
 <script type="text/html" id="barOption">
- 	#shiroHasPermission('/institution/info')
+#shiroHasPermission('/institution/tongji')
+ <a class="layui-btn layui-btn-xs" lay-event="tongji">统计</a>
+#end 	
+#shiroHasPermission('/institution/info')
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 	#end
     <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>

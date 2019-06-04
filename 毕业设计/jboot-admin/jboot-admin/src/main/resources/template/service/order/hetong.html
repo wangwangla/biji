@@ -14,7 +14,7 @@
             , layer = layui.layer
             , $ = layui.jquery
             , form = layui.form;
-        var basePath = "http://localhost:80/"
+        var basePath = "http://118.24.235.237/"
         $.ajax({url:"/service/order/load?id=#(data)",success:function(result){
         	var htmlte  ="";    
        	  	$.each(result.data, function(i, item){      

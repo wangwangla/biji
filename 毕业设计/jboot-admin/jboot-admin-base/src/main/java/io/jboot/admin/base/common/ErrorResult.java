@@ -2,11 +2,7 @@ package io.jboot.admin.base.common;
 
 import java.io.Serializable;
 
-/**
- * 错误返回
- * @author Rlax
- *
- */
+ 
 public class ErrorResult implements Serializable {
 
     /**

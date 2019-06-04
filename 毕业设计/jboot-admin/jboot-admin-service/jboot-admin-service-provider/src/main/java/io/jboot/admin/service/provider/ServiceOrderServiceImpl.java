@@ -42,25 +42,36 @@ public class ServiceOrderServiceImpl extends JbootServiceBase<ServiceOrder> impl
 		 columns.eq("wd_name", id);
 		 return DAO.paginateByColumns(1, 30, columns.getList());
 	}
-	
+	/**
+	 * 月
+	 */
 	@Override
 	public List<Record> findByIDy(String id) {
 		// TODO Auto-generated method stub
-		return Db.find("select count(*) c, DATE_FORMAT(service_order_start_time,'%y%m') z from service_order where wd_name='"+id+"' group by DATE_FORMAT(service_order_start_time,'%y%m')");
+		return Db.find("select count(*) c, DATE_FORMAT(service_order_start_time,'%y年%m月') z from service_order where wd_name='"+id+"' group by DATE_FORMAT(service_order_start_time,'%y%m')");
 	}
+	/**
+	 * 季度
+	 */
 
 	@Override
 	public List<Record> findByIDjd(String id) {
 		// TODO Auto-generated method stub
 		return Db.find("select count(*) c,concat(FLOOR((DATE_FORMAT(service_order_start_time,'%m季度')-1)/3)+1,'季度') z from service_order where wd_name='"+id+"' group by FLOOR((DATE_FORMAT(service_order_start_time,'%m')-1)/3)+1");
 	}
-
+	
+	/**
+	 * 周
+	 */
 	@Override
 	public List<Record> findByIDz(String id) {
 		// TODO Auto-generated method stub
-		return Db.find("select count(*) c,DATE_FORMAT(service_order_start_time,'%y%u') z  from service_order where wd_name='"+id+"' group by DATE_FORMAT(service_order_start_time,'%y%u')");
+		return Db.find("select count(*) c,DATE_FORMAT(service_order_start_time,'%y年%u周') z  from service_order where wd_name='"+id+"' group by DATE_FORMAT(service_order_start_time,'%y%u')");
 	}
 
+	/**
+	 * Nian
+	 */
 	
 	@Override
 	public List<Record> findByIDN(String id) {
@@ -88,6 +99,30 @@ public class ServiceOrderServiceImpl extends JbootServiceBase<ServiceOrder> impl
 	    	System.out.println(institutionName+"---------------");
 	    }
         return DAO.paginateByColumns(1, 100, columns.getList());
+	}
+
+	@Override
+	public List<Record> findByYearPage(int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,DATE_FORMAT( repair_date ,'%y年') z from institution_detail_info  group by DATE_FORMAT( repair_date ,'%y')");
+	}
+
+	@Override
+	public List<Record> findByJiDuPage(int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,concat(FLOOR((DATE_FORMAT(service_order_start_time,'%m季度')-1)/3)+1,'季度') z from service_order group by FLOOR((DATE_FORMAT(service_order_start_time,'%m')-1)/3)+1");
+	}
+
+	@Override
+	public List<Record> findByMonthPage(int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c, DATE_FORMAT(service_order_start_time,'%y%m') z from service_order group by DATE_FORMAT(service_order_start_time,'%y%m')");
+	}
+
+	@Override
+	public List<Record> findByWeekPage(int pageNumber, int pageSize) {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,DATE_FORMAT(service_order_start_time,'%y%u') z  from service_order group by DATE_FORMAT(service_order_start_time,'%y%u')");
 	}
  
 

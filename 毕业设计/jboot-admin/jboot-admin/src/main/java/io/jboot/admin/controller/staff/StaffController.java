@@ -93,6 +93,8 @@ public class StaffController extends BaseController{
         StaffInfo data = dataService.findById(id);
         setAttr("data", data).render("update.html");
     }
+    
+    
     @NotNullPara({"id"})
     public void find() {
         String id = getPara("id");

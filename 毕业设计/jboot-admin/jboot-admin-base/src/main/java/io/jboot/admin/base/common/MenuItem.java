@@ -1,13 +1,7 @@
 package io.jboot.admin.base.common;
 
 import java.util.List;
-
-/**
- * 菜单实体
- *
- * @author Rlax
- *
- */
+ 
 public class MenuItem {
 
     /** 菜单标题 */

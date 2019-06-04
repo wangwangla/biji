@@ -28,6 +28,19 @@ public class InstitutionDetailController extends BaseController{
 	private InstitutionInfoService infoService;
 	@JbootrpcService
 	private ServiceOrderService service;
+	
+	public void tongji() {
+    	String id = getPara("id");
+    	List<Record> lis = dataService.findByInstituId(id);
+    	if(lis.size()!=0) {
+    		Record r =  lis.get(0);
+    		setAttr("data", r.get("wd_id")).render("tongji.html");
+    	}else {
+    		render("tongji.html");
+    	}
+    	
+    }
+	
     /**
      * index
      */
@@ -172,4 +185,7 @@ public class InstitutionDetailController extends BaseController{
         System.out.println(dataPage.toString());
         renderJson(dataPage);
     }
+    
+    
+    
 }

@@ -1,5 +1,6 @@
 package io.jboot.admin.service.api;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -84,19 +85,15 @@ public interface WaregouseOutService  {
     public void join(Model model, String joinOnField, String[] attrs);
     public void join(Model model, String joinOnField, String joinName);
     public void join(Model model, String joinOnField, String joinName, String[] attrs);
-
     public void keep(Model model, String... attrs);
     public void keep(List<? extends Model> models, String... attrs);
-
-
 	public void refreshCache();
-
-
 	public Page<WaregouseOut> findPage(int pageNumber, int pageSize);
-
-
 	public List<Record> export();
-
-
 	public Page<WaregouseOut> findPage(WaregouseOut waregouseOut, int pageNumber, int pageSize);
+	public List<Record> findByIDy();
+	public List<Record> findByIDjd() ;
+	public List<Record> findByIDz();
+	public List<Record> findByIDN() ;
+
 }

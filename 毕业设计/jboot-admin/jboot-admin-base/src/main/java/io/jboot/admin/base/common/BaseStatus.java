@@ -3,11 +3,7 @@ package io.jboot.admin.base.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * 状态基类
- * @author Rlax
- *
- */
+ 
 public abstract class BaseStatus {
 
 	private Map<String, String> map = new LinkedHashMap<String, String>();

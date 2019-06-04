@@ -21,6 +21,11 @@ public class WarehouseInController  extends BaseController {
 	
 	@JbootrpcService
 	private WaregouseIntoService dataService;
+	
+	
+	public void tongji() {
+		render("tongji.html");
+	}
 
 	 /**
     * index

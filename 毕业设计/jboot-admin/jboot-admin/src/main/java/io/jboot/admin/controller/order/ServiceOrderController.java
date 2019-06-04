@@ -114,11 +114,33 @@ public class ServiceOrderController extends BaseController{
     }
 
     /**
+     * 	抢单
+     */
+    @NotNullPara({"id"})
+    public void appoint() {
+        String id = getPara("id");
+        ServiceOrder data = dataService.findById(id);
+        setAttr("data", data).render("appoint.html");
+    }
+
+    public void postAppoint() {
+    	ServiceOrder data = getBean(ServiceOrder.class, "data");
+    	
+        if (dataService.findById(data.getServiceOrderId()) == null) {
+            throw new BusinessException("数据不存在");
+        }
+
+        if (!dataService.update(data)) {
+            throw new BusinessException("修改失败");
+        }
+        renderJson(RestResult.buildSuccess());
+    }
+    /**
      * 修改提交
      */
     public void postUpdate() {
     	ServiceOrder data = getBean(ServiceOrder.class, "data");
-
+    	data.setOrderWorkTime(new Date());
         if (dataService.findById(data.getServiceOrderId()) == null) {
             throw new BusinessException("数据不存在");
         }

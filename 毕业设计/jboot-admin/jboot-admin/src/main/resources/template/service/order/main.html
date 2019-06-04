@@ -23,7 +23,7 @@
             , size: 'sm' //小尺寸的表格
             , height: 'full-150'    //容器高度
             , cols: [[                  //标题栏
-                 {field: 'serviceOrderId', title: 'ID', width: 160}
+                  {field: 'serviceOrderId', title: 'ID', width: 160}
                 , {field: 'serviceOrderName', title: '订单名称', width: 160}
                 , {field: 'serviceOrderInstitution', title: '服务机构', width: 120}
                 , {field: 'wdName', title: '机构网点', width: 120}
@@ -34,8 +34,8 @@
                 , {field: 'orderWorkTime', title: '派遣时间', width: 180}
                 , {field: 'orderFinshTime', title: '维修完工时间', width: 180}
                 , {field: 'orderStatus', title: '状态', width: 120}
-                , {fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
-                
+                , {field: 'rapairStaff', title: '维修工', width: 120}
+                , {fixed: 'right', title: '操作', width: 230, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
              ]]
             , url: '#(ctxPath)/service/order/tableData'
             , method: 'get'
@@ -78,6 +78,10 @@
                 pop_show('订单附件','#(ctxPath)/service/order/hetong?id=' + data.serviceOrderId,'','', function(){
                     reloadTableQuery();
                 });
+            } else if(obj.event === 'appoint'){
+            	 pop_show('编辑数据','#(ctxPath)/service/order/update?id=' + data.serviceOrderId,'','', function(){
+                     reloadTableQuery();
+                 });
             } 
             
         });
@@ -146,6 +150,6 @@
 	
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="fujian">订单附件</a>
-
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="appoint">指定维修工</a>
 </script>
 #end

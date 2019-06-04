@@ -1,10 +1,6 @@
 package io.jboot.admin.base.common;
 
-/**
- * 常量
- * @author Rlax
- *
- */
+ 
 public class Consts
 {
 	/** session 用户信息key */

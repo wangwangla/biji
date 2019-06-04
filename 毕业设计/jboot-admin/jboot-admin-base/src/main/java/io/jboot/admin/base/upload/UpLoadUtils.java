@@ -12,7 +12,7 @@ import com.jfinal.upload.UploadFile;
 public class UpLoadUtils {
 	public static List<String> uploadFile(UploadFile file ,List<String> listImage) throws Exception {
 		 String fileName = UUID.randomUUID().toString().substring(0, 5)+file.getFileName();
-		 File Newfile = new File("F:\\nginx-1.12.2\\html",fileName);
+		 File Newfile = new File("/usr/local/nginx/html",fileName);
 		 listImage.add(fileName);
 		 FileInputStream inputStream = new FileInputStream(file.getFile());
 		 FileOutputStream outputStream = new FileOutputStream(Newfile);
@@ -27,7 +27,7 @@ public class UpLoadUtils {
 	}
 	
 	public static void delete(String fileName) {
-		 File file = new File("F:\\nginx-1.12.2\\html",fileName);
+		 File file = new File("/usr/local/nginx/html",fileName);
 		 file.delete();
 	}
 }

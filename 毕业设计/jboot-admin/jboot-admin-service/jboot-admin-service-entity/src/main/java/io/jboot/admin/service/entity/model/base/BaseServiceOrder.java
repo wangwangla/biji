@@ -126,4 +126,12 @@ public abstract class BaseServiceOrder<M extends BaseServiceOrder<M>> extends Jb
 		return getStr("service_order_institution");
 	}
 
+	public void setRapairStaff(java.lang.String rapairStaff) {
+		set("rapair_staff", rapairStaff);
+	}
+	
+	public java.lang.String getRapairStaff() {
+		return getStr("rapair_staff");
+	}
+
 }

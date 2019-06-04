@@ -38,6 +38,7 @@ public class WarehouseOutController extends BaseController {
 	private static List<String> listImage = new ArrayList<String>();
 	@JbootrpcService
 	private EnclosureService enclosureService;
+
 	 /**
     * index
     */
@@ -177,4 +178,21 @@ public class WarehouseOutController extends BaseController {
 		    renderNull();
 		    
 		}
+	  public void tableYearData() {
+	        List<Record> dataPage = dataService.findByIDN();
+	        renderJson(dataPage);
+	    }
+	    public void tableJiDuData() {
+	        List<Record> dataPage = dataService.findByIDjd();
+	        renderJson(dataPage);
+	    }
+	    public void tableMonthData() {
+	        List<Record> dataPage = dataService.findByIDy();
+	        renderJson(dataPage);
+	    }
+	    public void tableWeekData() {
+	        List<Record> dataPage = dataService.findByIDz();
+	        renderJson(dataPage);
+	    }
+	 
 }

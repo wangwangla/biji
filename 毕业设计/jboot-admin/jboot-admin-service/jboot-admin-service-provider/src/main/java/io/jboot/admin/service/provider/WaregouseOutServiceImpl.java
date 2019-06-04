@@ -56,5 +56,41 @@ public class WaregouseOutServiceImpl extends JbootServiceBase<WaregouseOut> impl
 	       }
 	       return DAO.paginateByColumns(pageNumber, pageSize, columns.getList());
 	}
+	/**
+	 * 月
+	 */
+	@Override
+	public List<Record> findByIDy() {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c, DATE_FORMAT(equip_in_date,'%y年%m月') z from waregouse_out group by DATE_FORMAT(equip_in_date,'%y%m')");
+	}
+	/**
+	 * 季度
+	 */
+
+	@Override
+	public List<Record> findByIDjd() {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,concat(FLOOR((DATE_FORMAT(equip_in_date,'%m季度')-1)/3)+1,'季度') z from waregouse_out  group by FLOOR((DATE_FORMAT(equip_in_date,'%m')-1)/3)+1");
+	}
+	
+	/**
+	 * 周
+	 */
+	@Override
+	public List<Record> findByIDz() {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,DATE_FORMAT(equip_in_date,'%y年%u周') z  from waregouse_out  group by DATE_FORMAT(equip_in_date,'%y%u')");
+	}
+
+	/**
+	 * Nian
+	 */
+	
+	@Override
+	public List<Record> findByIDN() {
+		// TODO Auto-generated method stub
+		return Db.find("select count(*) c,DATE_FORMAT(equip_in_date ,'%y年') z from waregouse_out group by DATE_FORMAT(equip_in_date,'%y')");
+	}
 
 }

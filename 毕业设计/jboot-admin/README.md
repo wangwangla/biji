@@ -1,159 +1,338 @@
-### 项目介绍
-    
-　　jboot-admin是基于[jboot](https://github.com/yangfuhai/jboot)全家桶构建的微服务实战项目，以微服务快速迭代开发为架构思想，目前包含后台管理模块、微信公众号模块，将来计划按照电商业务加入秒杀、商品、订单、app、小程序等模块。微服务模块分为api层、实体层、调用层、实现层、基础层，包含代码生成、用户角色权限、数据字典、日志管理、服务治理、服务监控、链路跟踪等功能。无论是学习jboot还是作为项目脚手架开发都是一个很好的选择。
+## 云服务器配置
+#### jdk的安装
+(1)查看软件包列表
 
-　　jboot-admin主要的开发理念就是简单快速，所以框架里还包含一些其他特性，比如：
+```shell
+yum search java | grep -i --color jdk
+```
 
- - 简单好用的代码生成：微服务每个模块每层都可自动生成，只做核心代码开发，省去大量开发时间。
- - 牛逼的统一异常：分为业务、校验、系统异常，任何地方抛出异常都常可直接转化为前端提示，无需过多编码。
- - 快速的数据字典：将字典通过管理端配置，任何模块都可直接使用。
- - 业务状态管理：业务状态单独管理，即解耦了业务与状态又满足了分布式项目使用，在任何需要转码的地方都可直接使用。
- 
- 还有很多很多期待你在使用中发现。
+（2）选择版本进行安装
 
- **感兴趣有疑问的可以加jboot群交流：601440615** 
+```shell
+yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
+```
 
-### 技术选型
+或者如下命令，安装jdk1.8.0的所有文件
 
- - 核心框架：jboot 1.3.7
- - 模版引擎：jfinal 3.3
- - 注册中心：consul/zookeeper
- - RPC：motan/dubbo
- - RPC治理：motan-manager
- - 安全框架：shiro/jwt [jwt多设备token demo](./jboot-b2c/README.md)
- - 缓存框架：ehcache/redis
- - 容错隔离：hystrix
- - 调用监控：hystrix-dashboard
- - 链路跟踪：zipkin
- - 页面ui：layui 2.2.5
+```shell
+yum install -y java-1.8.0-openjdk*
+```
 
-### 模块说明
 
-项目为使用maven构建的多模块项目
+（3）查看是否安装成功
 
- - jboot-admin-parent：父模块，主要管理依赖
- - jboot-admin-base：框架相关代码
- - jboot-admin：后台管理客户端模块
- - jboot-wechat：微信公众号客户端模块，客户端demo
- - jboot-b2c：b2c客户端模块，客户的demo
- - jboot-admin-service：系统服务端模块，包含api、entity、provider三个子模块
- - jboot-admin-service-api：系统服务api模块，定义服务端与客户端api标准
- - jboot-admin-service-entity：系统服务实体模块，定义服务所需model、dto、服务状态类
- - jboot-admin-service-provider：系统服务实现模块，针对api的实现
- - jboot-b2c-service：B2C服务端模块，包含api、entity、provider三个子模块
- - jboot-b2c-service-api：B2C服务api模块，定义服务端与客户端api标准
- - jboot-b2c-service-entity：B2C服务实体模块，定义服务所需model、dto、服务状态类
- - jboot-b2c-service-provider：B2C服务实现模块，针对api的实现
- 
-### 重要更新
+```shell
+java -version
+```
 
-    1、2018-01-18： 添加微信公众号模块jboot-wechat，微信公众号demo
-    2、2018-01-23： 添加B2C服务端模块jboot-b2c-service，b2c商品管理demo
-    3、2018-01-25： 添加B2C客户端模块，初始化上传，作为商城秒杀demo模块
-    4、2018-02-01： B2C客户端添加 JWT 前后分离验证 demo 
- 
-### 项目使用
 
-**请使用jdk8及以上版本，数据库为mysql。** 
+（4）环境变量配置
 
-    1、建立后台管理数据库：doc/sql/jboot-admin.sql，数据库名：jboot-admin，用户名密码root/root
-    2、建立B2C数据库：doc/sql/jboot-b2c.sql，数据库名：jboot-b2c，用户名密码root/root
-    3、启动consul或zookeeper，目前配置文件默认为consul+motan，如需替换dubbo + zookeeper可参考下面配置进行更改
-    4、启动redis，需要配置密码为 123456，可在配置文件进行修改
-    5、如需更改db/redis/consul/zookeeper等配置请更新客户端配置文件：jboot-admin/resources/jboot.properties
-    6、如需更改db/redis/consul/zookeeper数据库配置请更新服务端配置文件：jboot-admin-service/jboot-admin-service-provider/resources/jboot.properties
-    7、启动客户端：客户端启动入口：io.jboot.admin.Application
-    8、启动服务端：服务端启动入口：io.jboot.admin.service.provider.app.Application
-    9、启动B2C服务端：服务端启动入口：io.jboot.b2c.service.provider.app.Application
-    10、浏览器访问：localhost:8888，默认用户名密码：admin/123123
-        
-    附加：
-    监控相关功能需要安装对应服务才可正常使用
-    注册中心监控需要安装：consul或zookeeper
-    服务调用监控需要安装：hystrix-dashboard
-    链路跟踪监控需要安装：zipkin-server
-    服务治理需要安装：motan-manager
-    这些都可以在网上下载或者自己编译，当然也可以加群下载
-    
-    
-### 配置说明
+```shell
+set java environment  
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64
+PATH=$PATH:$JAVA_HOME/bin  
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar  
+export JAVA_HOME  CLASSPATH  PATH 
+```
 
-可以在配置文件中更改db、consul、zookeeper、cache、mq等配置
 
-客户端配置文件：jboot-admin/resources/jboot.properties<br>
-服务端配置文件：jboot-admin-service/jboot-admin-service-provider/resources/jboot.properties    
-    
-motan + consul配置示例
-   
-    #use motan + consul
-    jboot.rpc.type = motan
-    jboot.rpc.registryType = consul
-    jboot.rpc.registryAddress = 127.0.0.1:8500
-    
-dubbo + zookeeper配置示例
+（5）立即生效
 
-    #use dubbo + zookeeper
-    jboot.rpc.type = dubbo
-    jboot.rpc.registryType = zookeeper
-    jboot.rpc.registryAddress = 127.0.0.1:2181
-    
-### 代码生成
+```shell
+source  /etc/profile
+```
 
-对jboot 代码生成进行了配置文件的封装，使用更简单方便
 
-1、配置代码生成配置文件，包含数据库配置与代码生成包相关配置
-    
-    配置文件位置：
-    各模块 resources/jboot.properties
+（6）查看变量
 
-2、执行代码生成类
+```shell
+echo $JAVA_HOME
+echo $PATH
+echo $CLASSPATH
+```
 
-    代码生成入口：
-    service interface api生成：io.jboot.admin.service.api.ge.GenCode
-    model 实体生成：io.jboot.admin.service.entity.GenCode
-    service impl 实现层生成：io.jboot.admin.service.provider.ge.GenCode
+​	
 
-provider实现类生成配置文件示例：
-   
-    #---------------------------------------------------------------------------------#
-    # Generator Config
-    # jboot.admin.serviceimpl.ge.entity.package: the entity package;
-    # jboot.admin.serviceimpl.ge.servicepackage：service 接口 package
-    # jboot.admin.serviceimpl.ge.serviceimplpackage：service 实现类 package
-    # jboot.admin.serviceimpl.ge.localdev.removedtablenameprefixes: 需要移除表名前缀只留下后部分，多个逗号隔开
-    # jboot.admin.serviceimpl.ge.localdev.excludedtable: 生成时不包含表名列表，多个逗号隔开
-    # jboot.admin.serviceimpl.ge.excludedtableprefixes: 生成时不包含表前缀，多个逗号隔开
-    #---------------------------------------------------------------------------------#
-    jboot.admin.serviceimpl.ge.modelpackage=io.jboot.admin.service.entity.model
-    jboot.admin.serviceimpl.ge.servicepackage=io.jboot.admin.service.api
-    jboot.admin.serviceimpl.ge.serviceimplpackage=io.jboot.admin.service.provider
-    jboot.admin.serviceimpl.ge.removedtablenameprefixes=sys_
-    jboot.admin.serviceimpl.ge.excludedtable=
-    jboot.admin.serviceimpl.ge.excludedtableprefixes=temp_,v_
 
-### 演示页面
+#### 米特网注册账号
+https://www.mite5.com
 
-登录界面：
-![登录界面](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/0.png "登录界面")
-资源管理：分为菜单与功能两种类型，菜单为左侧菜单树，功能为页面具体按钮或超链或其他资源内容，配置在资源管理内的资源只有通过授权后才可进行访问。
-![资源管理](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/1.png "资源管理")
-用户管理：配置系统的登录用户，并配置改用户角色。
-![用户管理](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/4.png "用户管理")
-角色管理：配置系统内角色，并配置角色具有哪些资源的权限。
-![角色管理](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/3.png "角色管理")
-数据管理：配置系统所需的字典参数，存储在缓存内，可灵活使用。
-![数据管理](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/5.png "数据管理")
-注册中心监控：监控注册中心页面
-![注册中心监控](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/6.png "注册中心监控")
-服务调用监控：hystrix服务调用监控
-![服务调用监控](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/7.png "服务调用监控")
-服务链路跟踪：zipkin链路跟踪
-![服务链路跟踪](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/8.png "服务链路跟踪")
-服务治理：motan-manager服务治理
-![服务治理](https://raw.githubusercontent.com/pkanyue/jboot-admin/master/doc/img/9.png "服务治理")
 
-### 感谢
+#### nginx的安装
+	更新软件
+	yum update
+	安装必须工具
+	yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel
+	安装pcre  
+	wget http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz	
+	解压安装包：tar zxvf pcre-8.35.tar.gz
+	进入安装包目录：cd pcre-8.35
+	编译：./configure
+	安装：make && make install
+	
+	下载nginx
+	cd /usr/local/
+	wget http://nginx.org/download/nginx-1.8.0.tar.gz
+	tar -zxvf nginx-1.8.0.tar.gz
+	cd nginx-1.8.0  
+	安装nginx指定目录
+	./configure --prefix=/usr/local/nginx 
+	make
+	make install
+	
+	--with-pcre=/usr/local/pcre-8.36 指的是pcre-8.36 的源码路径。
+	--with-zlib=/usr/local/zlib-1.2.8 指的是zlib-1.2.8 的源码路径。
 
- - jboot：https://github.com/yangfuhai/jboot
- - jfinal：http://git.oschina.net/jfinal/jfinal
- - layui：https://github.com/sentsin/layui
+启动
+
+```shell
+systemctl restart docker.service
+```
+
+ 检查是否启动成功：
+
+​	打开浏览器访问此机器的 IP，如果浏览器出现 Welcome to nginx! 则表示 Nginx 已经安装并运行成功。
+
+部分命令如下：
+	重启：
+
+```shelll
+/usr/local/nginx/sbin/nginx –s reload
+```
+
+​	停止：
+
+```shell
+/usr/local/nginx/sbin/nginx –s stop
+```
+
+	测试配置文件是否正常：
+	$ /usr/local/nginx/sbin/nginx –t
+	
+	强制关闭：
+	$ pkill nginx
+
+
+### Redis安装
+	yum install redis
+
+
+### 数据库安装
+	- 查看本身是否已经安装
+	rpm -qa | grep mariadb
+	- 卸载
+	rpm -e --nodeps  上面查出来的名字
+	- 设置yum repository
+	
+	设置rmp 
+	rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+	
+	下载webtatic-release RPM
+	rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+	
+	安装
+	yum install mysql55w mysql55w-server
+	
+	service mysqld start 开启服务
+	
+	mysqladmin -u root password 'root'设置密码
+	
+	mysql -u root -p  登录
+
+
+
+#### jboot项目构建
+
+​	在服务器和客户端的目录下执行下面命令
+	 mvn clean 
+	 mvn clean package appassembler:generate-daemons
+
+	jboot-admin\jboot-admin\target目录下的generated-resources复制到服务器
+	在服务器上给执行权限，然后启动服务器
+
+​	在服务器上将他们授予执行权限，然后就可以进行执行了，在执行的过程中，可以查看日志，在日志目录下，查看根目录下的启动日志。
+
+犯得错误：在根目录下执行名，这个要在服务端程序和客户端程序中都执行，然后分别启动即可。
+
+#### 服务器配置
+
+```shell
+数据库
+consul
+redis	 	 
+```
+
+
+### 启动过程
+- 启动nginx
+	./nginx
+- 启动consul
+	./consul agent -dev 或者consul agent -dev
+- 启动Redis
+	开机找服务开启
+	./redis-server
+
+jboot-admin下Application
+jboot-admin-provider下Application
+
+运行run方法。
+
+
+
+
+
+-------
+
+### docker发布项目
+
+首先我们需要安装redis、数据库、consul、java镜像。
+
+#### docker安装
+
+```shell
+yum -y install docker-io
+yum list installed | grep docker
+```
+
+镜像加速
+
+```shell
+{
+  "registry-mirrors": ["https://wghlmi3i.mirror.aliyuncs.com"]
+}
+或者
+{
+  "registry-mirrors": ["https://registry.docker-cn.com"]
+}
+```
+
+启动服务
+
+```shel
+systemctl start docker.service
+```
+
+已经安装完成，下来案例实验。
+
+- 启动docker
+
+  ```shell
+  [root@VM_0_15_centos ~]# systemctl start docker
+  ```
+
+  
+
+- 停止
+
+  ```shell
+  systemctl stop docker
+  ```
+
+  
+
+（1）启动一个hello-world
+
+```shell
+ docker run hello-world 运行容器，如果没有，就会自己去下载
+```
+
+（2）安装mysql
+
+- 速索mysql
+
+```shell
+docker search mysql
+```
+
+- pull镜像
+
+```shell
+ docker pull  docker.io/mysql
+```
+
+- 启动它
+
+```shell
+  sudo docker run --name kw-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3307:3306 -d mysql
+```
+
+- –name：给新创建的容器命名，此处命名为`pwc-mysql`
+- -e：配置信息，此处配置`mysql`的`root用户`的登陆密码
+- -p：端口映射，此处映射`主机3306端口`到`容器pwc-mysql的3306端口`
+- -d：成功启动容器后输出容器的完整ID，例如上图 `73f8811f669ee...`
+- 最后一个`mysql`指的是`mysql镜像名字`
+
+远程连接
+
+```shell
+mysql> CREATE USER 'kangwang'@'%' IDENTIFIED BY '123456';
+Query OK, 0 rows affected (0.00 sec)
+mysql> GRANT ALL ON *.* TO 'kangwang'@'%';
+Query OK, 0 rows affected (0.01 sec)
+```
+
+cmd中输入
+
+```shell
+mysql -h118.24.235.237 -p3307 -ukangwang -p123456
+```
+
+（3）安装redis
+
+查询Redis
+
+```shell
+docker search redis
+```
+
+下载redis
+
+```shell
+ docker pull docker.io/redis
+```
+
+启动redis
+
+```shell
+docker run --name kw-redis -p 6379:6379 -d redis:latest redis-server
+```
+
+使用工具连接数据库。
+
+
+
+补充：
+
+​	使用makefile构建redis
+
+```shell
+FROM 
+```
+
+
+
+（3）docker安装consul
+
+查找镜像
+
+```shell
+docker search consul
+```
+
+下载镜像
+
+```shell
+docker pull consul
+```
+
+启动
+
+```
+docker run --name consuls -d -p 8500:8500 -p 8300:8300 -p 8301:8301 -p 8302:8302 -p 8600:8600 consul:1.4.4 agent -server -bootstrap-expect 2 -ui -bind=0.0.0.0 -client=0.0.0.0
+```
+
+注意端口占用。
+
+#### redis安装
+

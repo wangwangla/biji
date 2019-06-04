@@ -115,4 +115,16 @@ public interface ServiceOrderService  {
 	public List<Record> findByIDxq(String institutionName);
  
 	public Page<ServiceOrder> findByWdName(String id, String institutionName);
+
+
+	public List<Record> findByYearPage(int pageNumber, int pageSize);
+
+
+	public List<Record> findByJiDuPage(int pageNumber, int pageSize);
+
+
+	public List<Record> findByMonthPage(int pageNumber, int pageSize);
+
+
+	public List<Record> findByWeekPage(int pageNumber, int pageSize);
 }
